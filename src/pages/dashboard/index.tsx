@@ -1,4 +1,6 @@
 import Sidebar from "@/components/Dashboard/Sidebar";
+import { supabaseClient } from "@/supabase/supabase.config";
+import { useSession } from "@supabase/auth-helpers-react";
 import { GetServerSideProps, NextPage } from "next";
 
 interface pageProps {
@@ -8,7 +10,10 @@ interface pageProps {
   };
 }
 
-const Dashboard: NextPage<pageProps> = () => {
+const Dashboard: NextPage = ({ data }) => {
+  const session = useSession();
+  console.log(data);
+
   return (
     <div className="min-h-screen bg-gradient-to-r from-cyan-500 to-blue-500 text-white">
       {/* Sidebar */}
@@ -20,15 +25,33 @@ const Dashboard: NextPage<pageProps> = () => {
           Your dashboard
         </h2>
 
-        <div className="m-4 p-4 bg-black bg-opacity-10 rounded-xl backdrop-blur-md"></div>
+        <div className="m-4 p-4 bg-black bg-opacity-10 rounded-xl backdrop-blur-md">
+          Authorized Users Dashboard.
+        </div>
       </div>
     </div>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = async (context: any) => {
+  const cookies = context.req.cookies;
+  const { data, error } = await supabaseClient.auth.setSession({
+    access_token: cookies["my-access-token"],
+    refresh_token: cookies["my-refresh-token"],
+  });
+
+  if (error == null) {
+    return {
+      props: {
+        data,
+      },
+    };
+  }
+
   return {
-    props: {},
+    redirect: {
+      destination: "/",
+    },
   };
 };
 

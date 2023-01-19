@@ -10,6 +10,8 @@ import {
   AiOutlineFacebook,
   AiOutlineGooglePlus,
 } from "react-icons/ai/index";
+import { supabaseClient } from "@/supabase/supabase.config";
+import { setCookie } from "cookies-next";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -46,14 +48,34 @@ export default function LoginForm() {
     validate,
     onSubmit: async (values) => {
       setProcessing(true);
-      const userRegistry = {
-        email: values.email,
-        password: values.password,
-      };
-      console.log(userRegistry);
-      setProcessing(false);
+      try {
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
+          email: values.email,
+          password: values.password,
+        });
+        if (error == null) {
+          router.push("/dashboard");
+        } else {
+          formik.errors.password = `${error.message}.`;
+          setProcessing(false);
+        }
+      } catch (error) {
+        console.log(error);
+        setProcessing(false);
+      }
     },
   });
+
+  // THIRD PARTY LOGIN FUNCTIONS
+  async function loginWithGoogle() {
+    const { data, error } = await supabaseClient.auth.signInWithOAuth({
+      provider: "google",
+    });
+
+    if (error == null) {
+      router.push("/");
+    }
+  }
 
   return (
     <motion.div
@@ -158,12 +180,12 @@ export default function LoginForm() {
       <p className="w-full text-center">OR</p>
 
       <div className="grid grid-cols-6 grid-rows-1 gap-4">
-        <Link
-          href="/"
-          className="col-span-2 flex flex-row items-center justify-center p-2 text-white bg-[#af2121] rounded-xl"
+        <div
+          // onClick={loginWithGoogle} Don't have money to set it up
+          className="col-span-2 flex flex-row items-center justify-center p-2 text-white bg-[#af2121] rounded-xl cursor-pointer"
         >
           <AiOutlineGooglePlus className="text-3xl" />
-        </Link>
+        </div>
         <Link
           href="/"
           className="col-span-2 flex flex-row items-center justify-center p-2 text-white bg-[#3b5998] rounded-xl"

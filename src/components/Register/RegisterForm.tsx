@@ -10,13 +10,20 @@ import {
   AiOutlineFacebook,
   AiOutlineGooglePlus,
 } from "react-icons/ai/index";
+import { supabaseClient } from "@/supabase/supabase.config";
 
-export default function LoginForm() {
+export default function LoginForm({ setSuccessFullyRegistered }) {
   const router = useRouter();
   const [processing, setProcessing] = useState(false);
 
   const validate = (values: any) => {
     const errors: any = {};
+
+    // Checking if name field is not empty.
+    if (!values.name) {
+      errors.name = "This field is required.";
+    }
+
     // Checking if email is valid
     if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(values.email)) {
       errors.email = "Invalid email address.";
@@ -38,6 +45,7 @@ export default function LoginForm() {
 
   const formik = useFormik({
     initialValues: {
+      name: "",
       email: "",
       password: "",
     },
@@ -45,13 +53,19 @@ export default function LoginForm() {
     validateOnBlur: false,
     validate,
     onSubmit: async (values) => {
-      setProcessing(true);
-      const userRegistry = {
-        email: values.email,
-        password: values.password,
-      };
-      console.log(userRegistry);
-      setProcessing(false);
+      try {
+        setProcessing(true);
+        const { data, error } = await supabaseClient.auth.signUp({
+          email: values.email,
+          password: values.password,
+        });
+        if (error == null) {
+          console.log(data);
+          setSuccessFullyRegistered(true);
+        }
+      } catch (error) {
+        console.log(error);
+      }
     },
   });
 
@@ -67,8 +81,8 @@ export default function LoginForm() {
         ease: "easeOut",
       }}
     >
-      <h1 className="text-3xl font-bold">Login</h1>
-      <h2 className="text-gray-700">Try out our amazing services.</h2>
+      <h1 className="text-3xl font-bold">Register</h1>
+      <h2 className="text-gray-700">Try out our amazing perks and services.</h2>
 
       <form
         onSubmit={formik.handleSubmit}
@@ -87,7 +101,7 @@ export default function LoginForm() {
             className="p-3 bg-gray-100 border-none focus:ring-1 focus:ring-orange-500 rounded-xl"
           />
           <AnimatePresence>
-            {formik.errors.email && (
+            {formik.errors.name && (
               <motion.p
                 className="text-red-700"
                 initial={{ opacity: 0, height: "0px" }}
@@ -99,7 +113,7 @@ export default function LoginForm() {
                   ease: "easeOut",
                 }}
               >
-                {formik.errors.email}
+                {formik.errors.name}
               </motion.p>
             )}
           </AnimatePresence>

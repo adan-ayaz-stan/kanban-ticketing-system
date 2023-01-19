@@ -1,4 +1,6 @@
 import LoginForm from "@/components/Login/LoginForm";
+import { supabaseClient } from "@/supabase/supabase.config";
+import { GetServerSideProps } from "next";
 
 export default function LogIn() {
   return (
@@ -9,3 +11,25 @@ export default function LogIn() {
     </div>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (context: any) => {
+  const cookies = context.req.cookies;
+  const { data, error } = await supabaseClient.auth.setSession({
+    access_token: cookies["my-access-token"],
+    refresh_token: cookies["my-refresh-token"],
+  });
+
+  if (error == null) {
+    return {
+      redirect: {
+        destination: "/dashboard",
+      },
+    };
+  }
+
+  return {
+    props: {
+      data,
+    },
+  };
+};

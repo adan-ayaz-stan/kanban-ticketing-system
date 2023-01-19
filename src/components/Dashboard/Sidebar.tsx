@@ -1,3 +1,5 @@
+import { supabaseClient } from "@/supabase/supabase.config";
+import { useRouter } from "next/router";
 import {
   AiFillAccountBook,
   AiFillCalendar,
@@ -8,10 +10,12 @@ import {
 } from "react-icons/ai/index";
 
 export default function Sidebar() {
+  const router = useRouter();
+
   const logout = async () => {
-    const data = await fetch("/api/logout").then((data) => data.json());
-    if (data.status == "success") {
-      router.push("/");
+    const { error } = await supabaseClient.auth.signOut();
+    if (error == null) {
+      router.replace("/");
     }
   };
 
@@ -25,28 +29,28 @@ export default function Sidebar() {
         <div
           id="dashboard-sidebar-home"
           data-tooltip-content="Home"
-          className="w-fit p-2 hover:bg-orange-400 cursor-pointer rounded-lg transition-all duration-300"
+          className="w-fit p-2 hover:bg-cyan-400 cursor-pointer rounded-lg transition-all duration-300"
         >
           <AiFillHome className="text-3xl" />
         </div>
         <div
           id="dashboard-sidebar-calender"
           data-tooltip-content="Calender"
-          className="w-fit p-2 hover:bg-orange-400 cursor-pointer rounded-lg transition-all duration-300"
+          className="w-fit p-2 hover:bg-cyan-400 cursor-pointer rounded-lg transition-all duration-300"
         >
           <AiFillCalendar className="text-3xl" />
         </div>
         <div
           id="dashboard-sidebar-expenses"
           data-tooltip-content="Expenses"
-          className="w-fit p-2 hover:bg-orange-400 cursor-pointer rounded-lg transition-all duration-300"
+          className="w-fit p-2 hover:bg-cyan-400 cursor-pointer rounded-lg transition-all duration-300"
         >
           <AiFillAccountBook className="text-3xl" />
         </div>
         <div
           id="dashboard-sidebar-gift"
           data-tooltip-content="Daily Reward"
-          className="w-fit p-2 hover:bg-orange-400 cursor-pointer rounded-lg transition-all duration-300"
+          className="w-fit p-2 hover:bg-cyan-400 cursor-pointer rounded-lg transition-all duration-300"
         >
           <AiFillGift className="text-3xl" />
         </div>
@@ -56,7 +60,7 @@ export default function Sidebar() {
       <div
         id="dashboard-sidebar-logout"
         data-tooltip-content="Logout"
-        className="w-fit ml-2 sm:mb-6 p-2 hover:bg-orange-400 cursor-pointer rounded-lg transition-all duration-300"
+        className="w-fit ml-2 sm:mb-6 p-2 hover:bg-cyan-400 cursor-pointer rounded-lg transition-all duration-300"
         onClick={logout}
       >
         <AiOutlineLogout className="text-3xl" />
