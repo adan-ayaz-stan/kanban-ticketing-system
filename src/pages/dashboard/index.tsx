@@ -3,14 +3,11 @@ import { supabaseClient } from "@/supabase/supabase.config";
 import { useSession } from "@supabase/auth-helpers-react";
 import { GetServerSideProps, NextPage } from "next";
 
-interface pageProps {
-  userData: {
-    name: String;
-    email: String;
-  };
-}
+type pageProps = {
+  data: Object;
+};
 
-const Dashboard: NextPage = ({ data }) => {
+const Dashboard: NextPage<pageProps> = ({ data }) => {
   return (
     <div className="min-h-screen bg-gradient-to-r from-cyan-500 to-blue-500 text-white">
       {/* Sidebar */}
@@ -30,8 +27,8 @@ const Dashboard: NextPage = ({ data }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async (context: any) => {
-  const cookies = context.req.cookies;
+export const getServerSideProps: GetServerSideProps = async ({ req }) => {
+  const cookies = req.cookies;
   const { data, error } = await supabaseClient.auth.setSession({
     access_token: cookies["my-access-token"],
     refresh_token: cookies["my-refresh-token"],

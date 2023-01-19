@@ -12,7 +12,13 @@ import {
 } from "react-icons/ai/index";
 import { supabaseClient } from "@/supabase/supabase.config";
 
-export default function LoginForm({ setSuccessFullyRegistered }) {
+type componentProps = {
+  setSuccessFullyRegistered: Function;
+};
+
+export default function LoginForm({
+  setSuccessFullyRegistered,
+}: componentProps) {
   const router = useRouter();
   const [processing, setProcessing] = useState(false);
 
