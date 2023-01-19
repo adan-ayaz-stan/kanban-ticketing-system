@@ -86,7 +86,7 @@ export default function LoginForm({ setSuccessFullyRegistered }) {
 
       <form
         onSubmit={formik.handleSubmit}
-        id="login-form"
+        id="register-form"
         autoComplete="off"
         className="flex flex-col gap-4"
       >

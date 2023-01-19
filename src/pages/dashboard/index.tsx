@@ -11,9 +11,6 @@ interface pageProps {
 }
 
 const Dashboard: NextPage = ({ data }) => {
-  const session = useSession();
-  console.log(data);
-
   return (
     <div className="min-h-screen bg-gradient-to-r from-cyan-500 to-blue-500 text-white">
       {/* Sidebar */}

@@ -155,7 +155,10 @@ export default function LoginForm() {
           </AnimatePresence>
         </div>
 
-        <Link href={"/"} className="text-cyan-500 font-bold hover:underline">
+        <Link
+          href={"/forgotPasswordSendMail"}
+          className="text-cyan-500 font-bold hover:underline"
+        >
           Forgot password
         </Link>
 

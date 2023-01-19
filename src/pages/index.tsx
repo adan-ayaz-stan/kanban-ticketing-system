@@ -11,7 +11,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="min-h-screen bg-gradient-to-r from-cyan-500 to-blue-500 text-white">
+      <main className="min-h-screen bg-[url('https://images.unsplash.com/photo-1659878997289-b9ab5a0663b6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80')] bg-norepeat bg-cover text-white">
         {/* Navbar */}
         <div className="flex flex-row justify-between items-center px-12 py-4">
           <div>Logo</div>
