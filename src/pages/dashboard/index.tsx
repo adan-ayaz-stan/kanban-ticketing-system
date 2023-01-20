@@ -27,11 +27,15 @@ const Dashboard: NextPage<pageProps> = ({ data }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async ({ req }) => {
-  const cookies = req.cookies;
+export async function getServerSideProps(context: { req: { cookies: any } }) {
+  const cookies = context.req.cookies;
   const { data, error } = await supabaseClient.auth.setSession({
-    access_token: cookies["my-access-token"],
-    refresh_token: cookies["my-refresh-token"],
+    access_token:
+      cookies["my-access-token"] == undefined ? "" : cookies["my-access-token"],
+    refresh_token:
+      cookies["my-refresh-token"] == undefined
+        ? ""
+        : cookies["my-refresh-token"],
   });
 
   if (error == null) {
@@ -47,6 +51,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
       destination: "/",
     },
   };
-};
+}
 
 export default Dashboard;

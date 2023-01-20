@@ -22,8 +22,12 @@ function MyApp({
       document.cookie = `my-refresh-token=; path=/; expires=${expires}; SameSite=Lax; secure`;
     } else if (event === "SIGNED_IN" || event === "TOKEN_REFRESHED") {
       const maxAge = 100 * 365 * 24 * 60 * 60; // 100 years, never expires
-      document.cookie = `my-access-token=${session.access_token}; path=/; max-age=${maxAge}; SameSite=Lax; secure`;
-      document.cookie = `my-refresh-token=${session.refresh_token}; path=/; max-age=${maxAge}; SameSite=Lax; secure`;
+      document.cookie = `my-access-token=${
+        session == null ? "" : session.access_token
+      }; path=/; max-age=${maxAge}; SameSite=Lax; secure`;
+      document.cookie = `my-refresh-token=${
+        session == null ? "" : session.refresh_token
+      }; path=/; max-age=${maxAge}; SameSite=Lax; secure`;
     }
   });
 
