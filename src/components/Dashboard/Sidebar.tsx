@@ -1,21 +1,28 @@
-import { supabaseClient } from "@/supabase/supabase.config";
 import { useRouter } from "next/router";
 import {
-  AiFillAccountBook,
-  AiFillCalendar,
   AiFillGift,
   AiFillHome,
-  AiOutlineHome,
   AiOutlineLogout,
+  AiFillProject,
+  AiFillContacts,
 } from "react-icons/ai/index";
+
+import { Tooltip } from "react-tooltip";
+
+import "react-tooltip/dist/react-tooltip.css";
+
+import { supabaseClient } from "@/supabase/supabase.config";
+import Link from "next/link";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
 export default function Sidebar() {
   const router = useRouter();
+  const supabase = useSupabaseClient();
 
   const logout = async () => {
-    const { error } = await supabaseClient.auth.signOut();
+    const { error } = await supabase.auth.signOut();
     if (error == null) {
-      router.replace("/");
+      router.push("/");
     }
   };
 
@@ -26,33 +33,38 @@ export default function Sidebar() {
 
       {/* Routing */}
       <div className="flex flex-row sm:flex-col gap-4">
-        <div
+        <Link
+          href={"/dashboard"}
           id="dashboard-sidebar-home"
           data-tooltip-content="Home"
           className="w-fit p-2 hover:bg-cyan-400 cursor-pointer rounded-lg transition-all duration-300"
         >
           <AiFillHome className="text-3xl" />
-        </div>
-        <div
-          id="dashboard-sidebar-calender"
-          data-tooltip-content="Calender"
+          <Tooltip anchorId="dashboard-sidebar-home">Home</Tooltip>
+        </Link>
+        <Link
+          href={"/dashboard/projects"}
+          id="dashboard-sidebar-projects"
           className="w-fit p-2 hover:bg-cyan-400 cursor-pointer rounded-lg transition-all duration-300"
         >
-          <AiFillCalendar className="text-3xl" />
-        </div>
+          <AiFillProject className="text-3xl" />
+          <Tooltip anchorId="dashboard-sidebar-projects">Projects</Tooltip>
+        </Link>
         <div
-          id="dashboard-sidebar-expenses"
-          data-tooltip-content="Expenses"
+          id="dashboard-sidebar-connections"
           className="w-fit p-2 hover:bg-cyan-400 cursor-pointer rounded-lg transition-all duration-300"
         >
-          <AiFillAccountBook className="text-3xl" />
+          <AiFillContacts className="text-3xl" />
+          <Tooltip anchorId="dashboard-sidebar-connections">
+            Connections
+          </Tooltip>
         </div>
         <div
           id="dashboard-sidebar-gift"
-          data-tooltip-content="Daily Reward"
           className="w-fit p-2 hover:bg-cyan-400 cursor-pointer rounded-lg transition-all duration-300"
         >
           <AiFillGift className="text-3xl" />
+          <Tooltip anchorId="dashboard-sidebar-gift">[Placeholder]</Tooltip>
         </div>
       </div>
 
@@ -64,6 +76,7 @@ export default function Sidebar() {
         onClick={logout}
       >
         <AiOutlineLogout className="text-3xl" />
+        <Tooltip anchorId="dashboard-sidebar-logout">Logout</Tooltip>
       </div>
     </div>
   );

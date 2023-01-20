@@ -1,22 +1,32 @@
+import { NextPage } from "next";
 import Sidebar from "@/components/Dashboard/Sidebar";
+
 import { supabaseClient } from "@/supabase/supabase.config";
+import Project from "@/components/Dashboard/Projects/ProjectOverview";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
-import {
-  useSession,
-  useSupabaseClient,
-  useUser,
-} from "@supabase/auth-helpers-react";
-import { GetServerSideProps, NextPage } from "next";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
+
+const sampleData = [
+  {
+    id: 1,
+    currentStatus: "active",
+    projectName: "Project 01",
+    projectCreationDate: "26.01.23",
+    totalMembers: 10,
+  },
+  {
+    id: 2,
+    currentStatus: "inactive",
+    projectName: "Project 02",
+    projectCreationDate: "12.02.23",
+    totalMembers: 21,
+  },
+];
 
 type pageProps = {
   user: Object;
 };
 
 const Dashboard: NextPage<pageProps> = ({ user }) => {
-  console.log(user);
-
   return (
     <div className="min-h-screen bg-gradient-to-r from-cyan-500 to-blue-500 text-white">
       {/* Sidebar */}
@@ -25,18 +35,23 @@ const Dashboard: NextPage<pageProps> = ({ user }) => {
       {/* MAIN PANEL */}
       <div className="relative sm:pl-20">
         <h2 className="w-full text-xl text-center font-bold uppercase p-4">
-          Your dashboard
+          Projects
         </h2>
 
-        <div className="m-4 p-4 bg-black bg-opacity-10 rounded-xl backdrop-blur-md">
-          Authorized Users Dashboard.
+        {/* Projects */}
+        <div className="border-2 mx-2 p-2 rounded-lg backdrop-blur-20">
+          <h1>Your Projects</h1>
+
+          <div className="grid grid-cols-1 auto-rows-auto gap-2">
+            {sampleData.map((ele, ind) => {
+              return <Project projectData={ele} key={ind * Math.random()} />;
+            })}
+          </div>
         </div>
       </div>
     </div>
   );
 };
-
-export default Dashboard;
 
 export const getServerSideProps = async (ctx) => {
   // Create authenticated Supabase Client
@@ -61,3 +76,6 @@ export const getServerSideProps = async (ctx) => {
     },
   };
 };
+
+
+export default Dashboard;

@@ -18,13 +18,13 @@ export default function Home() {
 
           <div className="flex flex-row gap-4">
             <Link
-              href={"/login"}
+              href={"/auth"}
               className="px-2 py-1 border-2 rounded hover:border-dotted"
             >
               Login
             </Link>
             <Link
-              href={"/register"}
+              href={"/auth"}
               className="px-2 py-1 border-2 rounded hover:border-dotted"
             >
               Sign up
