@@ -24,9 +24,12 @@ const sampleData = [
 
 type pageProps = {
   user: Object;
+  projectsData: [];
 };
 
-const Dashboard: NextPage<pageProps> = ({ user }) => {
+const Dashboard: NextPage<pageProps> = ({ user, projectsData }) => {
+  console.log(projectsData);
+
   return (
     <div className="min-h-screen bg-gradient-to-r from-cyan-500 to-blue-500 text-white">
       {/* Sidebar */}
@@ -43,7 +46,8 @@ const Dashboard: NextPage<pageProps> = ({ user }) => {
           <h1>Your Projects</h1>
 
           <div className="grid grid-cols-1 auto-rows-auto gap-2">
-            {sampleData.map((ele, ind) => {
+            {projectsData.map((ele, ind) => {
+              console.log(ele);
               return <Project projectData={ele} key={ind * Math.random()} />;
             })}
           </div>
@@ -69,13 +73,23 @@ export const getServerSideProps = async (ctx) => {
       },
     };
 
+  // If we have a session
+
+  // We get the user email
+  const userEmail = session.user.email;
+  // And fetch products that are owned by this email
+  const projectsData = await supabase
+    .from("projects")
+    .select()
+    .eq("ownership", userEmail);  
+
   return {
     props: {
       initialSession: session,
       user: session.user,
+      projectsData: projectsData.data,
     },
   };
 };
-
 
 export default Dashboard;
