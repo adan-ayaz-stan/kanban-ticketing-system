@@ -27,7 +27,7 @@ export default function Sidebar() {
   };
 
   return (
-    <div className="h-fit sm:h-screen w-screen sm:w-20 fixed bottom-0 sm:top-0 left-0 flex flex-row sm:flex-col justify-center sm:justify-between items-center py-2 sm:py-0 bg-gradient-to-b from-cyan-500 to-blue-500 bg-opacity-50">
+    <div className="h-fit sm:h-screen w-screen sm:w-20 fixed bottom-0 sm:top-0 left-0 flex flex-row sm:flex-col justify-center sm:justify-between items-center py-2 sm:py-0 text-white bg-gradient-to-b from-cyan-500 to-blue-500 bg-opacity-50">
       {/* Logo */}
       <div className="relative hidden sm:block h-20 w-full">Logo</div>
 

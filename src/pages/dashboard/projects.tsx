@@ -1,26 +1,9 @@
 import { NextPage } from "next";
-import Sidebar from "@/components/Dashboard/Sidebar";
-
-import { supabaseClient } from "@/supabase/supabase.config";
-import Project from "@/components/Dashboard/Projects/ProjectOverview";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 
-const sampleData = [
-  {
-    id: 1,
-    currentStatus: "active",
-    projectName: "Project 01",
-    projectCreationDate: "26.01.23",
-    totalMembers: 10,
-  },
-  {
-    id: 2,
-    currentStatus: "inactive",
-    projectName: "Project 02",
-    projectCreationDate: "12.02.23",
-    totalMembers: 21,
-  },
-];
+import Sidebar from "@/components/Dashboard/Sidebar";
+import Project from "@/components/Dashboard/Projects/ProjectOverview";
+import ProjectCreator from "@/components/Dashboard/Projects/ProjectCreator";
 
 type pageProps = {
   user: Object;
@@ -28,10 +11,8 @@ type pageProps = {
 };
 
 const Dashboard: NextPage<pageProps> = ({ user, projectsData }) => {
-  console.log(projectsData);
-
   return (
-    <div className="min-h-screen bg-gradient-to-r from-cyan-500 to-blue-500 text-white">
+    <div className="min-h-screen bg-white text-black">
       {/* Sidebar */}
       <Sidebar />
 
@@ -41,13 +22,17 @@ const Dashboard: NextPage<pageProps> = ({ user, projectsData }) => {
           Projects
         </h2>
 
+        {/* New Project Creator */}
+        <ProjectCreator user={user} />
+
         {/* Projects */}
-        <div className="border-2 mx-2 p-2 rounded-lg backdrop-blur-20">
-          <h1>Your Projects</h1>
+        <div className="border-[1px] mx-2 p-2 border-cyan-500 rounded-xl shadow-xl backdrop-blur-lg bg-[#ffffff55]">
+          <h1 className="p-2 mb-2 text-center rounded-t-xl rounded-b-md text-green-500 bg-white text-xl font-bold uppercase">
+            Active Projects
+          </h1>
 
           <div className="grid grid-cols-1 auto-rows-auto gap-2">
             {projectsData.map((ele, ind) => {
-              console.log(ele);
               return <Project projectData={ele} key={ind * Math.random()} />;
             })}
           </div>
@@ -81,7 +66,7 @@ export const getServerSideProps = async (ctx) => {
   const projectsData = await supabase
     .from("projects")
     .select()
-    .eq("ownership", userEmail);  
+    .eq("ownership", userEmail);
 
   return {
     props: {

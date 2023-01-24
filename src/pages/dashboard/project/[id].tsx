@@ -2,6 +2,7 @@ import FulfilledTasks from "@/components/Dashboard/Project/FulfilledTasks";
 import InProgressTask from "@/components/Dashboard/Project/InProgressTasks";
 import InProgressTasks from "@/components/Dashboard/Project/InProgressTasks";
 import PendingTasks from "@/components/Dashboard/Project/PendingTasks";
+import TaskCreator from "@/components/Dashboard/Project/TaskCreator";
 import UnassignedTasks from "@/components/Dashboard/Project/UnassignedTasks";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 
@@ -68,7 +69,10 @@ export default function IndvidualProject({ data }: pageProps) {
         </p>
       </div>
 
-      {/* TASKS DIVISION WHERE THEY ARE DIVIDED INTO 4 CATEGORIES */}
+      {/* TASK CREATOR */}
+      <TaskCreator projectData={data.project} />
+
+      {/* TASKS DIVISION WHERE THEY ARE DIVIDED INTO 3 CATEGORIES */}
       <div className="w-full grid grid-cols-1 md:grid-cols-3 auto-rows-auto gap-3 px-3">
         {/* Unassigned Category */}
         {/* <UnassignedTasks />  */}
@@ -79,6 +83,11 @@ export default function IndvidualProject({ data }: pageProps) {
           </h1>
 
           <div className="flex flex-col gap-3 p-2 text-blue-900">
+            {data.pendingTasks.length == 0 && (
+              <p className="text-center font-mono">
+                There are no pending tasks.
+              </p>
+            )}
             {data.pendingTasks.map((ele, ind) => {
               return (
                 <PendingTasks
@@ -96,6 +105,11 @@ export default function IndvidualProject({ data }: pageProps) {
           </h1>
 
           <div className="flex flex-col gap-3 p-2 text-blue-900">
+            {data.inProgressTasks.length == 0 && (
+              <p className="text-center font-mono">
+                There are no inprogress tasks.
+              </p>
+            )}
             {data.inProgressTasks.map((ele, ind) => {
               return (
                 <InProgressTask
@@ -113,6 +127,11 @@ export default function IndvidualProject({ data }: pageProps) {
           </h1>
 
           <div className="flex flex-col gap-3 p-2 text-blue-900">
+            {data.fulfilledTasks.length == 0 && (
+              <p className="text-center font-mono">
+                No history of fulfilled tasks present.
+              </p>
+            )}
             {data.fulfilledTasks.map((ele, ind) => {
               return (
                 <FulfilledTasks
@@ -132,8 +151,6 @@ export default function IndvidualProject({ data }: pageProps) {
 // This gets called on every request
 export async function getServerSideProps(context: { params: { id: number } }) {
   const params = context.params.id;
-
-  console.log(params);
 
   // Create authenticated Supabase Client
   const supabase = createServerSupabaseClient(context);

@@ -79,10 +79,10 @@
   }
 }
 
-* {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
-  padding: 0;
-  margin: 0;
 }
 
 html,
@@ -98,8 +98,9 @@ a {
   text-decoration: none;
 }
 
+/* 
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
   }
-}
+} */
