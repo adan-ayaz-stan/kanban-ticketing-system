@@ -6,8 +6,8 @@ const AuthPage = () => {
   const supabase = useSupabaseClient();
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-[#E5E5CB] p-2">
-      <div className="bg-gray-700 px-8 py-4 rounded-lg shadow-lg text-black">
+    <div className="min-h-screen flex justify-center items-center bg-[#1A120B] p-2">
+      <div className="bg-[#D5CEA3] px-8 py-4 rounded-lg shadow-lg text-black">
         <Auth
           supabaseClient={supabase}
           appearance={{
@@ -15,10 +15,12 @@ const AuthPage = () => {
             variables: {
               default: {
                 colors: {
-                  brand: "#3C2C21",
-                  brandAccent: "#3C2C21",
+                  brand: "#1A120B",
+                  brandAccent: "#3C2A21",
                   brandButtonText: "white",
-                  dividerBackground: "black",
+                  inputLabelText: "black",
+                  anchorTextColor: "#1A120B",
+                  anchorTextHoverColor: "#3C2A21",
                 },
               },
             },
