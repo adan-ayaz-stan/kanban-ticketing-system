@@ -1,11 +1,20 @@
+import { useRouter } from "next/router";
+import { useEffect, useRef, useState } from "react";
 import { useFormik } from "formik";
-import { useEffect, useRef } from "react";
 import Select from "react-select";
+import { DateTime } from "luxon";
+
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
 export default function TaskCreator({ projectData }) {
-  const dateBoxRef = useRef(null);
-  const priortyRef = useRef(null);
+  const router = useRouter();
+  const [processing, setProcessing] = useState(false);
 
+  const supabase = useSupabaseClient();
+
+  const dateBoxRef = useRef(null);
+
+  // Options
   const assignOptions = projectData.members.map((ele: String) => {
     return { value: ele, label: ele };
   });
@@ -15,23 +24,55 @@ export default function TaskCreator({ projectData }) {
     { value: "high", label: "High" },
   ];
 
+  // SETTING VALUES IN STATE TILL WORKAROUND WITH FORMIK IS POSSIBLE
+  const [assignTo, setAssignTo] = useState(assignOptions[0].value);
+  const [priortyState, setPriortyState] = useState(priortyOptions[0].value);
+
   // SETTING TODAYS DATE AS DEFAULT
   useEffect(() => {
     dateBoxRef.current.valueAsDate = new Date();
   }, []);
 
   // FORM HANDLING
+  const validate = (values) => {
+    const errors = {};
+
+    return errors;
+  };
+
   const formik = useFormik({
     initialValues: {
       task_name: "",
       task_description: "",
-      assign_to: "",
-      priorty: "",
       due_date: "",
     },
-
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+    validate,
+    onSubmit: async (values) => {
+      setProcessing(true);
+      // Handling Date
+      const dateX = DateTime.fromSQL(values.due_date);
+      const daysDifference = DateTime.now().diff(dateX, "hours").values.hours;
+      console.log(daysDifference);
+      if (daysDifference > 0) {
+        formik.errors.due_date = "Date must be valid";
+        setProcessing(false);
+      } else {
+        const { error } = await supabase.from("tasks").insert({
+          created_at: `${new Date().getUTCFullYear()}-${
+            new Date().getUTCMonth() + 1
+          }-${new Date().getUTCDay()}`,
+          name: values.task_name,
+          description: values.task_description,
+          assigned_to: assignTo,
+          status: "pending",
+          priorty: priortyState,
+          due_date: values.due_date,
+          project_id: projectData.tasks_id,
+          labels: [],
+        });
+        router.push(router.asPath, "", { scroll: "false" });
+        setProcessing(false);
+      }
     },
   });
 
@@ -71,7 +112,7 @@ export default function TaskCreator({ projectData }) {
               className="text-black rounded-lg"
               defaultValue={assignOptions[0]}
               onChange={(value) => {
-                console.log(value);
+                setAssignTo(value.value);
               }}
               required
             />
@@ -85,9 +126,8 @@ export default function TaskCreator({ projectData }) {
               className="text-black rounded-lg"
               defaultValue={priortyOptions[0]}
               onChange={(value) => {
-                console.log(value);
+                setPriortyState(value?.value);
               }}
-              ref={priortyRef}
               required
             />
           </div>
@@ -98,20 +138,32 @@ export default function TaskCreator({ projectData }) {
               type={"date"}
               name="due_date"
               className="px-2 py-[.4em] text-black text-center border-[1px] border-gray-300 rounded focus:outline-none"
+              style={{ border: formik.errors.due_date ? "red 2px solid" : "" }}
               ref={dateBoxRef}
               onChange={formik.handleChange}
               value={formik.values.due_date}
               required
             />
+            <p>{formik.errors.due_date}</p>
           </div>
         </div>
 
-        <button
-          type="submit"
-          className="w-fit px-2 py-1 mx-auto font-bold uppercase text-blue-600 bg-white rounded"
-        >
-          Create Task
-        </button>
+        {processing ? (
+          <button
+            type="submit"
+            className="w-fit px-2 py-1 mx-auto font-bold uppercase text-blue-600 bg-gray-500 rounded"
+            disabled
+          >
+            Create Task
+          </button>
+        ) : (
+          <button
+            type="submit"
+            className="w-fit px-2 py-1 mx-auto font-bold uppercase text-blue-600 bg-white rounded"
+          >
+            Create Task
+          </button>
+        )}
       </form>
     </div>
   );

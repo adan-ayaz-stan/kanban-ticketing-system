@@ -32,7 +32,7 @@ export default function InProgressTask({ inprogressTask }: componentProp) {
       .update({ status: "fulfilled" })
       .eq("task_id", inprogressTask.task_id);
     if (error == null) {
-      router.push(router.asPath);
+      router.push(router.asPath, "", { scroll: false });
     } else {
       console.log(error);
       setProcessing(false);

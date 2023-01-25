@@ -33,7 +33,7 @@ export default function FulfilledTask({ fulfilledTask }: componentProp) {
       .delete()
       .eq("task_id", fulfilledTask.task_id);
     if (error == null) {
-      router.push(router.asPath, undefined, { scroll: false });
+      router.push(router.asPath, "", { scroll: false });
     } else {
       setProcessing(false);
     }

@@ -32,7 +32,7 @@ export default function PendingTasks({ pendingTask }: componentProp) {
       .update({ status: "inprogress" })
       .eq("task_id", pendingTask.task_id);
     if (error == null) {
-      router.push(router.asPath);
+      router.push(router.asPath, "", { scroll: false });
     } else {
       console.log(error);
       setProcessing(false);
