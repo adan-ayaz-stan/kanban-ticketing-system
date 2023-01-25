@@ -12,12 +12,12 @@ type pageProps = {
 
 const Dashboard: NextPage<pageProps> = ({ user, projectsData }) => {
   return (
-    <div className="min-h-screen bg-white text-black">
+    <div className="min-h-screen bg-[#D5CEA3] text-black">
       {/* Sidebar */}
       <Sidebar />
 
       {/* MAIN PANEL */}
-      <div className="relative sm:pl-20">
+      <div className="relative sm:ml-20">
         <h2 className="w-full text-xl text-center font-bold uppercase p-4">
           Projects
         </h2>

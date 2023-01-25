@@ -4,6 +4,7 @@ import InProgressTasks from "@/components/Dashboard/Project/InProgressTasks";
 import PendingTasks from "@/components/Dashboard/Project/PendingTasks";
 import TaskCreator from "@/components/Dashboard/Project/TaskCreator";
 import UnassignedTasks from "@/components/Dashboard/Project/UnassignedTasks";
+import Sidebar from "@/components/Dashboard/Sidebar";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 
 type pageProps = {
@@ -50,99 +51,105 @@ type pageProps = {
 
 export default function IndvidualProject({ data }: pageProps) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-cyan-500 to-pink-500">
-      <div className="text-center p-4">
-        <h1 className="py-4 text-2xl font-bold text-center">
-          {data.project.name}
-        </h1>
-        <p>
-          <span className="font-bold">Creation Date: </span>
-          <span className="h-fit px-2 text-sm text-blue-500 font-bold bg-gray-200 rounded">
-            {data.project.created_at}
-          </span>
-        </p>
-        <p>
-          <span className="font-bold">Ownership: </span>
-          <span className="h-fit px-2 text-sm text-blue-500 font-bold bg-gray-200 rounded">
-            {data.project.ownership}
-          </span>
-        </p>
-      </div>
-
-      {/* TASK CREATOR */}
-      <TaskCreator projectData={data.project} />
-
-      {/* TASKS DIVISION WHERE THEY ARE DIVIDED INTO 3 CATEGORIES */}
-      <div className="w-full grid grid-cols-1 md:grid-cols-3 auto-rows-auto gap-3 px-3">
-        {/* Unassigned Category */}
-        {/* <UnassignedTasks />  */}
-        {/* Pending Category */}
-        <div className="p-2 border-2 border-white rounded-xl shadow-xl backdrop-blur-lg bg-[#ffffff55]">
-          <h1 className="w-fit px-2 py-1 mx-auto font-bold text-blue-500 bg-gray-300 rounded-lg">
-            Pending Tasks
-          </h1>
-
-          <div className="flex flex-col gap-3 p-2 text-blue-900">
-            {data.pendingTasks.length == 0 && (
-              <p className="text-center font-mono">
-                There are no pending tasks.
-              </p>
-            )}
-            {data.pendingTasks.map((ele, ind) => {
-              return (
-                <PendingTasks
-                  pendingTask={ele}
-                  key={Math.random() * ind + 15}
-                />
-              );
-            })}
+    <div className="min-h-screen bg-[#D5CEA3]">
+      <Sidebar />
+      <div className="relative sm:ml-20 pt-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 auto-rows-auto mx-3 mb-3 border-2 border-white rounded-xl shadow-xl backdrop-blur-lg bg-[#ffffff55]">
+          {/* PROJECT NAME AND RELATED STUFF */}
+          <div className="flex flex-col justify-center items-center text-center p-4">
+            <h1 className="py-4 text-[#1A120B] text-2xl font-bold text-center">
+              {data.project.name}
+            </h1>
+            <p>
+              <span className="font-bold">Creation Date: </span>
+              <span className="h-fit px-2 text-sm text-[#1A120B] font-bold bg-gray-200 rounded">
+                {data.project.created_at}
+              </span>
+            </p>
+            <p>
+              <span className="font-bold">Ownership: </span>
+              <span className="h-fit px-2 text-sm text-[#1A120B] font-bold bg-gray-200 rounded">
+                {data.project.ownership}
+              </span>
+            </p>
           </div>
-        </div>
-        {/* InProgress Category */}
-        <div className="p-2 border-2 border-white rounded-xl shadow-xl backdrop-blur-lg bg-[#ffffff55]">
-          <h1 className="w-fit px-2 py-1 mx-auto font-bold text-blue-500 bg-gray-300 rounded-lg">
-            InProgress Tasks
-          </h1>
 
-          <div className="flex flex-col gap-3 p-2 text-blue-900">
-            {data.inProgressTasks.length == 0 && (
-              <p className="text-center font-mono">
-                There are no inprogress tasks.
-              </p>
-            )}
-            {data.inProgressTasks.map((ele, ind) => {
-              return (
-                <InProgressTask
-                  inprogressTask={ele}
-                  key={Math.random() * ind + 15}
-                />
-              );
-            })}
-          </div>
+          {/* TASK CREATOR */}
+          <TaskCreator projectData={data.project} />
         </div>
-        {/* Fulfilled Category */}
-        <div className="p-2 border-2 border-white rounded-xl shadow-xl backdrop-blur-lg bg-[#ffffff55]">
-          <h1 className="w-fit px-2 py-1 mx-auto font-bold text-blue-500 bg-gray-300 rounded-lg">
-            Fulfilled Tasks
-          </h1>
 
-          <div className="flex flex-col gap-3 p-2 text-blue-900">
-            {data.fulfilledTasks.length == 0 && (
-              <p className="text-center font-mono">
-                No history of fulfilled tasks present.
-              </p>
-            )}
-            {data.fulfilledTasks.map((ele, ind) => {
-              return (
-                <FulfilledTasks
-                  fulfilledTask={ele}
-                  key={Math.random() * ind + 15}
-                />
-              );
-            })}
+        {/* TASKS DIVISION WHERE THEY ARE DIVIDED INTO 3 CATEGORIES */}
+        <div className="w-full grid grid-cols-1 md:grid-cols-3 auto-rows-auto gap-3 px-3">
+          {/* Unassigned Category */}
+          {/* <UnassignedTasks />  */}
+          {/* Pending Category */}
+          <div className="p-2 border-2 border-white rounded-xl shadow-xl backdrop-blur-lg bg-[#ffffff55]">
+            <h1 className="w-fit px-2 py-1 mx-auto font-bold text-[#1A120B] bg-gray-300 rounded-lg">
+              Pending Tasks
+            </h1>
+
+            <div className="flex flex-col gap-3 p-2 text-[#1A120B]">
+              {data.pendingTasks.length == 0 && (
+                <p className="text-center font-mono">
+                  There are no pending tasks.
+                </p>
+              )}
+              {data.pendingTasks.map((ele, ind) => {
+                return (
+                  <PendingTasks
+                    pendingTask={ele}
+                    key={Math.random() * ind + 15}
+                  />
+                );
+              })}
+            </div>
           </div>
+          {/* InProgress Category */}
+          <div className="p-2 border-2 border-white rounded-xl shadow-xl backdrop-blur-lg bg-[#ffffff55]">
+            <h1 className="w-fit px-2 py-1 mx-auto font-bold text-[#1A120B] bg-gray-300 rounded-lg">
+              InProgress Tasks
+            </h1>
+
+            <div className="flex flex-col gap-3 p-2 text-[#1A120B]">
+              {data.inProgressTasks.length == 0 && (
+                <p className="text-center font-mono">
+                  There are no inprogress tasks.
+                </p>
+              )}
+              {data.inProgressTasks.map((ele, ind) => {
+                return (
+                  <InProgressTask
+                    inprogressTask={ele}
+                    key={Math.random() * ind + 15}
+                  />
+                );
+              })}
+            </div>
+          </div>
+          {/* Fulfilled Category */}
+          <div className="p-2 border-2 border-white rounded-xl shadow-xl backdrop-blur-lg bg-[#ffffff55]">
+            <h1 className="w-fit px-2 py-1 mx-auto font-bold text-[#1A120B] bg-gray-300 rounded-lg">
+              Fulfilled Tasks
+            </h1>
+
+            <div className="flex flex-col gap-3 p-2 text-[#1A120B]">
+              {data.fulfilledTasks.length == 0 && (
+                <p className="text-center font-mono">
+                  No history of fulfilled tasks present.
+                </p>
+              )}
+              {data.fulfilledTasks.map((ele, ind) => {
+                return (
+                  <FulfilledTasks
+                    fulfilledTask={ele}
+                    key={Math.random() * ind + 15}
+                  />
+                );
+              })}
+            </div>
+          </div>
+          {/*  */}
         </div>
-        {/*  */}
       </div>
     </div>
   );

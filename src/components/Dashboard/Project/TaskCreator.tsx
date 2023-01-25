@@ -77,29 +77,32 @@ export default function TaskCreator({ projectData }) {
   });
 
   return (
-    <div className="p-2 m-3 border-[1px] text-white bg-blue-800 rounded-lg">
+    <div className="p-2 m-3 border-[1px] text-white bg-[#3C2A21] rounded-lg">
       <h1 className="w-fit mx-auto my-2 font-bold text-xl uppercase">
         Create new task
       </h1>
 
-      <form onSubmit={formik.handleSubmit} className="flex flex-col gap-2">
+      <form
+        onSubmit={formik.handleSubmit}
+        className="flex flex-col gap-2 px-4 py-2 "
+      >
         <input
           type={"text"}
           name="task_name"
           placeholder="Task Title"
           onChange={formik.handleChange}
           value={formik.values.task_name}
-          className="w-full text-black p-2 border-2 rounded-lg focus:outline-none"
+          className="w-full text-sm text-black p-2 border-2 rounded-lg focus:outline-none"
           required
         />
 
         <textarea
-          rows={3}
+          rows={2}
           name="task_description"
           placeholder="Task Description"
           onChange={formik.handleChange}
           value={formik.values.task_description}
-          className="p-2 text-black border-2 resize-y rounded-lg focus:outline-none"
+          className="p-2 text-sm text-black border-2 resize-y rounded-lg focus:outline-none"
           required
         />
 
@@ -109,7 +112,7 @@ export default function TaskCreator({ projectData }) {
             <Select
               name="assign_to"
               options={assignOptions}
-              className="text-black rounded-lg"
+              className="text-sm text-black rounded-lg"
               defaultValue={assignOptions[0]}
               onChange={(value) => {
                 setAssignTo(value.value);
@@ -123,7 +126,7 @@ export default function TaskCreator({ projectData }) {
             <Select
               name="priorty"
               options={priortyOptions}
-              className="text-black rounded-lg"
+              className="text-sm text-black rounded-lg"
               defaultValue={priortyOptions[0]}
               onChange={(value) => {
                 setPriortyState(value?.value);
@@ -137,7 +140,7 @@ export default function TaskCreator({ projectData }) {
             <input
               type={"date"}
               name="due_date"
-              className="px-2 py-[.4em] text-black text-center border-[1px] border-gray-300 rounded focus:outline-none"
+              className="px-2 py-[.6em] text-sm text-black text-center border-[1px] border-gray-300 rounded focus:outline-none cursor-pointer"
               style={{ border: formik.errors.due_date ? "red 2px solid" : "" }}
               ref={dateBoxRef}
               onChange={formik.handleChange}
@@ -151,7 +154,7 @@ export default function TaskCreator({ projectData }) {
         {processing ? (
           <button
             type="submit"
-            className="w-fit px-2 py-1 mx-auto font-bold uppercase text-blue-600 bg-gray-500 rounded"
+            className="w-fit px-2 py-1 mx-auto mt-2 font-bold uppercase text-[#3C2A21] bg-gray-500 rounded"
             disabled
           >
             Create Task
@@ -159,7 +162,7 @@ export default function TaskCreator({ projectData }) {
         ) : (
           <button
             type="submit"
-            className="w-fit px-2 py-1 mx-auto font-bold uppercase text-blue-600 bg-white rounded"
+            className="w-fit px-2 py-1 mx-auto mt-2 font-bold uppercase text-[#3C2A21] bg-white rounded"
           >
             Create Task
           </button>

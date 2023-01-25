@@ -52,7 +52,7 @@ export default function ProjectCreator({ user }) {
       {isModalOpen ? (
         <button
           onClick={() => setModalOpen(false)}
-          className="flex flex-row gap-2 items-center p-2 ml-auto font-bold rounded-lg text-white bg-gradient-to-r from-cyan-400 to-blue-500"
+          className="flex flex-row gap-2 items-center p-2 ml-auto font-bold rounded-lg text-white bg-[#3C2A21]"
         >
           <span className="text-2xl">
             <AiOutlineClose />
@@ -62,7 +62,7 @@ export default function ProjectCreator({ user }) {
       ) : (
         <button
           onClick={() => setModalOpen(true)}
-          className="flex flex-row gap-2 items-center p-2 ml-auto font-bold rounded-lg text-white bg-gradient-to-r from-cyan-400 to-blue-500"
+          className="flex flex-row gap-2 items-center p-2 ml-auto font-bold rounded-lg text-white bg-[#3C2A21]"
         >
           <span className="text-2xl">
             <AiOutlinePlus />
@@ -76,7 +76,7 @@ export default function ProjectCreator({ user }) {
         {isModalOpen && (
           <motion.form
             onSubmit={formik.handleSubmit}
-            className="flex flex-col gap-2 p-2 mt-2 border-2 text-white bg-gradient-to-br from-cyan-500 to-blue-500 rounded-lg"
+            className="flex flex-col gap-2 p-2 mt-2 border-2 text-white bg-[#3C2A21] rounded-lg"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{
@@ -108,7 +108,7 @@ export default function ProjectCreator({ user }) {
             ) : (
               <button
                 type="submit"
-                className="w-fit px-2 py-1 mx-auto font-bold uppercase text-white bg-blue-500 rounded"
+                className="w-fit px-2 py-1 mx-auto font-bold uppercase text-white bg-[#3C2A21] rounded"
               >
                 Create
               </button>
