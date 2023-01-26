@@ -93,7 +93,7 @@ export default function ProjectCreator({ user }) {
                 type={"text"}
                 onChange={formik.handleChange}
                 name="project_name"
-                className=" w-full px-2 py-1 text-sm text-gray-700 bg-white focus:bg-gray-100 border-[1px] border-cyan-500 focus:outline-none rounded"
+                className=" w-full px-2 py-1 font-semibold text-sm text-gray-700 bg-white focus:bg-gray-100 border-[1px] border-cyan-500 focus:outline-none rounded"
                 required
               />
             </div>
@@ -108,7 +108,7 @@ export default function ProjectCreator({ user }) {
             ) : (
               <button
                 type="submit"
-                className="w-fit px-2 py-1 mx-auto font-bold uppercase text-white bg-[#3C2A21] rounded"
+                className="w-fit px-2 py-1 mx-auto font-bold uppercase text-white bg-[#1A120B] rounded"
               >
                 Create
               </button>

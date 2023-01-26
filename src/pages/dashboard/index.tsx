@@ -1,14 +1,6 @@
 import Sidebar from "@/components/Dashboard/Sidebar";
-import { supabaseClient } from "@/supabase/supabase.config";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
-import {
-  useSession,
-  useSupabaseClient,
-  useUser,
-} from "@supabase/auth-helpers-react";
-import { GetServerSideProps, NextPage } from "next";
-import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { NextPage } from "next";
 
 type pageProps = {
   user: Object;
@@ -18,7 +10,7 @@ const Dashboard: NextPage<pageProps> = ({ user }) => {
   console.log(user);
 
   return (
-    <div className="min-h-screen bg-[#D5CEA3] text-white">
+    <div className="min-h-screen bg-[#D5CEA3] text-black">
       {/* Sidebar */}
       <Sidebar />
 

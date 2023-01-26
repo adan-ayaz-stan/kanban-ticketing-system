@@ -50,7 +50,8 @@ export default function Sidebar() {
           <AiFillProject className="text-3xl" />
           <Tooltip anchorId="dashboard-sidebar-projects">Projects</Tooltip>
         </Link>
-        <div
+        <Link
+          href={"/dashboard/connections"}
           id="dashboard-sidebar-connections"
           className="w-fit p-2 hover:bg-cyan-400 cursor-pointer rounded-lg transition-all duration-300"
         >
@@ -58,7 +59,7 @@ export default function Sidebar() {
           <Tooltip anchorId="dashboard-sidebar-connections">
             Connections
           </Tooltip>
-        </div>
+        </Link>
         <div
           id="dashboard-sidebar-gift"
           className="w-fit p-2 hover:bg-cyan-400 cursor-pointer rounded-lg transition-all duration-300"

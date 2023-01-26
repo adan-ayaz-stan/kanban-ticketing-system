@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "Patched";
+  src: url(../assets/fonts/patched-black/PatchedFont.otf);
+}
+
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;800&display=swap");
 
 :root {
@@ -90,6 +95,15 @@ body {
   max-width: 100vw;
   overflow-x: hidden;
 
+  font-family: "Poppins", sans-serif;
+}
+
+h1 {
+  font-family: "Patched", cursive;
+  color: #1a120b;
+}
+
+input {
   font-family: "Poppins", sans-serif;
 }
 

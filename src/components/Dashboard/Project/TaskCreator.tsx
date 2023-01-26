@@ -78,7 +78,7 @@ export default function TaskCreator({ projectData }) {
 
   return (
     <div className="p-2 m-3 border-[1px] text-white bg-[#3C2A21] rounded-lg">
-      <h1 className="w-fit mx-auto my-2 font-bold text-xl uppercase">
+      <h1 className="w-fit mx-auto my-2 font-bold text-xl text-white uppercase">
         Create new task
       </h1>
 
