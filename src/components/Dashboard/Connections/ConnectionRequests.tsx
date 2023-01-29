@@ -1,22 +1,177 @@
+import Image from "next/image";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useQuery } from "react-query";
+import { useEffect, useState } from "react";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { motion } from "framer-motion";
 
 export default function ConnectionRequests({ user }) {
-  console.log(user);
-
   const supabase = useSupabaseClient();
 
-  const { isLoading, data, error } = useQuery("connection-requests", () =>
-    supabase.from("users").select("*").eq("email", user.email)
+  const { isLoading, data, error, refetch, isSuccess } = useQuery(
+    "connection-requests",
+    () =>
+      supabase.from("connections_requests").select().eq("receiver_id", user.id),
+    {
+      staleTime: 120,
+    }
   );
 
-  console.log(data, error);
+  async function acceptConnectionRequest(
+    requestID: String,
+    senderID: String,
+    senderName: String
+  ) {
+    const { error } = await supabase.from("connections").insert({
+      user1_id: user.id,
+      user2_id: senderID,
+    });
+
+    if (error == null) {
+      const { error } = await supabase
+        .from("connections_requests")
+        .delete()
+        .eq("id", requestID);
+
+      if (error == null) {
+        console.log("Request successfully accepted.");
+      }
+    } else {
+      console.log(error);
+    }
+  }
+
+  async function rejectConnectionRequest(requestID: String) {
+    const { error } = await supabase
+      .from("connections_requests")
+      .delete()
+      .eq("id", requestID);
+
+    if (error == null) {
+      console.log("Successfully deleted request.");
+    } else {
+      console.log(error);
+    }
+  }
 
   return (
     <div className="my-5">
       <h1 className="w-fit mx-auto text-4xl border-b-2 border-gray-800">
         Connection Requests
       </h1>
+
+      {isLoading && (
+        <motion.p
+          initial={{ rotateZ: 0, opacity: 1 }}
+          animate={{
+            rotateZ: 360,
+            opacity: 1,
+            transition: {
+              type: "keyframes",
+              ease: "linear",
+              duration: 3,
+              repeat: Infinity,
+            },
+          }}
+          exit={{
+            rotateZ: 0,
+            opacity: 0,
+            transition: {
+              duration: 0.01,
+            },
+          }}
+          className="w-fit py-3 mx-auto text-4xl"
+        >
+          <AiOutlineLoading3Quarters />
+        </motion.p>
+      )}
+
+      <div className="grid grid-cols-12 auto-rows-auto p-3">
+        {isSuccess &&
+          data.data.map((ele, ind) => {
+            return (
+              <div
+                key={ind * Math.random()}
+                className="relative min-w-[20em] col-span-12 sm:col-span-9 md:col-span-6 lg:col-span-4 flex flex-row items-center gap-3 p-3 text-sm text-white bg-[#3C2A21] rounded"
+              >
+                <div className="relative h-20 w-20">
+                  <Image
+                    src={
+                      "https://images.pexels.com/photos/14208349/pexels-photo-14208349.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                    }
+                    alt="connection-profile"
+                    fill={true}
+                    className="rounded-full object-cover"
+                  />
+                </div>
+                {/*  */}
+                <div>
+                  <p>{ele.sender_name}</p>
+                </div>
+                {/*  */}
+                <div className="ml-auto flex flex-row gap-3">
+                  <button
+                    onClick={() => {
+                      acceptConnectionRequest(
+                        ele.id,
+                        ele.sender_id,
+                        ele.sender_name
+                      );
+                    }}
+                    className="px-2 py-1 text-sm font-bold text-gray-800 bg-[#e5e5cb] rounded"
+                  >
+                    Accept
+                  </button>
+                  <button
+                    onClick={() => {
+                      rejectConnectionRequest(ele.id);
+                    }}
+                    className="px-2 py-1 text-sm font-bold text-gray-800 bg-[#e5e5cb] rounded"
+                  >
+                    Reject
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+
+        {/* <div
+                key={ind * Math.random() + 123}
+                className="relative min-w-[20em] col-span-12 sm:col-span-9 md:col-span-6 lg:col-span-4 flex flex-row items-center gap-3 p-3 text-sm text-white bg-[#3C2A21] rounded"
+              >
+                <div className="relative h-20 w-20">
+                  <Image
+                    src={
+                      "https://images.pexels.com/photos/14208349/pexels-photo-14208349.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                    }
+                    alt="connection-profile"
+                    fill={true}
+                    className="rounded-full object-cover"
+                  />
+                </div>
+                <div>
+                  <p>Request Name</p>
+                </div>
+                <div className="ml-auto flex flex-row gap-3">
+                  <button
+                    onClick={() => {
+                      acceptConnectionRequest(ele.id);
+                    }}
+                    className="px-2 py-1 text-sm font-bold text-gray-800 bg-[#e5e5cb] rounded"
+                  >
+                    Accept
+                  </button>
+                  <button
+                    onClick={() => {
+                      rejectConnectionRequest(ele.id);
+                    }}
+                    className="px-2 py-1 text-sm font-bold text-gray-800 bg-[#e5e5cb] rounded"
+                  >
+                    Reject
+                  </button>
+                </div>
+              </div> */}
+      </div>
     </div>
   );
 }

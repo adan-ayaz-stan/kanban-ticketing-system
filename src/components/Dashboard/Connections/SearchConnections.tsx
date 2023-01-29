@@ -5,11 +5,12 @@ import { useState } from "react";
 import { useQuery } from "react-query";
 
 export default function SearchConnections({ user }) {
+  const [processing, setProcessing] = useState(false);
   const [results, setResults] = useState([]);
 
   const supabase = useSupabaseClient();
 
-  const { isLoading, data, error } = useQuery("connection-users", () =>
+  const { isLoading, data, error } = useQuery("users", () =>
     supabase.from("users").select()
   );
   const handleSearchChange = async (event) => {
@@ -25,27 +26,24 @@ export default function SearchConnections({ user }) {
   };
 
   // Send Connection request function handler
-  async function sendConnectionRequest(idRecipient: String) {
-    console.log(idRecipient);
-    const { data, error } = await supabase
-      .from("users")
-      .select("connection_requests")
-      .eq("id", idRecipient);
+  async function sendConnectionRequest(senderName: String, receiverID: String, event: Object) {
+    setProcessing(true);
+    //
+    const { error } = await supabase.from("connections_requests").upsert({
+      sender_name: senderName,
+      sender_id: user.id,
+      receiver_id: receiverID,
+    });
 
-    const oldArray = data[0].connection_requests;
-    const requestExists = [...oldArray].includes(user.email);
-    if (error == null && !requestExists) {
-      const newArray = [...oldArray, user.email];
-      const { error } = await supabase
-        .from("users")
-        .update({ connection_requests: newArray })
-        .eq("id", idRecipient);
-      console.log(error);
-      console.log(oldArray);
-      console.log(newArray);
+    if (error == null) {
+      console.log("Successfully request sent.");
+      event.target.style.display = "none";
+      setProcessing(false);
     } else {
-      console.log("request already exists");
+      event.target.style.display = "block";
     }
+
+    setProcessing(false);
   }
 
   return (
@@ -65,7 +63,7 @@ export default function SearchConnections({ user }) {
           return (
             <div
               key={ind * Math.random() + 45}
-              className="relative col-span-6 sm:col-span-4 md:col-span-3 flex flex-col items-center gap-3 p-3 m-2 text-white bg-[#1A120A] rounded"
+              className="relative col-span-12 sm:col-span-6 md:col-span-4 flex flex-col items-center gap-3 p-3 m-2 text-white bg-[#1A120A] rounded"
             >
               <div className="relative h-20 w-20">
                 <Image
@@ -78,7 +76,8 @@ export default function SearchConnections({ user }) {
                 />
               </div>
               <div>
-                <p className="font-bold">{ele.name}</p>
+                <p className="font-bold text-center">{ele.name}</p>
+                <p>{ele.email}</p>
               </div>
 
               <div className="">
@@ -86,10 +85,14 @@ export default function SearchConnections({ user }) {
                   <p>You</p>
                 ) : (
                   <button
-                    onClick={() => {
-                      sendConnectionRequest(ele.id);
+                    onClick={(e) => {
+                      sendConnectionRequest(ele.name ,ele.id, e);
                     }}
                     className="px-2 py-1 text-gray-700 bg-[#D5CEA3] hover:bg-[#E5E5CB] rounded font-mono"
+                    disabled={processing ? true : false}
+                    style={{
+                      background: processing ? "gray" : "",
+                    }}
                   >
                     Add Connection
                   </button>

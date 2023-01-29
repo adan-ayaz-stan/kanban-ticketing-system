@@ -18,10 +18,9 @@ const AuthPage = () => {
     e.preventDefault();
 
     const { error } = await supabase.from("users").upsert({
+      id: session.user.id,
       name: nameRef.current.value,
       email: session?.user.email,
-      connections: [],
-      connection_requests: [],
     });
 
     if (error == null) {
