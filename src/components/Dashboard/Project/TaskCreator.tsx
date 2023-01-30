@@ -6,7 +6,7 @@ import { DateTime } from "luxon";
 
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
-export default function TaskCreator({ projectData }) {
+export default function TaskCreator({ projectData, setModalOpen }) {
   const router = useRouter();
   const [processing, setProcessing] = useState(false);
 
@@ -70,14 +70,20 @@ export default function TaskCreator({ projectData }) {
           project_id: projectData.tasks_id,
           labels: [],
         });
-        router.push(router.asPath, "", { scroll: "false" });
+        setModalOpen(false);
+        router.push(router.asPath, "", { scroll: false });
         setProcessing(false);
       }
     },
   });
 
   return (
-    <div className="p-2 m-3 border-[1px] text-white bg-[#3C2A21] rounded-lg">
+    <div
+      onClick={(e) => {
+        e.stopPropagation();
+      }}
+      className="lg:w-6/12 p-2 m-3 border-[1px] text-white bg-[#3C2A21] rounded-lg"
+    >
       <h1 className="w-fit mx-auto my-2 font-bold text-xl text-white uppercase">
         Create new task
       </h1>

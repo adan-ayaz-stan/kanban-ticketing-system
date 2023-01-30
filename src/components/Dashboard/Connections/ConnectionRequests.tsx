@@ -6,6 +6,8 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { motion } from "framer-motion";
 
 export default function ConnectionRequests({ user }) {
+  const [processing, setProcessing] = useState(false);
+
   const supabase = useSupabaseClient();
 
   const { isLoading, data, error, refetch, isSuccess } = useQuery(
@@ -13,7 +15,7 @@ export default function ConnectionRequests({ user }) {
     () =>
       supabase.from("connections_requests").select().eq("receiver_id", user.id),
     {
-      staleTime: 120,
+      staleTime: 30000,
     }
   );
 
@@ -22,26 +24,44 @@ export default function ConnectionRequests({ user }) {
     senderID: String,
     senderName: String
   ) {
+    setProcessing(true);
+
+    const user1DataFromUsers = await supabase
+      .from("users")
+      .select("name")
+      .eq("id", user.id);
+    const user2DataFromUsers = await supabase
+      .from("users")
+      .select("name")
+      .eq("id", senderID);
+
     const { error } = await supabase.from("connections").insert({
       user1_id: user.id,
       user2_id: senderID,
+      user1_name: user1DataFromUsers.data[0].name,
+      user2_name: user2DataFromUsers.data[0].name,
     });
 
     if (error == null) {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from("connections_requests")
-        .delete()
-        .eq("id", requestID);
+        .delete({ count: "estimated" })
+        .eq("id", requestID)
+        .select();
 
       if (error == null) {
+        console.log(data);
         console.log("Request successfully accepted.");
+        refetch();
       }
     } else {
       console.log(error);
     }
+    setProcessing(false);
   }
 
   async function rejectConnectionRequest(requestID: String) {
+    setProcessing(true);
     const { error } = await supabase
       .from("connections_requests")
       .delete()
@@ -52,6 +72,7 @@ export default function ConnectionRequests({ user }) {
     } else {
       console.log(error);
     }
+    setProcessing(false);
   }
 
   return (
@@ -118,7 +139,8 @@ export default function ConnectionRequests({ user }) {
                         ele.sender_name
                       );
                     }}
-                    className="px-2 py-1 text-sm font-bold text-gray-800 bg-[#e5e5cb] rounded"
+                    disabled={processing}
+                    className="px-2 py-1 text-sm font-bold text-gray-800 bg-[#e5e5cb] rounded hover:brightness-[80%] disabled:bg-gray-500"
                   >
                     Accept
                   </button>
@@ -126,7 +148,8 @@ export default function ConnectionRequests({ user }) {
                     onClick={() => {
                       rejectConnectionRequest(ele.id);
                     }}
-                    className="px-2 py-1 text-sm font-bold text-gray-800 bg-[#e5e5cb] rounded"
+                    disabled={processing}
+                    className="px-2 py-1 text-sm font-bold text-gray-800 bg-[#e5e5cb] rounded hover:brightness-[80%] disabled:bg-gray-500"
                   >
                     Reject
                   </button>

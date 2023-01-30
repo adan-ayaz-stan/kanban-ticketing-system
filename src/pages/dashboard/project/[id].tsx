@@ -1,6 +1,8 @@
+import AddMemberToProject from "@/components/Dashboard/Project/AddMemberToProject";
 import FulfilledTasks from "@/components/Dashboard/Project/FulfilledTasks";
 import InProgressTask from "@/components/Dashboard/Project/InProgressTasks";
 import InProgressTasks from "@/components/Dashboard/Project/InProgressTasks";
+import NavigationBar from "@/components/Dashboard/Project/NavigationBar";
 import PendingTasks from "@/components/Dashboard/Project/PendingTasks";
 import TaskCreator from "@/components/Dashboard/Project/TaskCreator";
 import UnassignedTasks from "@/components/Dashboard/Project/UnassignedTasks";
@@ -53,37 +55,15 @@ export default function IndvidualProject({ data }: pageProps) {
   return (
     <div className="min-h-screen bg-[#D5CEA3]">
       <Sidebar />
-      <div className="relative sm:ml-20 pt-4">
-        <div className="grid grid-cols-1 lg:grid-cols-2 auto-rows-auto mx-3 mb-3 border-2 border-white rounded-xl shadow-xl backdrop-blur-lg bg-[#ffffff55]">
-          {/* PROJECT NAME AND RELATED STUFF */}
-          <div className="flex flex-col justify-center items-center text-center p-4">
-            <h1 className="py-4 text-[#1A120B] text-2xl font-bold text-center">
-              {data.project.name}
-            </h1>
-            <p>
-              <span className="font-bold">Creation Date: </span>
-              <span className="h-fit px-2 text-sm text-[#1A120B] font-bold bg-gray-200 rounded">
-                {data.project.created_at}
-              </span>
-            </p>
-            <p>
-              <span className="font-bold">Ownership: </span>
-              <span className="h-fit px-2 text-sm text-[#1A120B] font-bold bg-gray-200 rounded">
-                {data.project.ownership}
-              </span>
-            </p>
-          </div>
-
-          {/* TASK CREATOR */}
-          <TaskCreator projectData={data.project} />
-        </div>
+      <div className="relative sm:ml-16">
+        <NavigationBar projectData={data.project} />
 
         {/* TASKS DIVISION WHERE THEY ARE DIVIDED INTO 3 CATEGORIES */}
         <div className="w-full grid grid-cols-1 md:grid-cols-3 auto-rows-auto gap-3 px-3">
           {/* Unassigned Category */}
           {/* <UnassignedTasks />  */}
           {/* Pending Category */}
-          <div className="p-2 border-2 border-white rounded-xl shadow-xl backdrop-blur-lg bg-[#ffffff55]">
+          <div className="p-2 border-2 border-white rounded shadow-xl backdrop-blur-lg bg-[#ffffff55]">
             <h1 className="w-fit px-2 py-1 mx-auto font-bold text-[#1A120B] bg-gray-300 rounded-lg">
               Pending Tasks
             </h1>
@@ -105,7 +85,7 @@ export default function IndvidualProject({ data }: pageProps) {
             </div>
           </div>
           {/* InProgress Category */}
-          <div className="p-2 border-2 border-white rounded-xl shadow-xl backdrop-blur-lg bg-[#ffffff55]">
+          <div className="p-2 border-2 border-white rounded shadow-xl backdrop-blur-lg bg-[#ffffff55]">
             <h1 className="w-fit px-2 py-1 mx-auto font-bold text-[#1A120B] bg-gray-300 rounded-lg">
               InProgress Tasks
             </h1>
@@ -127,7 +107,7 @@ export default function IndvidualProject({ data }: pageProps) {
             </div>
           </div>
           {/* Fulfilled Category */}
-          <div className="p-2 border-2 border-white rounded-xl shadow-xl backdrop-blur-lg bg-[#ffffff55]">
+          <div className="p-2 border-2 border-white rounded shadow-xl backdrop-blur-lg bg-[#ffffff55]">
             <h1 className="w-fit px-2 py-1 mx-auto font-bold text-[#1A120B] bg-gray-300 rounded-lg">
               Fulfilled Tasks
             </h1>
@@ -176,21 +156,22 @@ export async function getServerSideProps(context: { params: { id: number } }) {
 
   // If we have a session
 
+  // Fetching project
   const project = await supabase
     .from("projects")
     .select()
     .eq("id", params)
     .limit(1);
 
-  if (project.error !== null) {
+  if (project.data?.length == 0) {
     return {
-      props: {
-        data: {
-          error: "An issue has occured while fetching the product.",
-        },
+      redirect: {
+        destination: "/",
+        permanent: false,
       },
     };
   }
+
   // Fetching Tasks
   const pendingTasks = await supabase
     .from("tasks")

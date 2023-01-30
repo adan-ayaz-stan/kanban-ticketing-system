@@ -26,11 +26,15 @@ export default function SearchConnections({ user }) {
   };
 
   // Send Connection request function handler
-  async function sendConnectionRequest(senderName: String, receiverID: String, event: Object) {
+  async function sendConnectionRequest(receiverID: String, event: Object) {
     setProcessing(true);
+    const { data } = await supabase
+      .from("users")
+      .select("name")
+      .eq("id", user.id);
     //
     const { error } = await supabase.from("connections_requests").upsert({
-      sender_name: senderName,
+      sender_name: data[0].name,
       sender_id: user.id,
       receiver_id: receiverID,
     });
@@ -86,7 +90,7 @@ export default function SearchConnections({ user }) {
                 ) : (
                   <button
                     onClick={(e) => {
-                      sendConnectionRequest(ele.name ,ele.id, e);
+                      sendConnectionRequest(ele.id, e);
                     }}
                     className="px-2 py-1 text-gray-700 bg-[#D5CEA3] hover:bg-[#E5E5CB] rounded font-mono"
                     disabled={processing ? true : false}

@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { AiOutlineClose, AiOutlinePlus } from "react-icons/ai";
 
-export default function ProjectCreator({ user }) {
+export default function ProjectCreator({ user, refetch }) {
   const router = useRouter();
 
   const [isModalOpen, setModalOpen] = useState(false);
@@ -30,16 +30,21 @@ export default function ProjectCreator({ user }) {
         new Date().getUTCMonth() + 1
       }-${new Date().getDate()}`;
 
+      const { data } = await supabase
+        .from("users")
+        .select("name")
+        .eq("id", user.id);
+
       const { error } = await supabase.from("projects").insert({
         name: values.project_name,
         created_at: date,
-        ownership: user.email,
-        members: [`${user.email}`],
+        ownership: user.id,
+        members: [`${data[0].name}`],
       });
       if (error == null) {
+        refetch();
         setModalOpen(false);
         setProcessing(false);
-        router.push(router.asPath, "", { scroll: false });
       } else {
         setProcessing(false);
       }

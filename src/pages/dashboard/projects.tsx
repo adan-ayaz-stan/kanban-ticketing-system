@@ -18,8 +18,13 @@ const Dashboard: NextPage<pageProps> = ({ user }) => {
 
   const projectsData: {}[] = [];
 
-  const { isLoading, data, error } = useQuery("projects-data", () =>
-    supabase.from("projects").select().eq("ownership", user.email)
+  const { isLoading, data, error, refetch } = useQuery(
+    "projects-data",
+    () => supabase.from("projects").select().eq("ownership", user.id),
+    {
+      staleTime: 30000,
+      cacheTime: 30000,
+    }
   );
 
   return (
@@ -32,7 +37,7 @@ const Dashboard: NextPage<pageProps> = ({ user }) => {
         <h1 className="w-full text-2xl font-bold uppercase p-4">Projects</h1>
 
         {/* New Project Creator */}
-        <ProjectCreator user={user} />
+        <ProjectCreator user={user} refetch={refetch} />
 
         {/* Projects */}
         <div className="border-[1px] mx-2 p-2 border-cyan-500 rounded-xl shadow-xl backdrop-blur-lg bg-[#ffffff55]">
@@ -74,6 +79,9 @@ const Dashboard: NextPage<pageProps> = ({ user }) => {
                 return <Project projectData={ele} key={ind * Math.random()} />;
               })}
             </div>
+          )}
+          {data && data.data.length == 0 && (
+            <div className="text-center">No projects to show.</div>
           )}
         </div>
       </div>
