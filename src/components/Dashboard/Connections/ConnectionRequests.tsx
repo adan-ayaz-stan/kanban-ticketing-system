@@ -157,43 +157,6 @@ export default function ConnectionRequests({ user }) {
               </div>
             );
           })}
-
-        {/* <div
-                key={ind * Math.random() + 123}
-                className="relative min-w-[20em] col-span-12 sm:col-span-9 md:col-span-6 lg:col-span-4 flex flex-row items-center gap-3 p-3 text-sm text-white bg-[#3C2A21] rounded"
-              >
-                <div className="relative h-20 w-20">
-                  <Image
-                    src={
-                      "https://images.pexels.com/photos/14208349/pexels-photo-14208349.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                    }
-                    alt="connection-profile"
-                    fill={true}
-                    className="rounded-full object-cover"
-                  />
-                </div>
-                <div>
-                  <p>Request Name</p>
-                </div>
-                <div className="ml-auto flex flex-row gap-3">
-                  <button
-                    onClick={() => {
-                      acceptConnectionRequest(ele.id);
-                    }}
-                    className="px-2 py-1 text-sm font-bold text-gray-800 bg-[#e5e5cb] rounded"
-                  >
-                    Accept
-                  </button>
-                  <button
-                    onClick={() => {
-                      rejectConnectionRequest(ele.id);
-                    }}
-                    className="px-2 py-1 text-sm font-bold text-gray-800 bg-[#e5e5cb] rounded"
-                  >
-                    Reject
-                  </button>
-                </div>
-              </div> */}
       </div>
     </div>
   );

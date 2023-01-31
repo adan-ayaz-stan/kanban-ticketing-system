@@ -1,135 +1,52 @@
-import AddMemberToProject from "@/components/Dashboard/Project/AddMemberToProject";
-import FulfilledTasks from "@/components/Dashboard/Project/FulfilledTasks";
-import InProgressTask from "@/components/Dashboard/Project/InProgressTasks";
-import InProgressTasks from "@/components/Dashboard/Project/InProgressTasks";
+import Category from "@/components/Dashboard/Project/Category";
 import NavigationBar from "@/components/Dashboard/Project/NavigationBar";
-import PendingTasks from "@/components/Dashboard/Project/PendingTasks";
-import TaskCreator from "@/components/Dashboard/Project/TaskCreator";
-import UnassignedTasks from "@/components/Dashboard/Project/UnassignedTasks";
 import Sidebar from "@/components/Dashboard/Sidebar";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import {
+  AnimatePresence,
+  motion,
+  Reorder,
+  useDragControls,
+} from "framer-motion";
+import { useState } from "react";
 
 type pageProps = {
-  data: {
-    project: {
-      name: String;
-      created_at: String;
-      ownership: String;
-    };
-    pendingTasks: [
-      {
-        task_id: String;
-        created_at: String;
-        name: String;
-        description: String;
-        assigned_to: String;
-        status: String;
-        priorty: String;
-        due_date: String;
-        labels: [];
-        report: String;
-        project_id: String;
-      }
-    ];
-
-    inProgressTasks: [
-      {
-        task_id: String;
-        created_at: String;
-        name: String;
-        description: String;
-        assigned_to: String;
-        status: String;
-        priorty: String;
-        due_date: String;
-        labels: [];
-        report: String;
-        project_id: String;
-      }
-    ];
-    fulfilledTasks: [];
+  project: {
+    project_id: String;
+    name: String;
+    created_at: String;
+    ownership: String;
+    task_categories: String[];
   };
 };
 
-export default function IndvidualProject({ data }: pageProps) {
+export default function IndvidualProject({ project }: pageProps) {
+  const [items, setItems] = useState(project.task_categories);
+
   return (
     <div className="min-h-screen bg-[#D5CEA3]">
       <Sidebar />
       <div className="relative sm:ml-16">
-        <NavigationBar projectData={data.project} />
+        <NavigationBar projectData={project} />
 
-        {/* TASKS DIVISION WHERE THEY ARE DIVIDED INTO 3 CATEGORIES */}
-        <div className="w-full grid grid-cols-1 md:grid-cols-3 auto-rows-auto gap-3 px-3">
-          {/* Unassigned Category */}
-          {/* <UnassignedTasks />  */}
-          {/* Pending Category */}
-          <div className="p-2 border-2 border-white rounded shadow-xl backdrop-blur-lg bg-[#ffffff55]">
-            <h1 className="w-fit px-2 py-1 mx-auto font-bold text-[#1A120B] bg-gray-300 rounded-lg">
-              Pending Tasks
+        {/* TASKS DIVISION WHERE THEY ARE DIVIDED INTO CATEGORIES According To types of tasks */}
+
+        <Reorder.Group
+          axis="x"
+          values={items}
+          onReorder={setItems}
+          className="flex flex-row gap-3"
+        >
+          {items.map((item, ind) => {
+            return <Category data={item} key={item} />;
+          })}
+
+          <div className="w-full p-2 border-2 border-dotted border-white rounded shadow-xl backdrop-blur-lg bg-[#ffffff55] cursor-pointer ">
+            <h1 className="w-fit px-2 py-1 mx-auto font-bold text-[#1A120B]">
+              Add Category
             </h1>
-
-            <div className="flex flex-col gap-3 p-2 text-[#1A120B]">
-              {data.pendingTasks.length == 0 && (
-                <p className="text-center font-mono">
-                  There are no pending tasks.
-                </p>
-              )}
-              {data.pendingTasks.map((ele, ind) => {
-                return (
-                  <PendingTasks
-                    pendingTask={ele}
-                    key={Math.random() * ind + 15}
-                  />
-                );
-              })}
-            </div>
           </div>
-          {/* InProgress Category */}
-          <div className="p-2 border-2 border-white rounded shadow-xl backdrop-blur-lg bg-[#ffffff55]">
-            <h1 className="w-fit px-2 py-1 mx-auto font-bold text-[#1A120B] bg-gray-300 rounded-lg">
-              InProgress Tasks
-            </h1>
-
-            <div className="flex flex-col gap-3 p-2 text-[#1A120B]">
-              {data.inProgressTasks.length == 0 && (
-                <p className="text-center font-mono">
-                  There are no inprogress tasks.
-                </p>
-              )}
-              {data.inProgressTasks.map((ele, ind) => {
-                return (
-                  <InProgressTask
-                    inprogressTask={ele}
-                    key={Math.random() * ind + 15}
-                  />
-                );
-              })}
-            </div>
-          </div>
-          {/* Fulfilled Category */}
-          <div className="p-2 border-2 border-white rounded shadow-xl backdrop-blur-lg bg-[#ffffff55]">
-            <h1 className="w-fit px-2 py-1 mx-auto font-bold text-[#1A120B] bg-gray-300 rounded-lg">
-              Fulfilled Tasks
-            </h1>
-
-            <div className="flex flex-col gap-3 p-2 text-[#1A120B]">
-              {data.fulfilledTasks.length == 0 && (
-                <p className="text-center font-mono">
-                  No history of fulfilled tasks present.
-                </p>
-              )}
-              {data.fulfilledTasks.map((ele, ind) => {
-                return (
-                  <FulfilledTasks
-                    fulfilledTask={ele}
-                    key={Math.random() * ind + 15}
-                  />
-                );
-              })}
-            </div>
-          </div>
-          {/*  */}
-        </div>
+        </Reorder.Group>
       </div>
     </div>
   );
@@ -160,7 +77,7 @@ export async function getServerSideProps(context: { params: { id: number } }) {
   const project = await supabase
     .from("projects")
     .select()
-    .eq("id", params)
+    .eq("project_id", params)
     .limit(1);
 
   if (project.data?.length == 0) {
@@ -172,30 +89,5 @@ export async function getServerSideProps(context: { params: { id: number } }) {
     };
   }
 
-  // Fetching Tasks
-  const pendingTasks = await supabase
-    .from("tasks")
-    .select()
-    .eq("project_id", project.data[0].tasks_id)
-    .eq("status", "pending");
-  const inProgressTasks = await supabase
-    .from("tasks")
-    .select()
-    .eq("project_id", project.data[0].tasks_id)
-    .eq("status", "inprogress");
-  const fulfilledTasks = await supabase
-    .from("tasks")
-    .select()
-    .eq("project_id", project.data[0].tasks_id)
-    .eq("status", "fulfilled");
-
-  // Pass data to the page via props
-  const data = {
-    project: project.data[0],
-    pendingTasks: pendingTasks.data,
-    inProgressTasks: inProgressTasks.data,
-    fulfilledTasks: fulfilledTasks.data,
-  };
-
-  return { props: { data } };
+  return { props: { project: project.data[0] } };
 }

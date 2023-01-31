@@ -30,18 +30,26 @@ export default function ProjectCreator({ user, refetch }) {
         new Date().getUTCMonth() + 1
       }-${new Date().getDate()}`;
 
-      const { data } = await supabase
+      const userData = await supabase
         .from("users")
         .select("name")
         .eq("id", user.id);
 
-      const { error } = await supabase.from("projects").insert({
-        name: values.project_name,
-        created_at: date,
-        ownership: user.id,
-        members: [`${data[0].name}`],
-      });
+      const { data, error } = await supabase
+        .from("projects")
+        .insert({
+          name: values.project_name,
+          created_at: date,
+          ownership: user.id,
+        })
+        .select();
       if (error == null) {
+        const { error } = await supabase.from("project_members").insert({
+          project_id: data[0].project_id,
+          user_id: user.id,
+          user_name: userData.data[0].name,
+        });
+
         refetch();
         setModalOpen(false);
         setProcessing(false);

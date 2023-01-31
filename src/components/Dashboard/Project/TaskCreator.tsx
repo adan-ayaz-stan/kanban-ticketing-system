@@ -15,9 +15,8 @@ export default function TaskCreator({ projectData, setModalOpen }) {
   const dateBoxRef = useRef(null);
 
   // Options
-  const assignOptions = projectData.members.map((ele: String) => {
-    return { value: ele, label: ele };
-  });
+
+  // Options for assigning tasks to people
   const priortyOptions = [
     { value: "low", label: "Low" },
     { value: "medium", label: "Medium" },
@@ -25,7 +24,6 @@ export default function TaskCreator({ projectData, setModalOpen }) {
   ];
 
   // SETTING VALUES IN STATE TILL WORKAROUND WITH FORMIK IS POSSIBLE
-  const [assignTo, setAssignTo] = useState(assignOptions[0].value);
   const [priortyState, setPriortyState] = useState(priortyOptions[0].value);
 
   // SETTING TODAYS DATE AS DEFAULT
@@ -63,11 +61,11 @@ export default function TaskCreator({ projectData, setModalOpen }) {
           }-${new Date().getUTCDay()}`,
           name: values.task_name,
           description: values.task_description,
-          assigned_to: assignTo,
+          assigned_to: "",
           status: "pending",
           priorty: priortyState,
           due_date: values.due_date,
-          project_id: projectData.tasks_id,
+          project_id: projectData.project_id,
           labels: [],
         });
         setModalOpen(false);
@@ -82,9 +80,9 @@ export default function TaskCreator({ projectData, setModalOpen }) {
       onClick={(e) => {
         e.stopPropagation();
       }}
-      className="lg:w-6/12 p-2 m-3 border-[1px] text-white bg-[#3C2A21] rounded-lg"
+      className="md:w-8/12 lg:w-6/12 p-2 m-3 border-[1px] text-black bg-gray-200 rounded-lg"
     >
-      <h1 className="w-fit mx-auto my-2 font-bold text-xl text-white uppercase">
+      <h1 className="w-fit mx-auto my-2 font-bold text-xl text-gray-800 uppercase">
         Create new task
       </h1>
 
@@ -113,20 +111,6 @@ export default function TaskCreator({ projectData, setModalOpen }) {
         />
 
         <div className="flex flex-col md:flex-row justify-between gap-3">
-          <div className="w-full flex flex-col">
-            <label>Assign To: </label>
-            <Select
-              name="assign_to"
-              options={assignOptions}
-              className="text-sm text-black rounded-lg"
-              defaultValue={assignOptions[0]}
-              onChange={(value) => {
-                setAssignTo(value.value);
-              }}
-              required
-            />
-          </div>
-
           <div className="w-full flex flex-col">
             <label>Task Priorty: </label>
             <Select

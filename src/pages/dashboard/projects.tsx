@@ -2,12 +2,11 @@ import { NextPage } from "next";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 
 import Sidebar from "@/components/Dashboard/Sidebar";
-import Project from "@/components/Dashboard/Projects/ProjectOverview";
 import ProjectCreator from "@/components/Dashboard/Projects/ProjectCreator";
 import { useQuery } from "react-query";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
-import { AiOutlineLoading, AiOutlineLoading3Quarters } from "react-icons/ai";
-import { AnimatePresence, motion } from "framer-motion";
+import OwnedProjects from "@/components/Dashboard/Projects/OwnedProjects";
+import NotOwnedProjects from "@/components/Dashboard/Projects/NotOwnedProjects";
 
 type pageProps = {
   user: Object;
@@ -15,8 +14,6 @@ type pageProps = {
 
 const Dashboard: NextPage<pageProps> = ({ user }) => {
   const supabase = useSupabaseClient();
-
-  const projectsData: {}[] = [];
 
   const { isLoading, data, error, refetch } = useQuery(
     "projects-data",
@@ -40,50 +37,9 @@ const Dashboard: NextPage<pageProps> = ({ user }) => {
         <ProjectCreator user={user} refetch={refetch} />
 
         {/* Projects */}
-        <div className="border-[1px] mx-2 p-2 border-cyan-500 rounded-xl shadow-xl backdrop-blur-lg bg-[#ffffff55]">
-          <h1 className="p-2 mb-2 text-center rounded-t-xl rounded-b-md text-green-700 bg-white text-xl font-bold uppercase">
-            Active Projects
-          </h1>
+        <OwnedProjects isLoading={isLoading} data={data} error={error} />
 
-          <AnimatePresence>
-            {isLoading && (
-              <motion.p
-                initial={{ rotateZ: 0, opacity: 0 }}
-                animate={{
-                  rotateZ: 360,
-                  opacity: 1,
-                  transition: {
-                    type: "keyframes",
-                    ease: "linear",
-                    duration: 3,
-                    repeat: Infinity,
-                  },
-                }}
-                exit={{
-                  rotateZ: 0,
-                  opacity: 0,
-                  transition: {
-                    duration: 0.01,
-                  },
-                }}
-                className="w-fit py-3 mx-auto text-4xl"
-              >
-                <AiOutlineLoading3Quarters />
-              </motion.p>
-            )}
-          </AnimatePresence>
-          {error && <p>An error has occurred.</p>}
-          {data && (
-            <div className="grid grid-cols-1 auto-rows-auto gap-2">
-              {data.data.map((ele, ind) => {
-                return <Project projectData={ele} key={ind * Math.random()} />;
-              })}
-            </div>
-          )}
-          {data && data.data.length == 0 && (
-            <div className="text-center">No projects to show.</div>
-          )}
-        </div>
+        <NotOwnedProjects user={user} />
       </div>
     </div>
   );
