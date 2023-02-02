@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { BiDotsVerticalRounded } from "react-icons/bi";
+import { useQuery } from "react-query";
 import TaskEditor from "./TaskEditor";
 
 interface TaskTypes {
@@ -22,27 +23,35 @@ interface TaskTypes {
   };
 }
 
-export default function Task({ task }: TaskTypes) {
-  const [processing, setProcessing] = useState(false);
+export default function Task({
+  task,
+  projectData,
+  refetchTasks,
+  category,
+}: TaskTypes) {
   const [isEditMode, setEditMode] = useState(false);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
   const router = useRouter();
   const supabase = useSupabaseClient();
 
-  async function changeTaskStatus() {
-    setProcessing(true);
-    const { error } = await supabase
-      .from("tasks")
-      .update({ status: "inprogress" })
-      .eq("task_id", task.task_id);
-    if (error == null) {
-      router.push(router.asPath, "", { scroll: false });
-    } else {
-      console.log(error);
-      setProcessing(false);
+  const { isLoading, isSuccess, data, error, refetch } = useQuery(
+    `${task.task_id}-task-induvidual`,
+    () =>
+      supabase.from("users").select("name").eq("id", task.assigned_to).limit(1),
+    {
+      cacheTime: 12000,
+      staleTime: 12000,
     }
-  }
+  );
+
+  const assignedToUserName = () => {
+    if ((data == null && data.data == undefined) || data.data == null) {
+      return "";
+    } else {
+      return data.data[0].name;
+    }
+  };
 
   async function deleteTask() {
     const { error } = await supabase
@@ -58,7 +67,13 @@ export default function Task({ task }: TaskTypes) {
   if (isEditMode) {
     return (
       <div className="h-fit flex flex-col gap-2 p-2 bg-white bg-opacity-40 backdrop-blur-lg rounded-lg drop-shadow-lg">
-        <TaskEditor task={task} setEditMode={setEditMode} />
+        <TaskEditor
+          task={task}
+          setEditMode={setEditMode}
+          projectData={projectData}
+          refetchTasks={refetchTasks}
+          category={category}
+        />
       </div>
     );
   }
@@ -67,19 +82,45 @@ export default function Task({ task }: TaskTypes) {
     <div className="h-fit flex flex-col gap-2 p-2 bg-white bg-opacity-40 backdrop-blur-lg rounded-lg drop-shadow-lg">
       {/* Task title and description */}
       <details>
-        <summary className="text-[14px] font-semibold pb-2 mb-2 border-b-2 cursor-pointer">
-          {task.name}
-        </summary>
+        {/* Different Top Bars based on priorty */}
+        {/* Low priorty */}
+        {task.priorty == "low" && (
+          <summary className="w-fit px-3 pt-2 text-[14px] text-white font-semibold pb-2 mb-2 border-b-2 bg-gray-500 cursor-pointer rounded">
+            {task.name}
+          </summary>
+        )}
+        {/* Medium Priorty */}
+        {task.priorty == "medium" && (
+          <summary className="w-fit px-3 pt-2 text-[14px] text-white font-semibold pb-2 mb-2 border-b-2 bg-orange-500 cursor-pointer rounded">
+            {task.name}
+          </summary>
+        )}
+        {/* High Priorty */}
+        {task.priorty == "high" && (
+          <summary className="w-fit px-3 pt-2 text-[14px] text-white font-semibold pb-2 mb-2 border-b-2 bg-red-500 cursor-pointer rounded">
+            {task.name}
+          </summary>
+        )}
+
         <p className="h-fit px-2 text-[12px] text-blue-500 font-bold bg-gray-200 rounded">
           <span className="uppercase text-gray-700">Description:</span>{" "}
           {task.description}
         </p>
       </details>
       {/* Task assigned to => ? */}
-      <p className="h-fit px-2 py-1 text-[12px] text-black bg-gray-200 rounded">
-        <span className="uppercase font-bold text-gray-700">Assigned To: </span>
-        <span className="font-bold text-green-800">{task.assigned_to}</span>
-      </p>
+      {isSuccess ? (
+        <p className="h-fit px-2 py-1 text-[12px] text-black bg-gray-200 rounded">
+          <span className="uppercase font-bold text-gray-700">
+            Assigned To:{" "}
+          </span>
+          <span className="font-bold text-green-800">
+            {assignedToUserName()}
+          </span>
+        </p>
+      ) : (
+        ""
+      )}
+
       {/* Task Due Date */}
       <p className="h-fit px-2 text-[12px] text-black rounded">
         <span className="uppercase font-bold text-gray-700">Due Date: </span>
@@ -129,19 +170,7 @@ export default function Task({ task }: TaskTypes) {
 
       {/*  */}
 
-      {/* Task Labels */}
-      <div className="flex flex-row gap-2 pt-2 border-t-2">
-        {task.labels.map((ele, ind) => {
-          return (
-            <span
-              className="h-fit px-2 text-[12px] text-blue-500 font-bold bg-gray-200 border-blue-400 border-2 rounded"
-              key={ind * Math.random() + 12}
-            >
-              {ele}
-            </span>
-          );
-        })}
-      </div>
+      {/* Task labels were removed as they seemed unneccessary */}
     </div>
   );
 }
