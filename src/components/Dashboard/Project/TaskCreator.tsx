@@ -23,9 +23,16 @@ export default function TaskCreator({ projectData, setModalOpen }) {
     { value: "high", label: "High" },
   ];
 
+  // Options for assigning task categories
+  const categoryOptions = projectData.task_categories.map((ele, ind) => {
+    return { label: `${ele}`.toUpperCase(), value: ele };
+  });
+
   // SETTING VALUES IN STATE TILL WORKAROUND WITH FORMIK IS POSSIBLE
   const [priortyState, setPriortyState] = useState(priortyOptions[0].value);
+  const [categoryState, setCategoryState] = useState(categoryOptions[0].value);
 
+  console.log(categoryState);
   // SETTING TODAYS DATE AS DEFAULT
   useEffect(() => {
     dateBoxRef.current.valueAsDate = new Date();
@@ -62,14 +69,13 @@ export default function TaskCreator({ projectData, setModalOpen }) {
           name: values.task_name,
           description: values.task_description,
           assigned_to: "",
-          status: "pending",
+          status: categoryState,
           priorty: priortyState,
           due_date: values.due_date,
           project_id: projectData.project_id,
-          labels: [],
         });
         setModalOpen(false);
-        router.push(router.asPath, "", { scroll: false });
+        router.reload();
         setProcessing(false);
       }
     },
@@ -120,6 +126,20 @@ export default function TaskCreator({ projectData, setModalOpen }) {
               defaultValue={priortyOptions[0]}
               onChange={(value) => {
                 setPriortyState(value?.value);
+              }}
+              required
+            />
+          </div>
+
+          <div className="w-full flex flex-col">
+            <label>Task Category: </label>
+            <Select
+              name="category"
+              options={categoryOptions}
+              className="text-sm text-black rounded-lg"
+              defaultValue={categoryOptions[0]}
+              onChange={(value) => {
+                setCategoryState(value?.value);
               }}
               required
             />

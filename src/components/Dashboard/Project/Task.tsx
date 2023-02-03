@@ -60,7 +60,7 @@ export default function Task({
       .eq("task_id", task.task_id);
 
     if (error == null) {
-      router.replace(router.asPath, "", { scroll: false });
+      refetchTasks();
     }
   }
 
@@ -152,7 +152,13 @@ export default function Task({
             >
               <AiOutlineCloseCircle />
             </p>
-            <p className="px-4 py-1 bg-gray-100 hover:brightness-[90%]">
+            <p
+              onClick={() => {
+                deleteTask();
+                setDropdownOpen(false);
+              }}
+              className="px-4 py-1 bg-gray-100 hover:brightness-[90%]"
+            >
               Delete Task
             </p>
             <p

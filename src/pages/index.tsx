@@ -1,3 +1,5 @@
+import FirstScreen from "@/components/Landing/FirstScreen";
+import SecondScreen from "@/components/Landing/SecondScreen";
 import Head from "next/head";
 import Link from "next/link";
 import { supabase } from "../supabase/supabase.config";
@@ -11,34 +13,9 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className="min-h-screen bg-[url('https://images.unsplash.com/photo-1659878997289-b9ab5a0663b6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80')] bg-norepeat bg-cover text-white">
-        {/* Navbar */}
-        <div className="flex flex-row justify-between items-center px-12 py-4">
-          <div>Logo</div>
-
-          <div className="flex flex-row gap-4">
-            <Link
-              href={"/auth"}
-              className="px-2 py-1 border-2 rounded hover:border-dotted"
-            >
-              Login
-            </Link>
-            <Link
-              href={"/auth"}
-              className="px-2 py-1 border-2 rounded hover:border-dotted"
-            >
-              Sign up
-            </Link>
-          </div>
-        </div>
-
-        {/* Center Content */}
-        <div className="flex flex-col items-center justify-center py-12">
-          <h1 className="text-3xl font-bold uppercase text-center">
-            Kanban Ticketing System
-          </h1>
-          <p>Landing Page</p>
-        </div>
+      <main>
+        <FirstScreen />
+        <SecondScreen />
       </main>
     </>
   );
