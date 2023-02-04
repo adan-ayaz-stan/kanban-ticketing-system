@@ -46,7 +46,7 @@ const AuthPage = () => {
   if (session && !userExists) {
     // router.push("/dashboard");
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#E5E5CB]">
+      <div className="min-h-screen flex items-center justify-center bg-[#FFF2F2]">
         <form
           onSubmit={formSubmitHandler}
           className="w-full md:w-6/12 p-2 m-2 flex flex-col gap-3 border-2 bg-[#D5CEA3]"
@@ -74,8 +74,8 @@ const AuthPage = () => {
   }
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-[#1A120B] p-2">
-      <div className="bg-[#D5CEA3] px-8 py-4 rounded-lg shadow-lg text-black">
+    <div className="min-h-screen flex justify-center items-center bg-[#FFF2F2] p-2">
+      <div className="bg-[#7286D3] px-8 py-4 rounded-lg shadow-lg text-black">
         <Auth
           supabaseClient={supabase}
           appearance={{
@@ -83,17 +83,20 @@ const AuthPage = () => {
             variables: {
               default: {
                 colors: {
-                  brand: "#1A120B",
-                  brandAccent: "#3C2A21",
-                  brandButtonText: "white",
-                  inputLabelText: "black",
-                  anchorTextColor: "#1A120B",
-                  anchorTextHoverColor: "#3C2A21",
+                  brand: "#FFF2F2",
+                  brandAccent: "white",
+                  brandButtonText: "black",
+                  defaultButtonBackgroundHover: "#E5E0FF",
+                  inputLabelText: "white",
+                  anchorTextColor: "#fff2f2",
+                  anchorTextHoverColor: "#E5E0FF",
+                  inputBackground: "white",
                 },
               },
             },
           }}
-          theme="dark"
+          theme="default"
+          
         />
       </div>
     </div>

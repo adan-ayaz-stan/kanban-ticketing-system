@@ -1,7 +1,9 @@
+import { Barlow } from "@next/font/google";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
-import Image from "next/image";
 import { useQuery } from "react-query";
 import Connection from "./minisMyConnections/Connection";
+
+const barlow = Barlow({ subsets: ["latin"], weight: "700" });
 
 export default function MyConnections({ user }) {
   const supabase = useSupabaseClient();
@@ -21,7 +23,7 @@ export default function MyConnections({ user }) {
 
   return (
     <div className="px-4 py-3 text-sm">
-      <h1 className="w-fit mx-auto text-4xl uppercase border-b-2 border-gray-700">
+      <h1 style={barlow.style} className="w-fit mx-auto text-3xl">
         My connections
       </h1>
 
@@ -46,6 +48,15 @@ export default function MyConnections({ user }) {
               );
             }
           })}
+
+        {isSuccess && data.data.length == 0 ? (
+          <div className="w-full text-center">
+            It seems like you havent't made any connections yet. Search people
+            now to make new connections.
+          </div>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );

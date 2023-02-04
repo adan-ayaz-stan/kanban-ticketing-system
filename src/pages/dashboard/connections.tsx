@@ -6,7 +6,7 @@ import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 
 export default function Connections({ user }) {
   return (
-    <div className="min-h-screen bg-[#E5E5CB] text-black">
+    <div className="min-h-screen bg-[#FFF2F2] text-black">
       <Sidebar />
       <div className="sm:ml-20">
         <h1 className="px-4 py-3 text-2xl font-bold">Connections</h1>

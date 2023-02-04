@@ -62,12 +62,12 @@ export default function SearchConnections({ user }) {
       </div>
 
       {/* Search Results */}
-      <div className="absolute top-[110%] left-0 w-full grid grid-cols-12 auto-rows-auto gap-2 bg-white rounded z-50">
+      <div className="absolute top-[110%] max-h-[75vh] left-0 w-full grid grid-cols-12 auto-rows-auto gap-2 bg-white rounded z-50 overflow-scroll">
         {results.map((ele, ind) => {
           return (
             <div
               key={ind * Math.random() + 45}
-              className="relative col-span-12 sm:col-span-6 md:col-span-4 flex flex-col items-center gap-3 p-3 m-2 text-white bg-[#1A120A] rounded"
+              className="relative col-span-6 sm:col-span-6 md:col-span-4 flex flex-col items-center gap-3 p-3 m-2 text-white bg-[#1A120A] rounded"
             >
               <div className="relative h-20 w-20">
                 <Image

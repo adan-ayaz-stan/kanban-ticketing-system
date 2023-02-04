@@ -4,6 +4,9 @@ import { useQuery } from "react-query";
 import { useEffect, useState } from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { motion } from "framer-motion";
+import { Barlow } from "@next/font/google";
+
+const barlow = Barlow({ subsets: ["latin"], weight: "700" });
 
 export default function ConnectionRequests({ user }) {
   const [processing, setProcessing] = useState(false);
@@ -77,7 +80,10 @@ export default function ConnectionRequests({ user }) {
 
   return (
     <div className="my-5">
-      <h1 className="w-fit mx-auto text-4xl border-b-2 border-gray-800">
+      <h1
+        style={barlow.style}
+        className="w-fit mx-auto text-3xl"
+      >
         Connection Requests
       </h1>
 
