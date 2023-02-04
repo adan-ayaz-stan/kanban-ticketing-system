@@ -1,7 +1,10 @@
+import { Barlow } from "@next/font/google";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Select from "react-select";
+
+const barlow = Barlow({ subsets: ["latin"], weight: "700" });
 
 export default function RemoveCategory({ projectData, setModalOpen }) {
   const [processing, setProcessing] = useState(false);
@@ -38,11 +41,14 @@ export default function RemoveCategory({ projectData, setModalOpen }) {
   return (
     <div
       onClick={(e) => e.stopPropagation()}
-      className="flex flex-col p-4 text-black bg-white rounded"
+      className="flex flex-col p-4 text-black bg-white rounded-lg"
     >
-      <h2 className="text-black" style={{ fontFamily: "Sen, sans-serif" }}>
+      <h1
+        className="w-fit mx-auto my-2 font-bold text-xl text-gray-800 uppercase"
+        style={barlow.style}
+      >
         Select category to remove
-      </h2>
+      </h1>
 
       <Select
         defaultValue={options[0]}
@@ -53,7 +59,7 @@ export default function RemoveCategory({ projectData, setModalOpen }) {
 
       <button
         onClick={removeCategoryFromProject}
-        className="w-fit mx-auto p-2 font-bold text-white hover:text-[#1a120b] disabled:text-gray-800 bg-[#1a120b] hover:bg-[#d5cea3] disabled:bg-gray-500 rounded transition-all duration-400"
+        className="w-fit mx-auto text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 my-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
         disabled={processing}
       >
         Remove Category

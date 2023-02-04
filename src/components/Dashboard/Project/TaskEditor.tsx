@@ -28,7 +28,6 @@ export default function TaskEditor({
   setEditMode,
   projectData,
   refetchTasks,
-  refetchUserForTask,
   category,
 }: TaskEditor) {
   const router = useRouter();
@@ -75,8 +74,8 @@ export default function TaskEditor({
     if (values.name.length == 0) {
       errors.name = "Task name cannot be empty.";
     }
-    if (values.name.length > 16) {
-      errors.name = "Task name cannot exceed 16 characters.";
+    if (values.name.length > 28) {
+      errors.name = "Task name cannot exceed 28 characters.";
     }
 
     if (values.description.length == 0) {
@@ -109,7 +108,6 @@ export default function TaskEditor({
       if (error == null) {
         if (category == statusTo.value) {
           refetchTasks();
-          refetchUserForTask();
         } else {
           router.reload();
         }
@@ -125,11 +123,11 @@ export default function TaskEditor({
       className="flex flex-col gap-2 text-sm"
     >
       <div>
-        <label className="block font-semibold">Task Name</label>
+        <label className="block font-medium">Task Name</label>
         <input
           name="name"
           type={"text"}
-          className="w-full px-2 py-1 rounded"
+          className="w-full px-2 py-1 rounded bg-gray-100"
           defaultValue={task.name}
           onChange={formik.handleChange}
         />
@@ -141,11 +139,11 @@ export default function TaskEditor({
       </div>
 
       <div>
-        <label className="block font-semibold">Task Description</label>
+        <label className="block font-medium">Task Description</label>
         <textarea
           name="description"
           rows={2}
-          className="w-full px-2 py-1 rounded resize-y"
+          className="w-full px-2 py-1 rounded resize-y bg-gray-100"
           defaultValue={task.description}
           onChange={formik.handleChange}
         />
@@ -157,7 +155,7 @@ export default function TaskEditor({
       </div>
 
       <div>
-        <label className="block font-semibold">Assign To</label>
+        <label className="block font-medium">Assign To</label>
         <Select
           options={assignOptions}
           defaultValue={assignOptions[0]}
@@ -166,7 +164,7 @@ export default function TaskEditor({
       </div>
 
       <div>
-        <label className="block font-semibold">Change Status To</label>
+        <label className="block font-medium">Change Status To</label>
         <Select
           options={statusOptions}
           defaultValue={statusOptions[0]}
@@ -175,7 +173,7 @@ export default function TaskEditor({
       </div>
 
       <div>
-        <label className="block font-semibold">Change Priorty To</label>
+        <label className="block font-medium">Change Priorty To</label>
         <Select
           options={priortyOptions}
           defaultValue={priortyOptions[0]}
@@ -186,14 +184,14 @@ export default function TaskEditor({
       <div className="flex flex-row gap-3 justify-end">
         <button
           onClick={() => setEditMode(false)}
-          className="px-2 py-1 font-bold text-white bg-red-700 disabled:bg-gray-600 rounded"
+          className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-green-800"
           disabled={processing}
         >
           Discard
         </button>
         <button
           type="submit"
-          className="px-2 py-1 font-bold text-white bg-green-700 disabled:bg-gray-600 rounded"
+          className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
           disabled={processing}
         >
           Save

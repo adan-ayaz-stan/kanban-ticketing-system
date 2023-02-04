@@ -1,7 +1,10 @@
+import { Barlow } from "@next/font/google";
 import { useState } from "react";
 import AddMemberToProject from "./AddMemberToProject";
 import RemoveCategory from "./RemoveCategory";
 import TaskCreator from "./TaskCreator";
+
+const barlow = Barlow({ subsets: ["latin"], weight: "700" });
 
 export default function NavigationBar({ projectData }) {
   const [isTaskModalOpen, setTaskModalOpen] = useState(false);
@@ -10,9 +13,11 @@ export default function NavigationBar({ projectData }) {
     useState(false);
 
   return (
-    <div className="flex flex-row gap-3 p-3 mb-4 text-white bg-[#1a120b]">
+    <div className="flex flex-row items-center gap-3 p-3 mt-2 ml-2 mb-4 text-white bg-[#7286D3] rounded-l-xl">
       {/* Project details */}
-      <h1 className="text-white text-2xl">{projectData.name}</h1>
+      <h2 className={`${barlow.className} text-white text-3xl`}>
+        {projectData.name}
+      </h2>
 
       {/* Project Functions */}
 
@@ -20,7 +25,7 @@ export default function NavigationBar({ projectData }) {
         {/*  */}
         <button
           onClick={() => setTaskModalOpen(true)}
-          className="px-2 py-1 font-semibold rounded text-gray-800 bg-[#d5cea3] hover:brightness-[80%]"
+          className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
         >
           Create Task
         </button>
@@ -40,10 +45,11 @@ export default function NavigationBar({ projectData }) {
         {/* Add member to project */}
         <button
           onClick={() => setMemberModalOpen(true)}
-          className="px-2 py-1 font-semibold rounded text-gray-800 bg-[#d5cea3] hover:brightness-[80%]"
+          className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
         >
           Add Member
         </button>
+
         {/* Modal */}
         {isMemberModalOpen && (
           <div
@@ -60,20 +66,20 @@ export default function NavigationBar({ projectData }) {
         {/* Remove a category from project */}
         <button
           onClick={() => setRemoveCategoryModalOpen(true)}
-          className="px-2 py-1 font-semibold rounded text-gray-800 bg-[#d5cea3] hover:brightness-[80%]"
+          className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-full text-sm px-5 py-2.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
         >
           Remove Category
         </button>
-         {/* Modal */}
-         {isRemoveCategoryModalOpen && (
+        {/* Modal */}
+        {isRemoveCategoryModalOpen && (
           <div
             onClick={() => setRemoveCategoryModalOpen(false)}
             className="w-screen h-screen fixed top-0 left-0 flex items-center justify-center bg-black bg-opacity-60 z-[9999]"
           >
             <RemoveCategory
-            projectData={projectData}
-            setModalOpen={setRemoveCategoryModalOpen}
-             />
+              projectData={projectData}
+              setModalOpen={setRemoveCategoryModalOpen}
+            />
           </div>
         )}
       </div>

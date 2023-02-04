@@ -1,7 +1,10 @@
+import { Barlow } from "@next/font/google";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Select from "react-select";
+
+const barlow = Barlow({ subsets: ["latin"], weight: "700" });
 
 export default function AddMemberToProject({ projectData, setModalOpen }) {
   const router = useRouter();
@@ -68,9 +71,14 @@ export default function AddMemberToProject({ projectData, setModalOpen }) {
   return (
     <div
       onClick={(e) => e.stopPropagation()}
-      className="w-11/12 sm:w-9/12 md:w-6/12 lg:w-4/12 p-3 flex flex-col gap-2 text-black bg-white border-blue-500 border-2"
+      className="w-11/12 sm:w-9/12 md:w-6/12 lg:w-4/12 p-3 flex flex-col gap-2 text-black bg-[#FFF2F2] rounded-lg"
     >
-      <h1>Add member to project</h1>
+      <h1
+        className="w-fit mx-auto my-2 font-bold text-xl text-gray-800 uppercase"
+        style={barlow.style}
+      >
+        Add member to project
+      </h1>
 
       {/* Render the list of connections and add them to the project based on selection */}
 
@@ -98,7 +106,7 @@ export default function AddMemberToProject({ projectData, setModalOpen }) {
 
       <button
         onClick={addMemberToProject}
-        className="px-2 py-1 mx-auto font-semibold bg-[#d5cea3] rounded disabled:bg-gray-500"
+        className="w-fit mx-auto text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 my-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
         disabled={processing}
       >
         Add Member

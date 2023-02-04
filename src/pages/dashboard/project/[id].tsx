@@ -69,7 +69,7 @@ export default function IndvidualProject({ project }: pageProps) {
   });
 
   return (
-    <div className="min-h-screen bg-[#D5CEA3]">
+    <div className="min-h-screen bg-[#FFF2F2]">
       <Sidebar />
       <div className="relative sm:ml-16">
         <NavigationBar projectData={project} />
@@ -90,7 +90,7 @@ export default function IndvidualProject({ project }: pageProps) {
 
           <div
             onClick={() => setCreateCategoryModalOpen(true)}
-            className="w-full p-2 border-2 border-dotted border-white rounded shadow-xl backdrop-blur-lg bg-[#ffffff85] hover:bg-[#ffffff55] cursor-pointer "
+            className="w-full p-2 border-2 border-dotted border-gray-400 rounded shadow-xl backdrop-blur-lg bg-[#white] hover:bg-gray-200 cursor-pointer"
           >
             <h1 className="w-fit px-2 py-1 mx-auto font-bold text-gray-500">
               Add Category

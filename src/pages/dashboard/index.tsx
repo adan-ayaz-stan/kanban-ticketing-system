@@ -1,4 +1,5 @@
 import Sidebar from "@/components/Dashboard/Sidebar";
+import SidebarFlowbite from "@/components/Dashboard/SidebarFlowBite";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { NextPage } from "next";
 
@@ -10,9 +11,10 @@ const Dashboard: NextPage<pageProps> = ({ user }) => {
   console.log(user);
 
   return (
-    <div className="min-h-screen bg-[#D5CEA3] text-black">
+    <div className="min-h-screen bg-[#FFF2F2F] text-black">
       {/* Sidebar */}
-      <Sidebar />
+      {/* <Sidebar /> */}
+      <SidebarFlowbite />
 
       {/* MAIN PANEL */}
       <div className="relative sm:pl-20">

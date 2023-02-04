@@ -5,6 +5,9 @@ import Select from "react-select";
 import { DateTime } from "luxon";
 
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { Barlow } from "@next/font/google";
+
+const barlow = Barlow({ subsets: ["latin"], weight: "700" });
 
 export default function TaskCreator({ projectData, setModalOpen }) {
   const router = useRouter();
@@ -58,7 +61,7 @@ export default function TaskCreator({ projectData, setModalOpen }) {
       const dateX = DateTime.fromSQL(values.due_date);
       const daysDifference = DateTime.now().diff(dateX, "hours").values.hours;
       console.log(daysDifference);
-      if (daysDifference > 0) {
+      if (daysDifference >= 0) {
         formik.errors.due_date = "Date must be valid";
         setProcessing(false);
       } else {
@@ -86,39 +89,60 @@ export default function TaskCreator({ projectData, setModalOpen }) {
       onClick={(e) => {
         e.stopPropagation();
       }}
-      className="md:w-8/12 lg:w-6/12 p-2 m-3 border-[1px] text-black bg-gray-200 rounded-lg"
+      className="md:w-8/12 lg:w-6/12 p-2 m-3 border-[1px] text-black bg-[#FFF2F2] rounded-lg"
     >
-      <h1 className="w-fit mx-auto my-2 font-bold text-xl text-gray-800 uppercase">
+      <h2
+        className="w-fit mx-auto my-2 font-bold text-xl text-gray-800 uppercase"
+        style={barlow.style}
+      >
         Create new task
-      </h1>
+      </h2>
 
       <form
         onSubmit={formik.handleSubmit}
         className="flex flex-col gap-2 px-4 py-2 "
       >
-        <input
-          type={"text"}
-          name="task_name"
-          placeholder="Task Title"
-          onChange={formik.handleChange}
-          value={formik.values.task_name}
-          className="w-full text-sm text-black p-2 border-2 rounded-lg focus:outline-none"
-          required
-        />
+        <div className="relative z-0 w-full mb-6 group">
+          <input
+            type="text"
+            name="task_name"
+            className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+            placeholder=" "
+            onChange={formik.handleChange}
+            value={formik.values.task_name}
+            required
+          />
+          <label
+            htmlFor="task_name"
+            className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+          >
+            Task Title
+          </label>
+        </div>
 
-        <textarea
-          rows={2}
-          name="task_description"
-          placeholder="Task Description"
-          onChange={formik.handleChange}
-          value={formik.values.task_description}
-          className="p-2 text-sm text-black border-2 resize-y rounded-lg focus:outline-none"
-          required
-        />
+        <div>
+          <label
+            htmlFor="task_description"
+            className="block mb-2 text-sm font-medium text-gray-900"
+          >
+            Your message
+          </label>
+          <textarea
+            rows={2}
+            name="task_description"
+            placeholder="Task Description"
+            onChange={formik.handleChange}
+            value={formik.values.task_description}
+            className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            required
+          />
+        </div>
 
         <div className="flex flex-col md:flex-row justify-between gap-3">
           <div className="w-full flex flex-col">
-            <label>Task Priorty: </label>
+            <label className="block mb-1 text-sm font-medium text-gray-900">
+              Task Priorty:{" "}
+            </label>
             <Select
               name="priorty"
               options={priortyOptions}
@@ -132,7 +156,9 @@ export default function TaskCreator({ projectData, setModalOpen }) {
           </div>
 
           <div className="w-full flex flex-col">
-            <label>Task Category: </label>
+            <label className="block mb-1 text-sm font-medium text-gray-900">
+              Task Category:{" "}
+            </label>
             <Select
               name="category"
               options={categoryOptions}
@@ -146,7 +172,9 @@ export default function TaskCreator({ projectData, setModalOpen }) {
           </div>
 
           <div className="w-full flex flex-col">
-            <label>Task Due Date: </label>
+            <label className="block mb-1 text-sm font-medium text-gray-900">
+              Task Due Date:{" "}
+            </label>
             <input
               type={"date"}
               name="due_date"
@@ -161,22 +189,13 @@ export default function TaskCreator({ projectData, setModalOpen }) {
           </div>
         </div>
 
-        {processing ? (
-          <button
-            type="submit"
-            className="w-fit px-2 py-1 mx-auto mt-2 font-bold uppercase text-[#3C2A21] bg-gray-500 rounded"
-            disabled
-          >
-            Create Task
-          </button>
-        ) : (
-          <button
-            type="submit"
-            className="w-fit px-2 py-1 mx-auto mt-2 font-bold uppercase text-[#3C2A21] bg-white rounded"
-          >
-            Create Task
-          </button>
-        )}
+        <button
+          type="submit"
+          className="w-fit mx-auto text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 my-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+          disabled={processing}
+        >
+          Create Task
+        </button>
       </form>
     </div>
   );

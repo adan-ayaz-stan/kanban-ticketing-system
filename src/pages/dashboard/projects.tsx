@@ -15,6 +15,7 @@ type pageProps = {
 const Dashboard: NextPage<pageProps> = ({ user }) => {
   const supabase = useSupabaseClient();
 
+  // Project Owned By Users
   const { isLoading, data, error, refetch } = useQuery(
     "projects-data",
     () => supabase.from("projects").select().eq("ownership", user.id),
@@ -25,7 +26,7 @@ const Dashboard: NextPage<pageProps> = ({ user }) => {
   );
 
   return (
-    <div className="min-h-screen bg-[#E5E5CB] text-black text-sm">
+    <div className="min-h-screen bg-[#FFF2F2] text-black text-sm">
       {/* Sidebar */}
       <Sidebar />
 

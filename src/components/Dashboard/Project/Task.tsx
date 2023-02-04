@@ -38,11 +38,7 @@ export default function Task({
   const { isLoading, isSuccess, data, error, refetch } = useQuery(
     `${task.task_id}-task-induvidual`,
     () =>
-      supabase.from("users").select("name").eq("id", task.assigned_to).limit(1),
-    {
-      cacheTime: 12000,
-      staleTime: 12000,
-    }
+      supabase.from("users").select("name").eq("id", task.assigned_to).limit(1)
   );
 
   const assignedToUserName = () => {
@@ -79,7 +75,7 @@ export default function Task({
   }
 
   return (
-    <div className="h-fit flex flex-col gap-2 p-2 bg-white bg-opacity-40 backdrop-blur-lg rounded-lg drop-shadow-lg">
+    <div className="h-fit flex flex-col gap-3 px-2 py-4 bg-white bg-opacity-40 backdrop-blur-lg rounded-lg drop-shadow-lg">
       {/* Task title and description */}
       <details>
         {/* Different Top Bars based on priorty */}
@@ -102,14 +98,14 @@ export default function Task({
           </summary>
         )}
 
-        <p className="h-fit px-2 text-[12px] text-blue-500 font-bold bg-gray-200 rounded">
+        <p className="h-fit p-2 text-[12px] text-blue-500 font-bold bg-gray-100 rounded">
           <span className="uppercase text-gray-700">Description:</span>{" "}
           {task.description}
         </p>
       </details>
       {/* Task assigned to => ? */}
       {isSuccess ? (
-        <p className="h-fit px-2 py-1 text-[12px] text-black bg-gray-200 rounded">
+        <p className="h-fit px-2 py-1 text-[12px] text-black bg-gray-100 rounded">
           <span className="uppercase font-bold text-gray-700">
             Assigned To:{" "}
           </span>
@@ -124,7 +120,7 @@ export default function Task({
       {/* Task Due Date */}
       <p className="h-fit px-2 text-[12px] text-black rounded">
         <span className="uppercase font-bold text-gray-700">Due Date: </span>
-        <span className="px-2 py-1 font-bold text-white bg-red-800 rounded-md">
+        <span className="px-2 py-1 font-bold text-white bg-red-700 rounded-md">
           {task.due_date}
         </span>
       </p>

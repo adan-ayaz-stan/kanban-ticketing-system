@@ -41,35 +41,6 @@ export default function Category({ category, projectData }: Props) {
     }
   );
 
-  // const data: TaskTypes[] = [
-  //   {
-  //     task_id: "f6343677-83e8-4c2c-9ac2-2fed61fba9a7",
-  //     created_at: "2023-01-02",
-  //     name: "Task Title",
-  //     description: "Task Description Example",
-  //     assigned_to: "",
-  //     status: "pending",
-  //     priorty: "medium",
-  //     due_date: "2023-02-01",
-  //     labels: ["Adam", "Urgent"],
-  //     report: "",
-  //     project_id: "2f84b234-7d84-489a-9cfe-0881e0722099",
-  //   },
-  //   {
-  //     task_id: "f25343677-83e8-4c2c-9ac2-2fed61fba9a7",
-  //     created_at: "2023-01-02",
-  //     name: "Task Title",
-  //     description: "Task Description Example",
-  //     assigned_to: "",
-  //     status: "pending",
-  //     priorty: "medium",
-  //     due_date: "2023-02-01",
-  //     labels: ["Adam", "Urgent"],
-  //     report: "",
-  //     project_id: "2f84b234-7d84-489a-9cfe-0881e0722099",
-  //   },
-  // ];
-
   return (
     <Reorder.Item
       value={category}
@@ -79,7 +50,7 @@ export default function Category({ category, projectData }: Props) {
       className="w-full p-2 border-2 border-dotted border-white rounded shadow-xl backdrop-blur-lg bg-[#ffffff55]"
     >
       <div className="flex justify-center items-center">
-        <h1 className="w-fit px-2 py-1 mx-auto font-bold text-[#1A120B] bg-gray-200 rounded">
+        <h1 className="w-fit px-2 py-1 mx-auto font-bold text-[#1A120B] uppercase bg-gray-200 rounded">
           {category}
         </h1>
         <span

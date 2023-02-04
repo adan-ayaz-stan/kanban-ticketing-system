@@ -1,8 +1,7 @@
 import FirstScreen from "@/components/Landing/FirstScreen";
 import SecondScreen from "@/components/Landing/SecondScreen";
+import ThirdScreen from "@/components/Landing/ThirdScreen";
 import Head from "next/head";
-import Link from "next/link";
-import { supabase } from "../supabase/supabase.config";
 
 export default function Home() {
   return (
@@ -16,6 +15,7 @@ export default function Home() {
       <main>
         <FirstScreen />
         <SecondScreen />
+        <ThirdScreen />
       </main>
     </>
   );
