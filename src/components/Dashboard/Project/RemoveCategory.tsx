@@ -32,7 +32,15 @@ export default function RemoveCategory({ projectData, setModalOpen }) {
       .eq("project_id", projectData.project_id);
 
     if (error == null) {
-      router.reload();
+      const { error } = await supabase
+        .from("tasks")
+        .delete()
+        .eq("status", optionValue.value)
+        .eq("project_id", projectData.project_id);
+
+      if (error == null) {
+        router.reload();
+      }
     } else {
       setProcessing(false);
     }
@@ -59,7 +67,7 @@ export default function RemoveCategory({ projectData, setModalOpen }) {
 
       <button
         onClick={removeCategoryFromProject}
-        className="w-fit mx-auto text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 my-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+        className="w-fit mx-auto text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 my-2 disabled:bg-gray-500"
         disabled={processing}
       >
         Remove Category

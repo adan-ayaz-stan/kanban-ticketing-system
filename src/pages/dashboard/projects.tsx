@@ -7,9 +7,12 @@ import { useQuery } from "react-query";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import OwnedProjects from "@/components/Dashboard/Projects/OwnedProjects";
 import NotOwnedProjects from "@/components/Dashboard/Projects/NotOwnedProjects";
+import SidebarFlowbite from "@/components/Dashboard/SidebarFlowBite";
 
 type pageProps = {
-  user: Object;
+  user: {
+    id: string;
+  };
 };
 
 const Dashboard: NextPage<pageProps> = ({ user }) => {
@@ -18,7 +21,7 @@ const Dashboard: NextPage<pageProps> = ({ user }) => {
   // Project Owned By Users
   const { isLoading, data, error, refetch } = useQuery(
     "projects-data",
-    () => supabase.from("projects").select().eq("ownership", user.id),
+    () => supabase.from("projects").select().filter("ownership", "eq", user.id),
     {
       staleTime: 30000,
       cacheTime: 30000,
@@ -28,10 +31,10 @@ const Dashboard: NextPage<pageProps> = ({ user }) => {
   return (
     <div className="min-h-screen bg-[#FFF2F2] text-black text-sm">
       {/* Sidebar */}
-      <Sidebar />
+      <SidebarFlowbite user={user} />
 
       {/* MAIN PANEL */}
-      <div className="relative sm:ml-20">
+      <div className="relative mt-20">
         <h1 className="w-full text-2xl font-bold uppercase p-4">Projects</h1>
 
         {/* New Project Creator */}

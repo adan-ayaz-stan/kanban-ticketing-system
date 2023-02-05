@@ -9,8 +9,6 @@ type pageProps = {
 };
 
 const Dashboard: NextPage<pageProps> = ({ user, initialSession }) => {
-  console.log(user);
-
   return (
     <div className="min-h-screen bg-[#FFF2F2F] text-black">
       {/* Sidebar */}
@@ -25,6 +23,17 @@ const Dashboard: NextPage<pageProps> = ({ user, initialSession }) => {
 
         <div className="m-4 mt-8 p-4 bg-black bg-opacity-10 rounded-xl backdrop-blur-md">
           <Account session={initialSession} />
+        </div>
+
+        <div>
+          <p className="px-4 py-2 m-4 text-sm bg-gray-100 rounded-lg">
+            <span className="text-2xl">✎</span> In the Connections section, you
+            will be able to find and make connections, and start a chat feature
+            that is coming soon.
+            <br /> <span className="text-2xl">✎</span> In the Projects section,
+            you can create new projects, add users to them, and manage tasks
+            within the project, including creating, editing, and deleting tasks.
+          </p>
         </div>
       </div>
     </div>

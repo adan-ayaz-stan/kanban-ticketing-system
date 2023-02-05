@@ -36,7 +36,6 @@ export default function AddMemberToProject({ projectData, setModalOpen }) {
       }
     });
 
-    console.log(processedData);
     setOptions(processedData);
   }
 
@@ -48,23 +47,35 @@ export default function AddMemberToProject({ projectData, setModalOpen }) {
 
   async function addMemberToProject() {
     setProcessing(true);
-    const membersArray: String[] = projectData.members;
-    if (!membersArray.includes(memberToAdd.label) || memberToAdd.label !== "") {
-      membersArray.push(memberToAdd.label);
-      const { data, error } = await supabase
-        .from("projects")
-        .update({
-          members: membersArray,
-        })
-        .eq("id", projectData.id);
+    // Check if a user is selected
+    if (memberToAdd.value == "") {
+      setMessage("Select a connection to add first.");
+      return setProcessing(false);
+    }
+    // Add member to project
+    const { data, error } = await supabase
+      .from("project_members")
+      .select("user_id")
+      .filter("project_id", "eq", projectData.project_id)
+      .filter("user_id", "eq", memberToAdd.value);
+
+    if (data[0] == undefined) {
+      // Means that the user has not been added to the project.
+      const { error } = await supabase.from("project_members").insert({
+        project_id: projectData.project_id,
+        user_id: memberToAdd.value,
+        user_name: memberToAdd.label,
+      });
 
       if (error == null) {
-        console.log("Data successfully updated.");
+        console.log("User has been added to the project.");
         setModalOpen(false);
       }
     } else {
-      setMessage("This user already exists within the project members.");
+      // Mean the user is already in the project
+      setMessage("This user already exists in this project.");
     }
+
     setProcessing(false);
   }
 
@@ -88,7 +99,7 @@ export default function AddMemberToProject({ projectData, setModalOpen }) {
         </label>
         <Select
           options={options}
-          getOptionValue={(value) => setMemberToAdd(value)}
+          onChange={(value) => setMemberToAdd(value)}
           onMenuOpen={() => setMessage("")}
         />
       </div>
@@ -101,12 +112,14 @@ export default function AddMemberToProject({ projectData, setModalOpen }) {
       )}
 
       {message !== "" && (
-        <p className="text-sm px-2 py-1 border-red-500 border-2">{message}</p>
+        <p className="text-sm px-2 py-1 text-white bg-red-600 rounded">
+          {message}
+        </p>
       )}
 
       <button
         onClick={addMemberToProject}
-        className="w-fit mx-auto text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 my-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700"
+        className="w-fit mx-auto text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 my-2 "
         disabled={processing}
       >
         Add Member

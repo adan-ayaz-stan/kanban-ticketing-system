@@ -13,11 +13,11 @@ export default function MyConnections({ user }) {
     () =>
       supabase
         .from("connections")
-        .select()
+        .select(`*`)
         .or(`user1_id.eq.${user.id},user2_id.eq.${user.id}`),
     {
-      staleTime: 12000,
-      cacheTime: 12000,
+      staleTime: 1000,
+      cacheTime: 1000,
     }
   );
 
@@ -31,6 +31,7 @@ export default function MyConnections({ user }) {
         {/* Sample Connection */}
 
         {isSuccess &&
+          data.data != null &&
           data.data.map((ele, ind) => {
             if (ele.user1_id == user.id) {
               return (
@@ -49,14 +50,16 @@ export default function MyConnections({ user }) {
             }
           })}
 
-        {isSuccess && data.data.length == 0 ? (
-          <div className="w-full text-center">
+        {isSuccess && data.data != null && data.data.length == 0 ? (
+          <div className="w-full text-center text-gray-600">
             It seems like you havent't made any connections yet. Search people
             now to make new connections.
           </div>
         ) : (
           ""
         )}
+
+        {error && <p>An error has occurred while fetching the resource.</p>}
       </div>
     </div>
   );

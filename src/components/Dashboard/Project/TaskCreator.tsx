@@ -15,8 +15,6 @@ export default function TaskCreator({ projectData, setModalOpen }) {
 
   const supabase = useSupabaseClient();
 
-  const dateBoxRef = useRef(null);
-
   // Options
 
   // Options for assigning tasks to people
@@ -35,12 +33,6 @@ export default function TaskCreator({ projectData, setModalOpen }) {
   const [priortyState, setPriortyState] = useState(priortyOptions[0].value);
   const [categoryState, setCategoryState] = useState(categoryOptions[0].value);
 
-  console.log(categoryState);
-  // SETTING TODAYS DATE AS DEFAULT
-  useEffect(() => {
-    dateBoxRef.current.valueAsDate = new Date();
-  }, []);
-
   // FORM HANDLING
   const validate = (values) => {
     const errors = {};
@@ -52,35 +44,24 @@ export default function TaskCreator({ projectData, setModalOpen }) {
     initialValues: {
       task_name: "",
       task_description: "",
-      due_date: "",
     },
     validate,
     onSubmit: async (values) => {
       setProcessing(true);
-      // Handling Date
-      const dateX = DateTime.fromSQL(values.due_date);
-      const daysDifference = DateTime.now().diff(dateX, "hours").values.hours;
-      console.log(daysDifference);
-      if (daysDifference >= 0) {
-        formik.errors.due_date = "Date must be valid";
-        setProcessing(false);
-      } else {
-        const { error } = await supabase.from("tasks").insert({
-          created_at: `${new Date().getUTCFullYear()}-${
-            new Date().getUTCMonth() + 1
-          }-${new Date().getUTCDay()}`,
-          name: values.task_name,
-          description: values.task_description,
-          assigned_to: "",
-          status: categoryState,
-          priorty: priortyState,
-          due_date: values.due_date,
-          project_id: projectData.project_id,
-        });
-        setModalOpen(false);
+
+      const { error } = await supabase.from("tasks").insert({
+        name: values.task_name,
+        description: values.task_description,
+        assigned_to: "",
+        status: categoryState,
+        priorty: priortyState,
+        project_id: projectData.project_id,
+      });
+      if (error == null) {
         router.reload();
-        setProcessing(false);
       }
+      setModalOpen(false);
+      setProcessing(false);
     },
   });
 
@@ -89,7 +70,7 @@ export default function TaskCreator({ projectData, setModalOpen }) {
       onClick={(e) => {
         e.stopPropagation();
       }}
-      className="md:w-8/12 lg:w-6/12 p-2 m-3 border-[1px] text-black bg-[#FFF2F2] rounded-lg"
+      className="w-10/12 md:w-8/12 lg:w-6/12 p-2 m-3 border-[1px] text-black bg-[#FFF2F2] rounded-lg"
     >
       <h2
         className="w-fit mx-auto my-2 font-bold text-xl text-gray-800 uppercase"
@@ -169,23 +150,6 @@ export default function TaskCreator({ projectData, setModalOpen }) {
               }}
               required
             />
-          </div>
-
-          <div className="w-full flex flex-col">
-            <label className="block mb-1 text-sm font-medium text-gray-900">
-              Task Due Date:{" "}
-            </label>
-            <input
-              type={"date"}
-              name="due_date"
-              className="px-2 py-[.6em] text-sm text-black text-center border-[1px] border-gray-300 rounded focus:outline-none cursor-pointer"
-              style={{ border: formik.errors.due_date ? "red 2px solid" : "" }}
-              ref={dateBoxRef}
-              onChange={formik.handleChange}
-              value={formik.values.due_date}
-              required
-            />
-            <p>{formik.errors.due_date}</p>
           </div>
         </div>
 

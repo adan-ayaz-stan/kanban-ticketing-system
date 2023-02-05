@@ -1,4 +1,4 @@
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -10,7 +10,6 @@ export default function User({ user }) {
   const router = useRouter();
 
   const [isDropdownOpen, setDropdownOpen] = useState(false);
-
   const supabase = useSupabaseClient();
 
   const { isLoading, data, error, isSuccess } = useQuery(
@@ -21,6 +20,7 @@ export default function User({ user }) {
       cacheTime: 6000,
     }
   );
+
   async function logout() {
     const { error } = await supabase.auth.signOut();
 
@@ -46,9 +46,9 @@ export default function User({ user }) {
           xmlns="http://www.w3.org/2000/svg"
         >
           <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
             d="M19 9l-7 7-7-7"
           ></path>
         </svg>

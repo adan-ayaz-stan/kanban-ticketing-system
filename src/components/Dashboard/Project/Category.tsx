@@ -34,11 +34,7 @@ export default function Category({ category, projectData }: Props) {
         .from("tasks")
         .select()
         .filter("project_id", "eq", projectData.project_id)
-        .filter("status", "eq", category),
-    {
-      cacheTime: 5000,
-      staleTime: 5000,
-    }
+        .filter("status", "eq", category)
   );
 
   return (
@@ -47,7 +43,7 @@ export default function Category({ category, projectData }: Props) {
       dragListener={false}
       dragControls={controls}
       whileDrag={{ cursor: "grab" }}
-      className="w-full p-2 border-2 border-dotted border-white rounded shadow-xl backdrop-blur-lg bg-[#ffffff55]"
+      className="min-w-[15em] w-full p-2 border-2 border-dotted border-white rounded shadow-xl backdrop-blur-lg bg-[#ffffff55]"
     >
       <div className="flex justify-center items-center">
         <h1 className="w-fit px-2 py-1 mx-auto font-bold text-[#1A120B] uppercase bg-gray-200 rounded">
@@ -74,6 +70,14 @@ export default function Category({ category, projectData }: Props) {
               />
             );
           })}
+
+        {isSuccess && data.data.length == 0 ? (
+          <p className="text-sm text-center text-gray-700">
+            Tasks will appear here.
+          </p>
+        ) : (
+          ""
+        )}
       </div>
     </Reorder.Item>
   );

@@ -17,9 +17,10 @@ type pageProps = {
     ownership: String;
     task_categories: String[];
   };
+  user: {};
 };
 
-export default function IndvidualProject({ project }: pageProps) {
+export default function IndvidualProject({ project, user }: pageProps) {
   const router = useRouter();
   const supabase = useSupabaseClient();
 
@@ -69,10 +70,10 @@ export default function IndvidualProject({ project }: pageProps) {
   });
 
   return (
-    <div className="min-h-screen bg-[#FFF2F2]">
+    <div className="min-h-screen h-fit pb-24 bg-[#FFF2F2]">
       <Sidebar />
       <div className="relative sm:ml-16">
-        <NavigationBar projectData={project} />
+        <NavigationBar projectData={project} user={user} />
 
         {/* TASKS DIVISION WHERE THEY ARE DIVIDED INTO CATEGORIES According To types of tasks */}
 
@@ -80,7 +81,7 @@ export default function IndvidualProject({ project }: pageProps) {
           axis="x"
           values={items}
           onReorder={setItems}
-          className="flex flex-row gap-3 px-3"
+          className="min-h-[50vh] flex flex-row gap-3 px-6 py-4 overflow-x overflow-scroll"
         >
           {items.map((item, ind) => {
             return (
@@ -183,5 +184,5 @@ export async function getServerSideProps(context: { params: { id: number } }) {
     };
   }
 
-  return { props: { project: project.data[0] } };
+  return { props: { project: project.data[0], user: session.user } };
 }

@@ -18,13 +18,13 @@ export default function FirstScreen() {
         <div className="flex flex-row gap-4">
           <Link
             href={"/auth"}
-            className="px-2 py-1 bg-white bg-opacity-20 rounded hover:scale-[1.1] transition-all ease-out"
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-700 dark:hover:bg-blue-800 focus:outline-none dark:focus:ring-blue-800"
           >
             Login
           </Link>
           <Link
             href={"/auth"}
-            className="px-2 py-1 bg-white bg-opacity-20 rounded hover:scale-[1.1] transition-all ease-out"
+            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-700 dark:hover:bg-blue-800 focus:outline-none dark:focus:ring-blue-800"
           >
             Sign up
           </Link>

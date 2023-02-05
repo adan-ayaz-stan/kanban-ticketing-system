@@ -5,7 +5,7 @@ const montserrat = Montserrat({ subsets: ["latin"], weight: ["500", "800"] });
 
 export default function SecondScreen() {
   return (
-    <div className="min-h-screen h-fit flex flex-col md:flex-row py-12 bg-gradient-to-b from-black via-black to-gray-700 bg-opacity-60">
+    <div className="min-h-screen h-fit flex flex-col md:flex-row py-12 bg-gradient-to-b from-black via-black to-blue-900 bg-opacity-60">
       <div className="w-full flex flex-col items-center justify-center gap-4 px-12 text-white ">
         <h2 className={`text-[3em] font-bold ${montserrat.className}`}>
           About

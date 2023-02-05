@@ -5,7 +5,7 @@ import ProjectOverview from "./minis-NotOwnedProjects/ProjectOverview";
 export default function NotOwnedProjects({ user }) {
   const supabase = useSupabaseClient();
 
-  const { isLoading, data, error } = useQuery(
+  const { isLoading, data, error, isSuccess } = useQuery(
     "all-projects-user-is-part-of",
     () =>
       supabase
@@ -19,12 +19,12 @@ export default function NotOwnedProjects({ user }) {
   );
 
   return (
-    <div className="m-2 p-2 border-2 border-blue-500 rounded-xl">
+    <div className="m-2 p-2 rounded-xl shadow-xl backdrop-blur-lg bg-[#ffffff55]">
       <h1 className="p-2 mb-2 text-center rounded-t-xl rounded-b-md text-red-700 bg-white text-xl font-bold uppercase">
-        Active Projects ( Not Owned )
+        Projects You're a Member of
       </h1>
 
-      {data &&
+      {isSuccess &&
         data.data.map((ele, ind) => {
           return (
             <ProjectOverview
@@ -34,6 +34,14 @@ export default function NotOwnedProjects({ user }) {
             />
           );
         })}
+
+      {isSuccess && data.data.length == 0 ? (
+        <p className="text-center text-gray-700">
+          Projects others have added you to will appear here.
+        </p>
+      ) : (
+        ""
+      )}
     </div>
   );
 }

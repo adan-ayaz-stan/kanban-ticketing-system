@@ -1,4 +1,6 @@
+import Link from "next/link";
 import { useRouter } from "next/router";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import {
   AiFillGift,
   AiFillHome,
@@ -6,14 +8,12 @@ import {
   AiFillProject,
   AiFillContacts,
 } from "react-icons/ai/index";
-
 import { Tooltip } from "react-tooltip";
 
 import "react-tooltip/dist/react-tooltip.css";
+import { Barlow } from "@next/font/google";
 
-import { supabaseClient } from "@/supabase/supabase.config";
-import Link from "next/link";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
+const barlow = Barlow({ subsets: ["latin"], weight: "700" });
 
 export default function Sidebar() {
   const router = useRouter();
@@ -37,47 +37,52 @@ export default function Sidebar() {
           href={"/dashboard"}
           id="dashboard-sidebar-home"
           data-tooltip-content="Home"
-          className="w-fit p-2 hover:bg-cyan-400 cursor-pointer rounded-lg transition-all duration-300"
+          className="w-fit p-2 flex flex-col items-center hover:bg-gray-700 cursor-pointer rounded-lg transition-all duration-300"
         >
           <AiFillHome className="text-3xl" />
           <Tooltip anchorId="dashboard-sidebar-home">Home</Tooltip>
+          <p style={barlow.style} className="sm:hidden text-sm">
+            Home
+          </p>
         </Link>
         <Link
           href={"/dashboard/projects"}
           id="dashboard-sidebar-projects"
-          className="w-fit p-2 hover:bg-cyan-400 cursor-pointer rounded-lg transition-all duration-300"
+          className="w-fit p-2 flex flex-col items-center hover:bg-gray-700 cursor-pointer rounded-lg transition-all duration-300"
         >
           <AiFillProject className="text-3xl" />
           <Tooltip anchorId="dashboard-sidebar-projects">Projects</Tooltip>
+          <p style={barlow.style} className="sm:hidden text-sm">
+            Projects
+          </p>
         </Link>
         <Link
           href={"/dashboard/connections"}
           id="dashboard-sidebar-connections"
-          className="w-fit p-2 hover:bg-cyan-400 cursor-pointer rounded-lg transition-all duration-300"
+          className="w-fit p-2 flex flex-col items-center hover:bg-gray-700 cursor-pointer rounded-lg transition-all duration-300"
         >
           <AiFillContacts className="text-3xl" />
           <Tooltip anchorId="dashboard-sidebar-connections">
             Connections
           </Tooltip>
+          <p style={barlow.style} className="sm:hidden text-sm">
+            Connections
+          </p>
         </Link>
-        <div
-          id="dashboard-sidebar-gift"
-          className="w-fit p-2 hover:bg-cyan-400 cursor-pointer rounded-lg transition-all duration-300"
-        >
-          <AiFillGift className="text-3xl" />
-          <Tooltip anchorId="dashboard-sidebar-gift">[Placeholder]</Tooltip>
-        </div>
       </div>
 
       {/* Log Out */}
       <div
         id="dashboard-sidebar-logout"
         data-tooltip-content="Logout"
-        className="w-fit sm:mb-6 p-2 hover:bg-cyan-400 cursor-pointer rounded-lg transition-all duration-300"
+        className="w-fit sm:mb-6 p-2 mx-2 flex flex-col items-center hover:bg-gray-700 cursor-pointer rounded-lg transition-all duration-300"
         onClick={logout}
       >
         <AiOutlineLogout className="text-3xl" />
         <Tooltip anchorId="dashboard-sidebar-logout">Logout</Tooltip>
+        <p style={barlow.style} className="sm:hidden text-sm">
+          Logout
+        </p>
       </div>
     </div>
   );

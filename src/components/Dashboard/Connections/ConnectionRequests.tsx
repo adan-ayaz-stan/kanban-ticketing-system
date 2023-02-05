@@ -80,10 +80,7 @@ export default function ConnectionRequests({ user }) {
 
   return (
     <div className="my-5">
-      <h1
-        style={barlow.style}
-        className="w-fit mx-auto text-3xl"
-      >
+      <h1 style={barlow.style} className="w-fit mx-auto text-3xl">
         Connection Requests
       </h1>
 
@@ -163,6 +160,16 @@ export default function ConnectionRequests({ user }) {
               </div>
             );
           })}
+
+        {isSuccess && data.data.length == 0 ? (
+          <div className="col-span-12">
+            <p className="w-full text-center text-sm text-gray-600">
+              Any connection requests people send to you will appear here.
+            </p>
+          </div>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );

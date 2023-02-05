@@ -32,22 +32,28 @@ export default function Task({
   const [isEditMode, setEditMode] = useState(false);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
-  const router = useRouter();
   const supabase = useSupabaseClient();
+
+  const [taskAssignedTo, setTaskAssignedTo] = useState("");
 
   const { isLoading, isSuccess, data, error, refetch } = useQuery(
     `${task.task_id}-task-induvidual`,
     () =>
-      supabase.from("users").select("name").eq("id", task.assigned_to).limit(1)
+      supabase.from("users").select("name").eq("id", task.assigned_to).limit(1),
+    {
+      enabled: task.assigned_to == null ? false : true,
+    }
   );
 
   const assignedToUserName = () => {
-    if ((data == null && data.data == undefined) || data.data == null) {
-      return "";
-    } else {
-      return data.data[0].name;
+    if (data != null && data != undefined && data.data != null) {
+      setTaskAssignedTo(data.data[0].name);
     }
   };
+
+  useEffect(() => {
+    assignedToUserName();
+  }, [data]);
 
   async function deleteTask() {
     const { error } = await supabase
@@ -77,53 +83,40 @@ export default function Task({
   return (
     <div className="h-fit flex flex-col gap-3 px-2 py-4 bg-white bg-opacity-40 backdrop-blur-lg rounded-lg drop-shadow-lg">
       {/* Task title and description */}
-      <details>
-        {/* Different Top Bars based on priorty */}
-        {/* Low priorty */}
-        {task.priorty == "low" && (
-          <summary className="w-fit px-3 pt-2 text-[14px] text-white font-semibold pb-2 mb-2 border-b-2 bg-gray-500 cursor-pointer rounded">
-            {task.name}
-          </summary>
-        )}
-        {/* Medium Priorty */}
-        {task.priorty == "medium" && (
-          <summary className="w-fit px-3 pt-2 text-[14px] text-white font-semibold pb-2 mb-2 border-b-2 bg-orange-500 cursor-pointer rounded">
-            {task.name}
-          </summary>
-        )}
-        {/* High Priorty */}
-        {task.priorty == "high" && (
-          <summary className="w-fit px-3 pt-2 text-[14px] text-white font-semibold pb-2 mb-2 border-b-2 bg-red-500 cursor-pointer rounded">
-            {task.name}
-          </summary>
-        )}
-
-        <p className="h-fit p-2 text-[12px] text-blue-500 font-bold bg-gray-100 rounded">
-          <span className="uppercase text-gray-700">Description:</span>{" "}
-          {task.description}
-        </p>
-      </details>
+      {/* Different Top Bars based on priorty */}
+      {/* Low priorty */}
+      {task.priorty == "low" && (
+        <h1 className="w-fit px-3 pt-2 text-[14px] text-gray-900 font-semibold pb-2 mb-2 border-b-2 bg-gray-300 cursor-pointer rounded">
+          {task.name}
+        </h1>
+      )}
+      {/* Medium Priorty */}
+      {task.priorty == "medium" && (
+        <h1 className="w-fit px-3 pt-2 text-[14px] text-white font-semibold pb-2 mb-2 border-b-2 bg-orange-500 cursor-pointer rounded">
+          {task.name}
+        </h1>
+      )}
+      {/* High Priorty */}
+      {task.priorty == "high" && (
+        <h1 className="w-fit px-3 pt-2 text-[14px] text-white font-semibold pb-2 mb-2 border-b-2 bg-red-500 cursor-pointer rounded">
+          {task.name}
+        </h1>
+      )}
+      <p className="h-fit p-2 text-[12px] text-blue-500 font-bold bg-gray-100 rounded">
+        <span className="uppercase text-gray-700">Description:</span>{" "}
+        {task.description}
+      </p>
       {/* Task assigned to => ? */}
-      {isSuccess ? (
+      {isSuccess && error == null ? (
         <p className="h-fit px-2 py-1 text-[12px] text-black bg-gray-100 rounded">
           <span className="uppercase font-bold text-gray-700">
             Assigned To:{" "}
           </span>
-          <span className="font-bold text-green-800">
-            {assignedToUserName()}
-          </span>
+          <span className="font-bold text-green-800">{taskAssignedTo}</span>
         </p>
       ) : (
         ""
       )}
-
-      {/* Task Due Date */}
-      <p className="h-fit px-2 text-[12px] text-black rounded">
-        <span className="uppercase font-bold text-gray-700">Due Date: </span>
-        <span className="px-2 py-1 font-bold text-white bg-red-700 rounded-md">
-          {task.due_date}
-        </span>
-      </p>
 
       {/* Task Functions */}
       <div

@@ -33,8 +33,10 @@ export default function Account({ session }) {
             <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
               {data.data[0].name}
             </h5>
-            <span className="text-sm text-gray-500 dark:text-gray-400">
-              {session.user.id}
+            <span className="max-w-[10em] text-sm text-gray-500 dark:text-gray-400 truncate">
+              {`${session.user.id}`
+                .replace("-", "27as248d")
+                .replace("-", "7sc6wcv")}
             </span>
             <div className="flex mt-4 space-x-3 md:mt-6">
               <Link
