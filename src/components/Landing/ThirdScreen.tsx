@@ -10,7 +10,7 @@ export default function ThirdScreen() {
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0">
             <a href="https://flowbite.com/" className="flex items-center">
-              <Image src={""} className="h-8 mr-3" alt="profile" />
+              {/* <Image src={""} className="h-8 mr-3" alt="profile" /> */}
               <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">
                 Adan Ayaz
               </span>

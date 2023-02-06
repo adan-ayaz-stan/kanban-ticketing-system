@@ -35,21 +35,23 @@ const AuthPage = ({ session }) => {
     const { data, error } = await supabase
       .from("users")
       .select()
-      .eq("email", session?.user.email);
+      .eq("email", sessionClientSide?.user.email);
 
     if (data[0]) {
       setRedirecting(true);
       setUserExists(true);
       router.push("/dashboard");
     }
+
+    console.log(data);
   };
 
   useEffect(() => {
     checkIfUserExists();
   }, [sessionClientSide]);
 
-  if (isRedirecting) {
-    router.push("/");
+  if (sessionClientSide && userExists) {
+    router.push("/dashboard");
     return (
       <div className="min-h-screen bg-[#131209]">
         <h1 className="text-white">Redirecting...</h1>
@@ -57,8 +59,7 @@ const AuthPage = ({ session }) => {
     );
   }
 
-  if (session && !userExists) {
-    // router.push("/dashboard");
+  if (sessionClientSide && !userExists) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[url('https://images.pexels.com/photos/1194713/pexels-photo-1194713.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1280&dpr=1')]">
         <form

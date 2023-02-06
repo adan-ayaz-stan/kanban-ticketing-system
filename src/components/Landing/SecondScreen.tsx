@@ -22,7 +22,7 @@ export default function SecondScreen() {
         </p>
       </div>
       <div className="w-full p-20">
-        <div className="min-h-[300px] h-full bg-[url('https://images.pexels.com/photos/13583358/pexels-photo-13583358.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1280&dpr=1')] bg-contain bg-no-repeat"></div>
+        <div className="min-h-[300px] h-full bg-[url('https://images.pexels.com/photos/13583358/pexels-photo-13583358.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1280&dpr=1')] bg-contain bg-no-repeat bg-center"></div>
       </div>
     </div>
   );
