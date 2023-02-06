@@ -4,10 +4,18 @@ import SearchConnections from "@/components/Dashboard/Connections/SearchConnecti
 import Sidebar from "@/components/Dashboard/Sidebar";
 import SidebarFlowbite from "@/components/Dashboard/SidebarFlowBite";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import Head from "next/head";
 
 export default function Connections({ user }) {
   return (
     <div className="min-h-screen bg-[#FFF2F2] text-black">
+      <Head>
+        <title>Connections</title>
+        <meta name="description" content="Coded by Adan Ayaz" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
       <SidebarFlowbite user={user} />
       <div className="mt-20">
         {/* Search Connections */}

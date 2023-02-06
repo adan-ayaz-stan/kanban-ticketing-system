@@ -5,6 +5,7 @@ import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useFormik } from "formik";
 import { Reorder } from "framer-motion";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { BiCoinStack } from "react-icons/bi";
@@ -71,6 +72,13 @@ export default function IndvidualProject({ project, user }: pageProps) {
 
   return (
     <div className="min-h-screen h-fit pb-24 bg-[#FFF2F2]">
+      <Head>
+        <title>{project.name}</title>
+        <meta name="description" content="Coded by Adan Ayaz" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
       <Sidebar />
       <div className="relative sm:ml-16">
         <NavigationBar projectData={project} user={user} />

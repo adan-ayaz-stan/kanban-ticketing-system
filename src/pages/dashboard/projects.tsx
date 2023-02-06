@@ -8,6 +8,7 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import OwnedProjects from "@/components/Dashboard/Projects/OwnedProjects";
 import NotOwnedProjects from "@/components/Dashboard/Projects/NotOwnedProjects";
 import SidebarFlowbite from "@/components/Dashboard/SidebarFlowBite";
+import Head from "next/head";
 
 type pageProps = {
   user: {
@@ -30,6 +31,13 @@ const Dashboard: NextPage<pageProps> = ({ user }) => {
 
   return (
     <div className="min-h-screen bg-[#FFF2F2] text-black text-sm">
+      <Head>
+        <title>Projects</title>
+        <meta name="description" content="Coded by Adan Ayaz" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
       {/* Sidebar */}
       <SidebarFlowbite user={user} />
 

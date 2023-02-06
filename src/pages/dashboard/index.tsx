@@ -3,6 +3,7 @@ import Sidebar from "@/components/Dashboard/Sidebar";
 import SidebarFlowbite from "@/components/Dashboard/SidebarFlowBite";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { NextPage } from "next";
+import Head from "next/head";
 
 type pageProps = {
   user: Object;
@@ -11,6 +12,13 @@ type pageProps = {
 const Dashboard: NextPage<pageProps> = ({ user, initialSession }) => {
   return (
     <div className="min-h-screen bg-[#FFF2F2F] text-black">
+      <Head>
+        <title>Dashboard</title>
+        <meta name="description" content="Coded by Adan Ayaz" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
       {/* Sidebar */}
       {/* <Sidebar /> */}
       <SidebarFlowbite user={user} />
