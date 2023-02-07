@@ -43,9 +43,12 @@ export default function FirstScreen() {
 
           <div className="flex flex-col sm:flex-row gap-4 justify-between items-center">
             <div className="flex flex-row gap-4">
-              <button className="text-white bg-gray-900 hover:bg-gray-800 focus:ring-4 focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none">
+              <Link
+                href={"/auth"}
+                className="text-white bg-gray-900 hover:bg-gray-800 focus:ring-4 focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none"
+              >
                 Login
-              </button>
+              </Link>
               <p className="text-sm text-black">
                 The project planning platform <br /> for forward tech teams.
               </p>
