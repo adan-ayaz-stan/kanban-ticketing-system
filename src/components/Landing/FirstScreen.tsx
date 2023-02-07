@@ -12,7 +12,7 @@ export default function FirstScreen() {
   return (
     <div className="relative min-h-screen pb-12 text-white bg-gradient-to-br from-[#d1c8e4] to-[#ca97d4]">
       {/* Navbar */}
-      <div className="flex flex-row justify-between items-center px-12 py-4">
+      <div className="flex flex-row justify-between items-center px-6 sm:px-12 py-4">
         <div className="text-lg font-mono text-black">Adan Ayaz</div>
 
         <div className="flex flex-row gap-4">
