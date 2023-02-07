@@ -51,17 +51,17 @@ const AuthPage = ({ session }) => {
   }, [sessionClientSide]);
 
   if (sessionClientSide && userExists) {
-    router.push("/dashboard");
+    // router.push("/dashboard");
     return (
       <div className="min-h-screen bg-[#131209]">
-        <h1 className="text-white">Redirecting...</h1>
+        <h1 className="text-white text-center py-4">Redirecting...</h1>
       </div>
     );
   }
 
   if (sessionClientSide && !userExists) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[url('https://images.pexels.com/photos/1194713/pexels-photo-1194713.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1280&dpr=1')]">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#d1c8e4] to-[#ca97d4]">
         <form
           onSubmit={formSubmitHandler}
           className="w-full md:w-6/12 p-4 m-2 flex flex-col gap-3 bg-[#131209] rounded"
@@ -94,7 +94,7 @@ const AuthPage = ({ session }) => {
   }
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-[url('https://images.pexels.com/photos/1194713/pexels-photo-1194713.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1280&dpr=1')] p-2">
+    <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-[#d1c8e4] to-[#ca97d4] p-2">
       <div className="bg-[#131209] px-8 py-4 rounded-lg shadow-lg text-black">
         <Auth
           supabaseClient={supabase}
