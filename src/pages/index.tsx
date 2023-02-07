@@ -14,8 +14,8 @@ export default function Home() {
       </Head>
       <main>
         <FirstScreen />
-        <SecondScreen />
-        <ThirdScreen />
+        {/* <SecondScreen />
+        <ThirdScreen /> */}
       </main>
     </>
   );
