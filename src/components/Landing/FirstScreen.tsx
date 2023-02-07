@@ -6,25 +6,25 @@ import { Rubik, Sen } from "@next/font/google";
 import DoodleImage from "@/assets/images/doodle-main-page.png";
 
 const sen = Sen({ weight: "700", subsets: ["latin"] });
-const rubik = Rubik({ subsets: ["hebrew"], weight: "700" });
+const rubik = Rubik({ subsets: ["hebrew"], weight: "400" });
 
 export default function FirstScreen() {
   return (
-    <div className="min-h-screen pb-12 bg-[url('https://images.pexels.com/photos/1194713/pexels-photo-1194713.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1280&dpr=1')] bg-norepeat bg-cover bg-fixed text-white">
+    <div className="relative min-h-screen pb-12 text-white bg-gradient-to-br from-[#d1c8e4] to-[#ca97d4]">
       {/* Navbar */}
       <div className="flex flex-row justify-between items-center px-12 py-4">
-        <div>Logo</div>
+        <div className="text-lg font-mono text-black">Adan Ayaz</div>
 
         <div className="flex flex-row gap-4">
           <Link
             href={"/auth"}
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-700 dark:hover:bg-blue-800 focus:outline-none dark:focus:ring-blue-800"
+            className="text-white bg-gray-900 hover:bg-gray-800 focus:ring-4 focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none"
           >
             Login
           </Link>
           <Link
             href={"/auth"}
-            className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-700 dark:hover:bg-blue-800 focus:outline-none dark:focus:ring-blue-800"
+            className="text-white bg-gray-900 hover:bg-gray-800 focus:ring-4 focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none"
           >
             Sign up
           </Link>
@@ -32,29 +32,35 @@ export default function FirstScreen() {
       </div>
       {/* Navbar Closed */}
 
-      <div
-        className={`h-full grid grid-cols-1 sm:grid-cols-2 auto-rows-auto px-4 sm:px-12`}
-      >
-        <div className="py-8 sm:h-[500px] flex flex-col justify-center gap-2 text-center sm:text-left pl-0 lg:pl-16 md:pl-8 sm:pl-0">
-          <h2
-            className={`font-bold text-[3em] sm:text-[2.5em] leading-tight ${rubik.className}`}
+      <div className={`h-[80vh] flex flex-col`}>
+        <div className="flex flex-col px-6 py-2 mt-auto">
+          <h1
+            className="py-4 text-[3em] text-center sm:text-left leading-tight text-black"
+            style={rubik.style}
           >
-            Kanban Task Management System
-          </h2>
-          <p className={`text-lg text-blue-300 font-sen ${sen.className}`}>
-            A task management platform which helps you organize your team and
-            team members by assigning tasks to them.
-          </p>
-        </div>
+            Kanban Ticketing System
+          </h1>
 
-        <div className="flex items-end justify-center">
-          <Image
-            src={DoodleImage}
-            alt="doodle"
-            height={400}
-            width={400}
-            className="brightness-[200%]"
-          />
+          <div className="flex flex-col sm:flex-row gap-4 justify-between items-center">
+            <div className="flex flex-row gap-4">
+              <button className="text-white bg-gray-900 hover:bg-gray-800 focus:ring-4 focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none">
+                Login
+              </button>
+              <p className="text-sm text-black">
+                The project planning platform <br /> for forward tech teams.
+              </p>
+            </div>
+
+            <div
+              className="text-sm text-black text-center sm:text-right"
+              style={sen.style}
+            >
+              <p>Whats new? Project is now live!</p>
+              <a href="#" className="underline">
+                Learn more
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
