@@ -10,8 +10,9 @@ export default function NotOwnedProjects({ user }) {
     () =>
       supabase
         .from("project_members")
-        .select("id, project_id")
-        .eq("user_id", user.id),
+        .select("id, project_id, projects!inner (ownership)")
+        .eq("user_id", user.id)
+        .filter("projects.ownership", "not.eq", user.id),
     {
       staleTime: 5000,
       cacheTime: 5000,
@@ -24,16 +25,19 @@ export default function NotOwnedProjects({ user }) {
         Projects You're a Member of
       </h1>
 
-      {isSuccess &&
-        data.data.map((ele, ind) => {
-          return (
-            <ProjectOverview
-              projectID={ele.project_id}
-              user={user}
-              key={ele.id}
-            />
-          );
-        })}
+      {isSuccess && data.data != null && (
+        <div className="grid grid-cols-3 auto-rows-auto gap-3">
+          {data.data.map((ele, ind) => {
+            return (
+              <ProjectOverview
+                projectID={ele.project_id}
+                user={user}
+                key={ele.id}
+              />
+            );
+          })}
+        </div>
+      )}
 
       {isSuccess && data.data.length == 0 ? (
         <p className="text-center text-gray-700">

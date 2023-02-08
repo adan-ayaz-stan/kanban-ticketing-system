@@ -27,7 +27,7 @@ export default function ProjectOverview({ projectID, user }) {
       {isSuccess && data.data[0] != null && (
         <Link
           href={`/dashboard/project/${data.data[0].project_id}`}
-          className="flex flex-col gap-3 text-white p-4 bg-[#7286d3] rounded-lg"
+          className="flex flex-col gap-3 text-white p-4 border-gray-300 border-2 border-l-blue-500 border-l-4 rounded-lg"
         >
           {/* Project heading */}
           <div className="flex flex-row justify-between items-center">
@@ -39,14 +39,6 @@ export default function ProjectOverview({ projectID, user }) {
             </p>
           </div>
         </Link>
-      )}
-
-      {isSuccess && data.data.length == 0 ? (
-        <p className="text-center text-gray-700">
-          Projects others have added you to will appear here.
-        </p>
-      ) : (
-        ""
       )}
     </>
   );

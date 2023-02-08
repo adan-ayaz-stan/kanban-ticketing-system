@@ -30,11 +30,13 @@ export default function ProjectOverview({ projectData }: componentProp) {
   return (
     <Link
       href={`/dashboard/project/${projectData.project_id}`}
-      className="flex flex-col gap-3 text-white p-4 bg-[#7286d3] rounded-lg"
+      className="flex flex-col gap-3 text-white p-4 border-gray-300 border-2 border-l-blue-500 border-l-4 rounded-lg"
     >
       {/* Project heading */}
-      <div className="flex flex-row justify-between items-center">
-        <h1 className="text-2xl font-bold text-white">{projectData.name}</h1>
+      <div className="flex flex-row gap-2 justify-between items-center">
+        <h1 className="text-2xl font-bold text-gray-800 truncate">
+          {projectData.name}asdasdasdasdasdadas
+        </h1>
         <p className="h-fit px-2 text-sm text-[#1A120B] font-bold bg-gray-200 rounded">
           {projectData.created_at}
         </p>
@@ -42,7 +44,7 @@ export default function ProjectOverview({ projectData }: componentProp) {
       {/* Project Main Information */}
       <div className="flex flex-col gap-3">
         <p className="text-sm">
-          <span>Total Participants:</span>{" "}
+          <span className="text-gray-700">Total Participants:</span>{" "}
           <span className="h-fit px-2 text-sm text-[#1A120B] font-bold bg-gray-200 rounded">
             {data && data.data.length}
           </span>
