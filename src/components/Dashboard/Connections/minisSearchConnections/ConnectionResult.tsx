@@ -33,7 +33,7 @@ export default function ConnectionResult({
   }
 
   return (
-    <div className="relative col-span-6 sm:col-span-6 md:col-span-4 flex flex-col items-center gap-3 p-3 m-2 text-white bg-[#1A120A] rounded">
+    <div className="relative col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3 flex flex-col items-center gap-3 p-3 m-2 text-gray-800 bg-white rounded border-2 border-gray-300">
       <div className="relative h-20 w-20">
         <Image
           src={
@@ -59,7 +59,7 @@ export default function ConnectionResult({
             onClick={(e) => {
               sendConnectionRequest(userSearchResult.id, e);
             }}
-            className="px-2 py-1 text-gray-700 bg-[#D5CEA3] hover:bg-[#E5E5CB] rounded font-mono"
+            className="px-2 py-1 text-gray-700 bg-gray-200 hover:bg-gray-300 rounded font-mono"
             disabled={processing ? true : false}
             style={{
               background: processing ? "gray" : "",
