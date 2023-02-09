@@ -1,4 +1,13 @@
+import { User } from "@/types/types";
 import Image from "next/image";
+
+type ConnectionResultProps = {
+  processing: boolean;
+  setProcessing(arg0: boolean): boolean;
+  userSearchResult: { name: string; email: string; id: string };
+  user: User;
+  supabase: any;
+};
 
 export default function ConnectionResult({
   processing,
@@ -6,7 +15,8 @@ export default function ConnectionResult({
   userSearchResult,
   user,
   supabase,
-}) {
+}: ConnectionResultProps) {
+  console.log(userSearchResult);
   // Send Connection request function handler
   async function sendConnectionRequest(receiverID: String, event: Object) {
     setProcessing(true);
@@ -20,14 +30,6 @@ export default function ConnectionResult({
       sender_id: user.id,
       receiver_id: receiverID,
     });
-
-    if (error == null) {
-      console.log("Successfully request sent.");
-      event.target.style.display = "none";
-      setProcessing(false);
-    } else {
-      event.target.style.display = "block";
-    }
 
     setProcessing(false);
   }

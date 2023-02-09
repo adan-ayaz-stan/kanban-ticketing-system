@@ -1,12 +1,13 @@
-import Account from "@/components/Dashboard/Account";
-import Sidebar from "@/components/Dashboard/Sidebar";
-import SidebarFlowbite from "@/components/Dashboard/SidebarFlowBite";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { NextPage } from "next";
 import Head from "next/head";
+import Account from "@/components/Dashboard/Account";
+import SidebarFlowbite from "@/components/Dashboard/SidebarFlowBite";
+import { User } from "@/types/types";
 
 type pageProps = {
-  user: Object;
+  user: User;
+  initialSession: Object;
 };
 
 const Dashboard: NextPage<pageProps> = ({ user, initialSession }) => {

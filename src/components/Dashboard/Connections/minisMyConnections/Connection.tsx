@@ -15,8 +15,8 @@ export default function Connection({ connectionUserID }) {
   );
 
   return (
-    <div className="relative min-w-[30em] flex flex-row items-center gap-3 p-3 text-gray-800 bg-white rounded-xl border-gray-300 border-2">
-      <div className="relative h-20 w-20">
+    <div className="relative flex flex-row items-center gap-3 p-3 text-gray-800 bg-white rounded-xl border-gray-300 border-2">
+      <div className="relative h-14 w-16 sm:h-20 sm:w-20">
         <Image
           src={
             "https://images.pexels.com/photos/14208349/pexels-photo-14208349.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
@@ -27,7 +27,7 @@ export default function Connection({ connectionUserID }) {
         />
       </div>
       <div>
-        <p style={barlow.style} className="text-lg">
+        <p style={barlow.style} className=" sm:text-lg">
           {isSuccess && `${data.data[0].name}`}
         </p>
       </div>

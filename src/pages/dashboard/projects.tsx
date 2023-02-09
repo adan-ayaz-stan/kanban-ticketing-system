@@ -9,14 +9,14 @@ import OwnedProjects from "@/components/Dashboard/Projects/OwnedProjects";
 import NotOwnedProjects from "@/components/Dashboard/Projects/NotOwnedProjects";
 import SidebarFlowbite from "@/components/Dashboard/SidebarFlowBite";
 import Head from "next/head";
+import { User } from "@/types/types";
 
 type pageProps = {
-  user: {
-    id: string;
-  };
+  user: User;
 };
 
-const Dashboard: NextPage<pageProps> = ({ user }) => {
+const Projects: NextPage<pageProps> = ({ user }) => {
+  console.log(user);
   const supabase = useSupabaseClient();
 
   // Project Owned By Users
@@ -57,7 +57,7 @@ const Dashboard: NextPage<pageProps> = ({ user }) => {
   );
 };
 
-export const getServerSideProps = async (ctx) => {
+export const getServerSideProps = async (ctx: any) => {
   // Create authenticated Supabase Client
   const supabase = createServerSupabaseClient(ctx);
   // Check if we have a session
@@ -83,4 +83,4 @@ export const getServerSideProps = async (ctx) => {
   };
 };
 
-export default Dashboard;
+export default Projects;

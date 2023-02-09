@@ -1,27 +1,26 @@
-import Category from "@/components/Dashboard/Project/Category";
-import NavigationBar from "@/components/Dashboard/Project/NavigationBar";
-import Sidebar from "@/components/Dashboard/Sidebar";
-import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useFormik } from "formik";
 import { Reorder } from "framer-motion";
+import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
+
+import Category from "@/components/Dashboard/Project/Category";
+import NavigationBar from "@/components/Dashboard/Project/NavigationBar";
+import Sidebar from "@/components/Dashboard/Sidebar";
+
+import { Project, User } from "@/types/types";
 import { BiCoinStack } from "react-icons/bi";
 
 type pageProps = {
-  project: {
-    project_id: String;
-    name: String;
-    created_at: String;
-    ownership: String;
-    task_categories: String[];
-  };
-  user: {};
+  project: Project;
+  user: User;
 };
 
 export default function IndvidualProject({ project, user }: pageProps) {
+  console.log(project);
   const router = useRouter();
   const supabase = useSupabaseClient();
 
@@ -31,8 +30,8 @@ export default function IndvidualProject({ project, user }: pageProps) {
   const [isCreateCategoryModalOpen, setCreateCategoryModalOpen] =
     useState(false);
 
-  const validate = (values) => {
-    const errors = {};
+  const validate = (values: { category_name: string }) => {
+    const errors: { category_name: any } = { category_name: null };
 
     if (!/^(\w+\s)*\w+$/.test(values.category_name)) {
       errors.category_name =
@@ -156,7 +155,7 @@ export default function IndvidualProject({ project, user }: pageProps) {
 }
 
 // This gets called on every request
-export async function getServerSideProps(context: { params: { id: number } }) {
+export async function getServerSideProps(context: any) {
   const params = context.params.id;
 
   // Create authenticated Supabase Client
@@ -191,6 +190,5 @@ export async function getServerSideProps(context: { params: { id: number } }) {
       },
     };
   }
-
   return { props: { project: project.data[0], user: session.user } };
 }
