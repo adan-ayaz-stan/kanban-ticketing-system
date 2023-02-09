@@ -5,10 +5,18 @@ import { useQuery } from "react-query";
 
 const barlow = Barlow({ subsets: ["latin"], weight: "500" });
 
-export default function Connection({ connectionUserID }) {
+export default function Connection({
+  connectionUserID,
+}: {
+  connectionUserID: string;
+}) {
   const supabase = useSupabaseClient();
 
-  const { isSuccess, data, error } = useQuery(
+  const {
+    isSuccess,
+    data,
+    error,
+  }: { data: { data: [] }; isSuccess: boolean; error: object } = useQuery(
     `user-data-for-${connectionUserID}-my-connections`,
     () => supabase.from("users").select("name").eq("id", connectionUserID),
     { staleTime: Infinity, cacheTime: Infinity }

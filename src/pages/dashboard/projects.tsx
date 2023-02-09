@@ -16,7 +16,6 @@ type pageProps = {
 };
 
 const Projects: NextPage<pageProps> = ({ user }) => {
-  console.log(user);
   const supabase = useSupabaseClient();
 
   // Project Owned By Users

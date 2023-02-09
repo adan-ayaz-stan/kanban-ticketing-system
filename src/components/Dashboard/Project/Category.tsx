@@ -43,7 +43,7 @@ export default function Category({ category, projectData }: Props) {
       dragListener={false}
       dragControls={controls}
       whileDrag={{ cursor: "grab" }}
-      className="min-w-[15em] w-full p-2 border-2 border-dotted border-white rounded shadow-xl backdrop-blur-lg bg-[#ffffff55]"
+      className="min-w-[20em] w-full p-2 border-2 border-dotted border-white rounded shadow-xl backdrop-blur-lg bg-[#eeeeee55]"
     >
       <div className="flex justify-center items-center">
         <h1 className="w-fit px-2 py-1 mx-auto font-bold text-[#1A120B] uppercase bg-gray-200 rounded">

@@ -36,7 +36,7 @@ export default function Connections({ user }: ConnectionProps) {
   );
 }
 
-export const getServerSideProps = async (ctx) => {
+export const getServerSideProps = async (ctx: any) => {
   // Create authenticated Supabase Client
   const supabase = createServerSupabaseClient(ctx);
   // Check if we have a session

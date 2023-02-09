@@ -1,10 +1,19 @@
-import { Auth, ThemeMinimal, ThemeSupa } from "@supabase/auth-ui-react";
+import { Auth, ThemeSupa } from "@supabase/auth-ui-react";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 
-const AuthPage = ({ session }) => {
+type AuthPageProps = {
+  session: {
+    user: {
+      email: string;
+      id: string;
+    };
+  };
+};
+
+const AuthPage = ({ session }: AuthPageProps) => {
   const router = useRouter();
 
   const [userExists, setUserExists] = useState(false);
@@ -15,7 +24,7 @@ const AuthPage = ({ session }) => {
 
   const sessionClientSide = useSession();
 
-  const formSubmitHandler = async (e) => {
+  const formSubmitHandler = async (e: HTMLFormElement) => {
     e.preventDefault();
 
     const { error } = await supabase.from("users").upsert({
@@ -51,7 +60,7 @@ const AuthPage = ({ session }) => {
   }, [sessionClientSide]);
 
   if (sessionClientSide && userExists) {
-    // router.push("/dashboard");
+    router.push("/dashboard");
     return (
       <div className="min-h-screen bg-[#131209]">
         <h1 className="text-white text-center py-4">Redirecting...</h1>
@@ -120,7 +129,7 @@ const AuthPage = ({ session }) => {
   );
 };
 
-export const getServerSideProps = async (ctx) => {
+export const getServerSideProps = async (ctx: any) => {
   // Create authenticated Supabase Client
   const supabase = createServerSupabaseClient(ctx);
   // Check if we have a session
