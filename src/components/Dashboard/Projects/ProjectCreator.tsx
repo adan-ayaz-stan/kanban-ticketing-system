@@ -65,7 +65,7 @@ export default function ProjectCreator({ user, refetch }) {
       {isModalOpen ? (
         <button
           onClick={() => setModalOpen(false)}
-          className="flex flex-row gap-2 items-center p-2 ml-auto font-bold rounded-lg text-white bg-[#7286D3]"
+          className="flex flex-row gap-2 items-center p-2 ml-auto font-bold rounded-lg text-white bg-gray-900"
         >
           <span className="text-2xl">
             <AiOutlineClose />
@@ -75,7 +75,7 @@ export default function ProjectCreator({ user, refetch }) {
       ) : (
         <button
           onClick={() => setModalOpen(true)}
-          className="flex flex-row gap-2 items-center p-2 ml-auto font-bold rounded-lg text-white bg-[#7286D3]"
+          className="flex flex-row gap-2 items-center p-2 ml-auto font-bold rounded-lg text-white bg-gray-900"
         >
           <span className="text-2xl">
             <AiOutlinePlus />
@@ -89,7 +89,7 @@ export default function ProjectCreator({ user, refetch }) {
         {isModalOpen && (
           <motion.form
             onSubmit={formik.handleSubmit}
-            className="flex flex-col gap-2 p-2 mt-2 border-2 text-white bg-[#7286D3] rounded-lg"
+            className="flex flex-col gap-2 p-2 mt-2 border-2 text-white bg-gray-900 rounded-lg"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{

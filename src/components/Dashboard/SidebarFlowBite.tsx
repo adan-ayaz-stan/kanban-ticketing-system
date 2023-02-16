@@ -12,7 +12,7 @@ export default function SidebarFlowbite({ user }) {
 
   return (
     <>
-      <nav className="fixed top-0 z-30 w-full bg-[#7286D3]">
+      <nav className="fixed top-0 z-30 w-full bg-gray-900">
         <div className="px-3 py-3 lg:px-5 lg:pl-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-start px-4">
@@ -38,7 +38,7 @@ export default function SidebarFlowbite({ user }) {
 
       <div
         id="drawer-navigation"
-        className="fixed top-0 left-0 z-40 w-64 h-screen p-4 overflow-y-auto transition-transform duration-500 bg-[#7286D3]"
+        className="fixed top-0 left-0 z-40 w-64 h-screen p-4 overflow-y-auto transition-transform duration-500 bg-gray-900"
         style={{
           transform: isOpenMenu ? "translateX(0%)" : "translate(-100%)",
         }}

@@ -20,7 +20,6 @@ type pageProps = {
 };
 
 export default function IndvidualProject({ project, user }: pageProps) {
-  console.log(project);
   const router = useRouter();
   const supabase = useSupabaseClient();
 

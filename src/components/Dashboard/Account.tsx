@@ -18,7 +18,7 @@ export default function Account({ session }) {
 
   return (
     <>
-      <div className="w-full bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+      <div className="w-full bg-gray-900 border border-gray-200 rounded-lg shadow">
         {isSuccess && (
           <div className="flex flex-col items-center py-10">
             <Image

@@ -30,7 +30,7 @@ export default function ProjectOverview({ projectData }: componentProp) {
   return (
     <Link
       href={`/dashboard/project/${projectData.project_id}`}
-      className="flex flex-col gap-3 text-white p-4 border-gray-300 border-2 border-l-blue-500 border-l-4 rounded-lg"
+      className="flex flex-col gap-3 text-white p-4 border-gray-300 border-2 border-l-gray-900 border-l-4 rounded-lg"
     >
       {/* Project heading */}
       <div className="flex flex-row gap-2 justify-between items-center">

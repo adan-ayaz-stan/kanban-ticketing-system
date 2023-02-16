@@ -104,7 +104,7 @@ const AuthPage = ({ session }: AuthPageProps) => {
 
   return (
     <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-[#d1c8e4] to-[#ca97d4] p-2">
-      <div className="bg-[#131209] px-8 py-4 rounded-lg shadow-lg text-black">
+      <div className="w-11/12 sm:w-6/12 md:w-4/12 bg-gray-900 px-8 py-4 rounded-lg shadow-lg text-black">
         <Auth
           supabaseClient={supabase}
           appearance={{
