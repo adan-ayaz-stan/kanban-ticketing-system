@@ -24,35 +24,13 @@ interface TaskTypes {
   projectData: Object;
 }
 
-export default function Task({
-  task,
-  projectData,
-}: TaskTypes) {
+export default function Task({ task, projectData }: TaskTypes) {
   const [isEditMode, setEditMode] = useState(false);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
   const supabase = useSupabaseClient();
 
   const [taskAssignedTo, setTaskAssignedTo] = useState("");
-
-  const { isLoading, isSuccess, data, error, refetch } = useQuery(
-    `${task.task_id}-task-induvidual`,
-    () =>
-      supabase.from("users").select("name").eq("id", task.assigned_to).limit(1),
-    {
-      enabled: task.assigned_to == null ? false : true,
-    }
-  );
-
-  const assignedToUserName = () => {
-    if (data != null && data != undefined && data.data != null) {
-      setTaskAssignedTo(data.data[0].name);
-    }
-  };
-
-  useEffect(() => {
-    assignedToUserName();
-  }, [data]);
 
   async function deleteTask() {
     const { error } = await supabase
@@ -100,16 +78,10 @@ export default function Task({
         {task.description}
       </p>
       {/* Task assigned to => ? */}
-      {isSuccess && error == null ? (
-        <p className="h-fit px-2 py-1 text-[12px] text-black bg-gray-100 rounded">
-          <span className="uppercase font-bold text-gray-700">
-            Assigned To:{" "}
-          </span>
-          <span className="font-bold text-green-800">{taskAssignedTo}</span>
-        </p>
-      ) : (
-        ""
-      )}
+      <p className="h-fit px-2 py-1 text-[12px] text-black bg-gray-100 rounded">
+        <span className="uppercase font-bold text-gray-700">Assigned To: </span>
+        <span className="font-bold text-green-800">{task.users != null ? task.users.name : ""}</span>
+      </p>
 
       {/* Task Functions */}
       <div

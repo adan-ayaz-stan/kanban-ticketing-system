@@ -75,7 +75,7 @@ export default function IndvidualProject({ project, user }: pageProps) {
   async function getTasksForProjects() {
     const { data, error } = await supabase
       .from("tasks")
-      .select()
+      .select("*, users(name)")
       .eq("project_id", project.project_id);
 
     if (error == null) {
@@ -96,15 +96,28 @@ export default function IndvidualProject({ project, user }: pageProps) {
           table: "tasks",
           filter: `project_id=eq.${project.project_id}`,
         },
-        (payload) => {
+        async (payload) => {
           // Adding the task to the existing array of tasks
+          const { data, error } = await supabase
+            .from("users")
+            .select("name")
+            .eq("id", user.id);
 
           // If incase task editing occurs, we will remove that respective task from the array and add the new payload to the array
           setTasks((tasksPrev) => {
+            //
             const filteredArray = tasksPrev.filter(
               (ele, ind) => ele.task_id != payload.new.task_id
             );
-            return [...filteredArray, payload.new];
+
+            const newObject = {
+              ...payload.new,
+              users: {
+                name: data[0].name,
+              },
+            };
+
+            return [newObject, ...filteredArray];
           });
         }
       )
@@ -130,7 +143,7 @@ export default function IndvidualProject({ project, user }: pageProps) {
           axis="x"
           values={items}
           onReorder={setItems}
-          className="min-h-[50vh] flex flex-row gap-3 px-6 py-4 overflow-x overflow-scroll"
+          className="min-h-[50vh] flex flex-row gap-3 px-6 py-4 pb-20 overflow-x overflow-scroll"
         >
           {items.map((item, ind) => {
             const tasksForCategory = tasks.filter(
