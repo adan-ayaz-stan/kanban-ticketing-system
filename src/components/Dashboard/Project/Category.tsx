@@ -4,11 +4,6 @@ import { TbGridDots } from "react-icons/tb/index";
 import { useQuery } from "react-query";
 import Task from "./Task";
 
-interface Props {
-  category: String;
-  projectData: Object;
-}
-
 interface TaskTypes {
   task_id: string;
   created_at: string;
@@ -23,19 +18,15 @@ interface TaskTypes {
   project_id: string;
 }
 
-export default function Category({ category, projectData }: Props) {
+interface Props {
+  category: String;
+  projectData: Object;
+  tasks: TaskTypes[];
+}
+
+export default function Category({ category, projectData, tasks }: Props) {
   const controls = useDragControls();
   const supabase = useSupabaseClient();
-
-  const { isLoading, data, error, refetch, isSuccess } = useQuery(
-    `tasks-for-${category}`,
-    () =>
-      supabase
-        .from("tasks")
-        .select()
-        .filter("project_id", "eq", projectData.project_id)
-        .filter("status", "eq", category)
-  );
 
   return (
     <Reorder.Item
@@ -58,20 +49,13 @@ export default function Category({ category, projectData }: Props) {
       </div>
 
       <div className="flex flex-col gap-3 py-3">
-        {isSuccess &&
-          data.data.map((ele, ind) => {
-            return (
-              <Task
-                task={ele}
-                key={ele.task_id}
-                projectData={projectData}
-                category={category}
-                refetchTasks={refetch}
-              />
-            );
-          })}
+        {tasks.map((ele, ind) => {
+          return (
+            <Task task={ele} key={ele.task_id} projectData={projectData} />
+          );
+        })}
 
-        {isSuccess && data.data.length == 0 ? (
+        {tasks.length == 0 ? (
           <p className="text-sm text-center text-gray-700">
             Tasks will appear here.
           </p>

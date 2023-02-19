@@ -3,7 +3,7 @@ import { Reorder } from "framer-motion";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
@@ -24,11 +24,13 @@ export default function IndvidualProject({ project, user }: pageProps) {
   const supabase = useSupabaseClient();
 
   const [items, setItems] = useState(project.task_categories);
+  const [tasks, setTasks] = useState([]);
 
   const [processing, setProcessing] = useState(false);
   const [isCreateCategoryModalOpen, setCreateCategoryModalOpen] =
     useState(false);
 
+  // Validation for form below
   const validate = (values: { category_name: string }) => {
     const errors: { category_name: any } = { category_name: null };
 
@@ -40,6 +42,7 @@ export default function IndvidualProject({ project, user }: pageProps) {
     return errors;
   };
 
+  // Form for creating category
   const formik = useFormik({
     initialValues: {
       category_name: "",
@@ -68,6 +71,46 @@ export default function IndvidualProject({ project, user }: pageProps) {
     },
   });
 
+  // Get tasks function
+  async function getTasksForProjects() {
+    const { data, error } = await supabase
+      .from("tasks")
+      .select()
+      .eq("project_id", project.project_id);
+
+    if (error == null) {
+      setTasks(data);
+    }
+  }
+
+  useEffect(() => {
+    getTasksForProjects();
+    // Setting up the subscription
+    supabase
+      .channel("any")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "tasks",
+          filter: `project_id=eq.${project.project_id}`,
+        },
+        (payload) => {
+          // Adding the task to the existing array of tasks
+
+          // If incase task editing occurs, we will remove that respective task from the array and add the new payload to the array
+          setTasks((tasksPrev) => {
+            const filteredArray = tasksPrev.filter(
+              (ele, ind) => ele.task_id != payload.new.task_id
+            );
+            return [...filteredArray, payload.new];
+          });
+        }
+      )
+      .subscribe();
+  }, []);
+
   return (
     <div className="min-h-screen h-fit pb-24 bg-[#FFF2F2]">
       <Head>
@@ -90,8 +133,17 @@ export default function IndvidualProject({ project, user }: pageProps) {
           className="min-h-[50vh] flex flex-row gap-3 px-6 py-4 overflow-x overflow-scroll"
         >
           {items.map((item, ind) => {
+            const tasksForCategory = tasks.filter(
+              (ele) => `${ele.status}`.toLowerCase() == item.toLowerCase()
+            );
+
             return (
-              <Category category={item} projectData={project} key={item} />
+              <Category
+                category={item}
+                tasks={tasksForCategory}
+                projectData={project}
+                key={item}
+              />
             );
           })}
 

@@ -57,9 +57,6 @@ export default function TaskCreator({ projectData, setModalOpen }) {
         priorty: priortyState,
         project_id: projectData.project_id,
       });
-      if (error == null) {
-        router.reload();
-      }
       setModalOpen(false);
       setProcessing(false);
     },

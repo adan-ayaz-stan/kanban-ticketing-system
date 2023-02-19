@@ -27,8 +27,6 @@ export default function TaskEditor({
   task,
   setEditMode,
   projectData,
-  refetchTasks,
-  category,
 }: TaskEditor) {
   const router = useRouter();
   const supabase = useSupabaseClient();
@@ -106,11 +104,6 @@ export default function TaskEditor({
         .eq("task_id", task.task_id);
 
       if (error == null) {
-        if (category == statusTo.value) {
-          refetchTasks();
-        } else {
-          router.reload();
-        }
         setEditMode(false);
       }
       setProcessing(false);

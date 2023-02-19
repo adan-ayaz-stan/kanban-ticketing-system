@@ -21,13 +21,12 @@ interface TaskTypes {
     report: string;
     project_id: string;
   };
+  projectData: Object;
 }
 
 export default function Task({
   task,
   projectData,
-  refetchTasks,
-  category,
 }: TaskTypes) {
   const [isEditMode, setEditMode] = useState(false);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
@@ -60,10 +59,6 @@ export default function Task({
       .from("tasks")
       .delete()
       .eq("task_id", task.task_id);
-
-    if (error == null) {
-      refetchTasks();
-    }
   }
 
   if (isEditMode) {
@@ -73,8 +68,6 @@ export default function Task({
           task={task}
           setEditMode={setEditMode}
           projectData={projectData}
-          refetchTasks={refetchTasks}
-          category={category}
         />
       </div>
     );
