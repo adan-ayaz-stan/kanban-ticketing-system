@@ -23,7 +23,7 @@ A Kanban Ticketing System was created to allow project management and collaborat
 ![site-snapshot](https://i.ibb.co/L9dBpJj/category-remover.jpg)
 
 ## Connections Page
-![site-snapshot](https://i.ibb.co/FWxRqcN/connections.png) 
+![site-snapshot](https://i.ibb.co/qY49Y9c/connections.png)
 
 Made with Next 13, tailwindcss, Formik, Typescript, Framer Motion and Supabase.
 
