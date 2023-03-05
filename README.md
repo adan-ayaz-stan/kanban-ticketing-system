@@ -1,6 +1,30 @@
 # Kanban Ticketing System
 A Kanban Ticketing System was created to allow project management and collaboration by enabling users to create, edit, and delete tasks and connect with other network users.
 
+## Hero Page
+![site-snapshot](https://i.ibb.co/GMTTdXN/hero.png)
+
+## Account Page
+![site-snapshot](https://i.ibb.co/cYVzdmR/account.png)
+
+## All Projects Page
+![site-snapshot](https://i.ibb.co/qpTsJPj/projects.png)
+
+## Induvidual Project Overview Page
+![site-snapshot](https://i.ibb.co/br8dt4v/project.jpg)
+
+![site-snapshot](https://i.ibb.co/cQxFQc7/project-sidemenu.jpg)
+
+## Main Functions for an induvidual project Page
+![site-snapshot](https://i.ibb.co/qp6vB6h/create-task.jpg)
+
+![site-snapshot](https://i.ibb.co/yYtQkbg/add-member.jpg)
+
+![site-snapshot](https://i.ibb.co/L9dBpJj/category-remover.jpg)
+
+## Connections Page
+![site-snapshot](https://i.ibb.co/FWxRqcN/connections.png)
+
 Made with Next 13, tailwindcss, Formik, Typescript, Framer Motion and Supabase.
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
