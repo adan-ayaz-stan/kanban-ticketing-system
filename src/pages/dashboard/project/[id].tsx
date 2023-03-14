@@ -47,8 +47,8 @@ export default function IndvidualProject({ project, user }: pageProps) {
     initialValues: {
       category_name: "",
     },
-    validate,
-    validateOnBlur: false,
+    // validate,
+    // validateOnBlur: false,
     onSubmit: async (values) => {
       setProcessing(true);
 
@@ -67,6 +67,8 @@ export default function IndvidualProject({ project, user }: pageProps) {
         setCreateCategoryModalOpen(false);
         router.reload();
       }
+
+      console.log(error);
       setProcessing(false);
     },
   });
@@ -225,12 +227,20 @@ export default function IndvidualProject({ project, user }: pageProps) {
             </div>
 
             <button
+              onClick={() => console.log("click")}
               type="submit"
               className="p-2 font-bold text-white bg-[#0a0704] disabled:bg-gray-600 rounded"
-              disabled={processing}
             >
               Create Column
             </button>
+
+            <p className="text-[12px]">
+              Previously, I had validations all over the place including the
+              category creator. Considering that it just gets annoying just to
+              satisfy the conditions, I have removed validation. Therefore, it
+              is requested to be lenient with entering category names. Try to
+              keep em short, thanks!
+            </p>
           </form>
         </div>
       )}
