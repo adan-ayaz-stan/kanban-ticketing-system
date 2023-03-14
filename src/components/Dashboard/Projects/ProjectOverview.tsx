@@ -35,7 +35,7 @@ export default function ProjectOverview({ projectData }: componentProp) {
       {/* Project heading */}
       <div className="flex flex-row gap-2 justify-between items-center">
         <h1 className="text-2xl font-bold text-gray-800 truncate">
-          {projectData.name}asdasdasdasdasdadas
+          {projectData.name}
         </h1>
         <p className="h-fit px-2 text-sm text-[#1A120B] font-bold bg-gray-200 rounded">
           {projectData.created_at}

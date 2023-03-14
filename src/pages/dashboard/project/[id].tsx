@@ -143,7 +143,7 @@ export default function IndvidualProject({ project, user }: pageProps) {
           axis="x"
           values={items}
           onReorder={setItems}
-          className="min-h-[50vh] flex flex-row gap-3 px-6 py-4 pb-20 overflow-x overflow-scroll"
+          className="min-h-[80vh] flex flex-row gap-3 px-6 py-4 pb-20 overflow-x overflow-scroll"
         >
           {items.map((item, ind) => {
             const tasksForCategory = tasks.filter(

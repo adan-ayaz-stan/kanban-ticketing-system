@@ -124,6 +124,12 @@ const AuthPage = ({ session }: AuthPageProps) => {
           }}
           theme="dark"
         />
+
+        <div className="w-full p-2 bg-gray-300 rounded">
+          <h2 className="font-bold text-center">Dummy Creds</h2>
+          <p className="px-6">Email: sicego@finews.biz</p>
+          <p className="px-6">Password: 12345678</p>
+        </div>
       </div>
     </div>
   );
