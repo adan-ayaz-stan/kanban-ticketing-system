@@ -104,21 +104,41 @@ export default function IndvidualProject({ project, user }: pageProps) {
             .eq("id", user.id);
 
           // If incase task editing occurs, we will remove that respective task from the array and add the new payload to the array
-          setTasks((tasksPrev) => {
-            //
-            const filteredArray = tasksPrev.filter(
-              (ele, ind) => ele.task_id != payload.new.task_id
-            );
+          console.log(payload);
 
-            const newObject = {
-              ...payload.new,
-              users: {
-                name: data[0].name,
-              },
-            };
+          if (payload.eventType == "DELETE") {
+            setTasks((tasksPrev) => {
+              const filteredArray = tasksPrev.filter(
+                (ele) => ele.task_id != payload.old.task_id
+              );
 
-            return [newObject, ...filteredArray];
-          });
+              return filteredArray;
+            });
+          }
+
+          if (payload.eventType == "UPDATE") {
+            setTasks((tasksPrev) => {
+              //
+              const filteredArray = tasksPrev.filter(
+                (ele, ind) => ele.task_id != payload.new.task_id
+              );
+
+              const newObject = {
+                ...payload.new,
+                users: {
+                  name: data[0].name,
+                },
+              };
+
+              return [newObject, ...filteredArray];
+            });
+          }
+
+          if (payload.eventType == "INSERT") {
+            setTasks((tasksPrev) => {
+              return [payload.new, ...tasksPrev];
+            });
+          }
         }
       )
       .subscribe();
