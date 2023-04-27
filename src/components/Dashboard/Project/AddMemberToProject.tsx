@@ -9,6 +9,8 @@ const barlow = Barlow({ subsets: ["latin"], weight: "700" });
 export default function AddMemberToProject({ projectData, setModalOpen }) {
   const router = useRouter();
 
+  const [projectMembers, setProjectMembers] = useState([]);
+
   const [processing, setProcessing] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -39,8 +41,21 @@ export default function AddMemberToProject({ projectData, setModalOpen }) {
     setOptions(processedData);
   }
 
+  async function fetchMembers() {
+    const { data, error } = await supabase
+      .from("project_members")
+      .select()
+      .filter("project_id", "eq", projectData.project_id);
+
+    if (!error) {
+      console.log(data);
+      setProjectMembers(data);
+    }
+  }
+
   useEffect(() => {
     return () => {
+      fetchMembers();
       fetchConnections();
     };
   }, []);
@@ -91,6 +106,21 @@ export default function AddMemberToProject({ projectData, setModalOpen }) {
         Add member to project
       </h1>
 
+      <div>
+        <h2>Current Members ({projectMembers.length}) :</h2>
+        <div className="max-h-[40vh] flex flex-col gap-2 overflow-y-auto">
+          {projectMembers.map((ele, ind) => {
+            return (
+              <div
+                className="bg-gray-900 bg-opacity-90 text-white p-2 rounded"
+                key={"project-members" + ele.id + ele.user_id}
+              >
+                {ele.user_name}
+              </div>
+            );
+          })}
+        </div>
+      </div>
       {/* Render the list of connections and add them to the project based on selection */}
 
       <div>

@@ -12,7 +12,7 @@ export default function SidebarFlowbite({ user }) {
 
   return (
     <>
-      <nav className="fixed top-0 z-30 w-full bg-gray-900">
+      <nav className="fixed top-0 z-30 w-full text-white bg-gray-900">
         <div className="px-3 py-3 lg:px-5 lg:pl-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-start px-4">
@@ -55,7 +55,7 @@ export default function SidebarFlowbite({ user }) {
           type="button"
           data-drawer-hide="drawer-navigation"
           aria-controls="drawer-navigation"
-          className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 absolute top-2.5 right-2.5 inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+          className="text-gray-400 bg-transparent hover:bg-gray-700 hover:text-gray-900 rounded-lg text-sm p-1.5 absolute top-2.5 right-2.5 inline-flex items-center"
           onClick={() => setOpenMenu(false)}
         >
           <svg
@@ -78,11 +78,11 @@ export default function SidebarFlowbite({ user }) {
             <li>
               <Link
                 href="/dashboard"
-                className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg text-white hover:bg-gray-700 "
               >
                 <svg
                   aria-hidden="true"
-                  className="w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+                  className="w-6 h-6 text-gray-500 transition duration-75 group-hover:text-gray-900"
                   fill="white"
                   viewBox="0 0 20 20"
                   xmlns="http://www.w3.org/2000/svg"
@@ -97,7 +97,7 @@ export default function SidebarFlowbite({ user }) {
             <li>
               <Link
                 href="/dashboard/projects"
-                className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg text-white hover:bg-gray-700 "
               >
                 <AiOutlineProject className="text-2xl" />
                 <span className="flex-1 ml-3 whitespace-nowrap">Projects</span>
@@ -109,7 +109,7 @@ export default function SidebarFlowbite({ user }) {
             <li>
               <Link
                 href="/dashboard/connections"
-                className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                className="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg text-white hover:bg-gray-700 "
               >
                 <svg
                   aria-hidden="true"

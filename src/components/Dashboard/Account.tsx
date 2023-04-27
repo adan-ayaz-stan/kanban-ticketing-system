@@ -30,7 +30,7 @@ export default function Account({ session }) {
               height={200}
               width={200}
             />
-            <h5 className="mb-1 text-xl font-medium text-gray-900 dark:text-white">
+            <h5 className="mb-1 text-xl font-medium text-gray-900 text-white">
               {data.data[0].name}
             </h5>
             <span className="max-w-[10em] text-sm text-gray-500 dark:text-gray-400 truncate">

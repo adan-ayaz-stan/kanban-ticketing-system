@@ -89,6 +89,65 @@ export default function NavigationBar({ projectData, user }) {
         ""
       )}
 
+      {projectData.ownership != user.id ? (
+        <div className="flex flex-row gap-3 mx-auto sm:mx-0 sm:ml-auto">
+          {/*  */}
+          <button
+            onClick={() => setTaskModalOpen(true)}
+            className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded text-sm px-5 py-2.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+          >
+            Create Task
+          </button>
+          {/* Modal */}
+          {isTaskModalOpen && (
+            <div
+              onClick={() => setTaskModalOpen(false)}
+              className="w-screen h-screen fixed top-0 left-0 flex items-center justify-center bg-black bg-opacity-60 z-[9999]"
+            >
+              <TaskCreator
+                projectData={projectData}
+                setModalOpen={setTaskModalOpen}
+              />
+            </div>
+          )}
+
+          {/* Modal */}
+          {isMemberModalOpen && (
+            <div
+              onClick={() => setMemberModalOpen(false)}
+              className="w-screen h-screen fixed top-0 left-0 flex items-center justify-center bg-black bg-opacity-60 z-[9999]"
+            >
+              <AddMemberToProject
+                projectData={projectData}
+                setModalOpen={setMemberModalOpen}
+              />
+            </div>
+          )}
+
+          {/* Remove a category from project */}
+          <button
+            onClick={() => setRemoveCategoryModalOpen(true)}
+            className="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded text-sm px-5 py-2.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+          >
+            Remove Category
+          </button>
+          {/* Modal */}
+          {isRemoveCategoryModalOpen && (
+            <div
+              onClick={() => setRemoveCategoryModalOpen(false)}
+              className="w-screen h-screen fixed top-0 left-0 flex items-center justify-center bg-black bg-opacity-60 z-[9999]"
+            >
+              <RemoveCategory
+                projectData={projectData}
+                setModalOpen={setRemoveCategoryModalOpen}
+              />
+            </div>
+          )}
+        </div>
+      ) : (
+        ""
+      )}
+
       <div className="relative sm:ml-auto">
         <User user={user} />
       </div>
