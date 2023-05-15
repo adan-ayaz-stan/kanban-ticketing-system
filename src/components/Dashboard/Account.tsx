@@ -8,11 +8,10 @@ export default function Account({ session }) {
 
   const { isLoading, data, error, isSuccess } = useQuery(
     "user-data-for-dashboard",
-    () =>
-      supabase.from("users").select("email, name").eq("id", session.user.id),
+    () => supabase.from("users").select("").eq("id", session.user.id),
     {
-      staleTime: 6000,
-      cacheTime: 6000,
+      staleTime: 60000,
+      cacheTime: 60000,
     }
   );
 
