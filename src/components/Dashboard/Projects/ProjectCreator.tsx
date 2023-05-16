@@ -60,73 +60,75 @@ export default function ProjectCreator({ user, refetch }) {
   });
 
   return (
-    <div className="flex flex-col m-2">
+    <div className="max-w-[400px] flex flex-col m-2 ml-auto">
       {/* BUTTON TO CREATE NEW PROJECT */}
-      {isModalOpen ? (
-        <button
-          onClick={() => setModalOpen(false)}
-          className="flex flex-row gap-2 items-center p-2 ml-auto font-bold rounded-lg text-white bg-gray-900"
-        >
-          <span className="text-2xl">
-            <AiOutlineClose />
-          </span>{" "}
-          Close Modal
-        </button>
-      ) : (
-        <button
-          onClick={() => setModalOpen(true)}
-          className="flex flex-row gap-2 items-center p-2 ml-auto font-bold rounded-lg text-white bg-gray-900"
-        >
-          <span className="text-2xl">
-            <AiOutlinePlus />
-          </span>{" "}
-          Create a new project
-        </button>
-      )}
+      <button
+        onClick={() => setModalOpen(true)}
+        className="flex flex-row gap-2 items-center p-2 ml-auto font-bold rounded-lg text-white bg-gray-900"
+      >
+        <span className="text-2xl">
+          <AiOutlinePlus />
+        </span>{" "}
+        Create a new project
+      </button>
 
       {/* MODAL OR IN VIEW?? */}
       <AnimatePresence>
         {isModalOpen && (
-          <motion.form
-            onSubmit={formik.handleSubmit}
-            className="flex flex-col gap-2 p-2 mt-2 border-2 text-white bg-gray-900 rounded-lg"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{
-              opacity: 0,
-              transition: {
-                delay: 0,
-                duration: 0.1,
-              },
-            }}
-          >
-            <div className="flex flex-col gap-2 items-center">
-              <label className="w-fit mr-auto font-bold">Project Name</label>
-              <input
-                type={"text"}
-                onChange={formik.handleChange}
-                name="project_name"
-                className=" w-full px-2 py-1 font-semibold text-sm text-gray-700 bg-white focus:bg-gray-100 border-[1px] border-cyan-500 focus:outline-none rounded"
-                required
-              />
-            </div>
+          <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-black z-50 bg-opacity-50">
+            <motion.form
+              onSubmit={formik.handleSubmit}
+              className="relative w-11/12 sm:w-9/12 md:w-6/12 lg:w-4/12 p-3 flex flex-col gap-2 text-black bg-[#FFF2F2] rounded-lg"
+              initial={{ opacity: 0, maxHeight: "0px" }}
+              animate={{ opacity: 1, maxHeight: "500px" }}
+              exit={{
+                opacity: 0,
+                transition: {
+                  delay: 0,
+                  duration: 0.1,
+                },
+              }}
+            >
+              {/* Close icon */}
+              <div
+                onClick={() => setModalOpen(false)}
+                className="absolute top-[15px] right-[20px] text-2xl cursor-pointer"
+              >
+                ✕
+              </div>
 
-            {processing ? (
-              <button
-                className="w-fit px-2 py-1 mx-auto font-bold uppercase text-white bg-gray-500 rounded"
-                disabled
-              >
-                Create
-              </button>
-            ) : (
-              <button
-                type="submit"
-                className="w-fit px-2 py-1 mx-auto font-bold uppercase text-black bg-[#FFF2F2] rounded"
-              >
-                Create
-              </button>
-            )}
-          </motion.form>
+              {/*  */}
+
+              <div className="flex flex-col gap-2 items-center">
+                <label className="w-fit mx-auto my-2 font-bold text-xl text-gray-800 uppercase">
+                  Project Name
+                </label>
+                <input
+                  type={"text"}
+                  onChange={formik.handleChange}
+                  name="project_name"
+                  className=" w-full px-5 py-3 text-lg text-gray-700 bg-white outline-none rounded border-[1px] border-gray-300 focus:border-black transition-all duration-400"
+                  required
+                />
+              </div>
+
+              {processing ? (
+                <button
+                  className="w-fit mx-auto text-white bg-gray-500 font-medium rounded px-5 py-2.5 my-2"
+                  disabled
+                >
+                  Creating project...
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  className="w-fit mx-auto text-white bg-gray-800 hover:bg-gray-900 font-medium rounded  px-5 py-2.5 my-2"
+                >
+                  Create Project
+                </button>
+              )}
+            </motion.form>
+          </div>
         )}
       </AnimatePresence>
     </div>

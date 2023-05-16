@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import { Reorder } from "framer-motion";
+import { AnimatePresence, Reorder } from "framer-motion";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -10,9 +10,13 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import Category from "@/components/Dashboard/Project/Category";
 import NavigationBar from "@/components/Dashboard/Project/NavigationBar";
 import Sidebar from "@/components/Dashboard/Sidebar";
+import TaskDetailsModal from "@/components/Dashboard/Project/TaskDetailsModal";
+
+import { taskDetailsModalAtom } from "../../../atoms/taskDetailsModalAtom";
 
 import { Project, User } from "@/types/types";
 import { BiCoinStack } from "react-icons/bi";
+import { useRecoilValue } from "recoil";
 
 type pageProps = {
   project: Project;
@@ -22,6 +26,7 @@ type pageProps = {
 export default function IndvidualProject({ project, user }: pageProps) {
   const router = useRouter();
   const supabase = useSupabaseClient();
+  const taskAtom = useRecoilValue(taskDetailsModalAtom);
 
   const [items, setItems] = useState(project.task_categories);
   const [tasks, setTasks] = useState([]);
@@ -155,6 +160,10 @@ export default function IndvidualProject({ project, user }: pageProps) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <AnimatePresence>
+        {taskAtom.modalOpen && <TaskDetailsModal task={taskAtom.task} />}
+      </AnimatePresence>
+
       <Sidebar />
       <div className="relative sm:ml-16">
         <NavigationBar projectData={project} user={user} />
@@ -184,7 +193,7 @@ export default function IndvidualProject({ project, user }: pageProps) {
 
           <div
             onClick={() => setCreateCategoryModalOpen(true)}
-            className="w-full p-2 border-2 border-dotted border-gray-400 rounded shadow-xl backdrop-blur-lg bg-[#white] hover:bg-gray-200 cursor-pointer"
+            className="min-w-[250px] w-full p-2 border-2 border-dotted border-gray-400 rounded shadow-xl backdrop-blur-lg bg-[#white] hover:bg-gray-200 cursor-pointer"
           >
             <h1 className="w-fit px-2 py-1 mx-auto font-bold text-gray-500">
               Add Category
@@ -215,7 +224,7 @@ export default function IndvidualProject({ project, user }: pageProps) {
                 minLength={2}
                 maxLength={16}
                 onChange={formik.handleChange}
-                className="w-full p-2 bg-gray-200 rounded"
+                className="w-full p-2 bg-gray-200 rounded outline-none"
                 required
               />
               {formik.errors.category_name && (

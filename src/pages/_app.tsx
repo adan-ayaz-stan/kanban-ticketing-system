@@ -5,6 +5,7 @@ import { AppProps } from "next/app";
 
 import "../styles/globals.css";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { RecoilRoot } from "recoil";
 
 const queryClient = new QueryClient();
 
@@ -22,7 +23,9 @@ function MyApp({
         supabaseClient={supabase}
         initialSession={pageProps.initialSession}
       >
-        <Component {...pageProps} />
+        <RecoilRoot>
+          <Component {...pageProps} />
+        </RecoilRoot>
       </SessionContextProvider>
     </QueryClientProvider>
   );

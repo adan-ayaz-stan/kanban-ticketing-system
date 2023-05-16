@@ -121,19 +121,19 @@ const AuthPage = ({ session }: AuthPageProps) => {
     setFgtPasswordMode(true);
   }
 
-  if (isSignUpSuccessful) {
-    setTimeout(() => {
-      router.push("/");
-    }, 4000);
+  // if (isFgtLinkSent) {
+  //   setTimeout(() => {
+  //     router.push("/");
+  //   }, 4000);
 
-    return (
-      <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-[#d1c8e4] to-[#ca97d4] p-2">
-        <div className="w-11/12 sm:w-6/12 md:w-4/12 bg-gray-900 px-8 py-4 rounded-lg shadow-lg text-white">
-          <p>Check your email for password reset link.</p>
-        </div>
-      </div>
-    );
-  }
+  //   return (
+  //     <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-[#d1c8e4] to-[#ca97d4] p-2">
+  //       <div className="w-11/12 sm:w-6/12 md:w-4/12 bg-gray-900 px-8 py-4 rounded-lg shadow-lg text-white">
+  //         <p>Check your email for password reset link.</p>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   if (isSignUpSuccessful) {
     setTimeout(() => {

@@ -26,7 +26,6 @@ interface Props {
 
 export default function Category({ category, projectData, tasks }: Props) {
   const controls = useDragControls();
-  const supabase = useSupabaseClient();
 
   return (
     <Reorder.Item

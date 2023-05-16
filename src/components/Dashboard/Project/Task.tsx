@@ -1,3 +1,4 @@
+import { taskDetailsModalAtom } from "@/atoms/taskDetailsModalAtom";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/router";
@@ -5,6 +6,8 @@ import { useState, useEffect } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import { useQuery } from "react-query";
+import { useSetRecoilState } from "recoil";
+import TaskDetailsModal from "./TaskDetailsModal";
 import TaskEditor from "./TaskEditor";
 
 interface TaskTypes {
@@ -28,6 +31,8 @@ export default function Task({ task, projectData }: TaskTypes) {
   const [isEditMode, setEditMode] = useState(false);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
 
+  const setTaskAtom = useSetRecoilState(taskDetailsModalAtom);
+
   const supabase = useSupabaseClient();
 
   const [taskAssignedTo, setTaskAssignedTo] = useState("");
@@ -38,6 +43,25 @@ export default function Task({ task, projectData }: TaskTypes) {
       .delete()
       .eq("task_id", task.task_id);
   }
+
+  const getTaskPriorityStyle = (priority) => {
+    let className =
+      "w-fit px-3 pt-2 text-[14px] font-semibold pb-2 mb-2 border-b-2 cursor-pointer rounded";
+    switch (priority) {
+      case "low":
+        className += " text-gray-900 bg-gray-300";
+        break;
+      case "medium":
+        className += " text-white bg-orange-500";
+        break;
+      case "high":
+        className += " text-white bg-red-500";
+        break;
+      default:
+        break;
+    }
+    return className;
+  };
 
   if (isEditMode) {
     return (
@@ -53,34 +77,22 @@ export default function Task({ task, projectData }: TaskTypes) {
 
   return (
     <div className="h-fit flex flex-col gap-3 px-2 py-4 bg-white bg-opacity-40 backdrop-blur-lg rounded-lg drop-shadow-lg">
-      {/* Task title and description */}
-      {/* Different Top Bars based on priorty */}
-      {/* Low priorty */}
-      {task.priorty == "low" && (
-        <h1 className="w-fit px-3 pt-2 text-[14px] text-gray-900 font-semibold pb-2 mb-2 border-b-2 bg-gray-300 cursor-pointer rounded">
-          {task.name}
-        </h1>
-      )}
-      {/* Medium Priorty */}
-      {task.priorty == "medium" && (
-        <h1 className="w-fit px-3 pt-2 text-[14px] text-white font-semibold pb-2 mb-2 border-b-2 bg-orange-500 cursor-pointer rounded">
-          {task.name}
-        </h1>
-      )}
-      {/* High Priorty */}
-      {task.priorty == "high" && (
-        <h1 className="w-fit px-3 pt-2 text-[14px] text-white font-semibold pb-2 mb-2 border-b-2 bg-red-500 cursor-pointer rounded">
-          {task.name}
-        </h1>
-      )}
+      {/*  */}
+      {/* Task title */}
+      <h1 className={getTaskPriorityStyle(task.priorty)}>{task.name}</h1>
+      {/*  */}
+      {/* Task description */}
       <p className="h-fit p-2 text-[12px] text-blue-500 font-bold bg-gray-100 rounded">
         <span className="uppercase text-gray-700">Description:</span>{" "}
         {task.description}
       </p>
+      {/*  */}
       {/* Task assigned to => ? */}
       <p className="h-fit px-2 py-1 text-[12px] text-black bg-gray-100 rounded">
         <span className="uppercase font-bold text-gray-700">Assigned To: </span>
-        <span className="font-bold text-green-800">{task.users != null ? task.users.name : ""}</span>
+        <span className="font-bold text-green-800">
+          {task.users != null ? task.users.name : ""}
+        </span>
       </p>
 
       {/* Task Functions */}
@@ -124,12 +136,23 @@ export default function Task({ task, projectData }: TaskTypes) {
             >
               Edit
             </p>
+            <p
+              onClick={() => {
+                setTaskAtom({
+                  modalOpen: true,
+                  task: task,
+                });
+                setDropdownOpen(false);
+              }}
+              className="px-4 py-1 bg-gray-100 hover:brightness-[90%]"
+            >
+              View details
+            </p>
           </motion.div>
         </AnimatePresence>
       )}
 
       {/*  */}
-
       {/* Task labels were removed as they seemed unneccessary */}
     </div>
   );
