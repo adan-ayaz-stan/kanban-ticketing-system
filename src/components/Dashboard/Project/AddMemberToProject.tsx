@@ -48,7 +48,6 @@ export default function AddMemberToProject({ projectData, setModalOpen }) {
       .filter("project_id", "eq", projectData.project_id);
 
     if (!error) {
-      console.log(data);
       setProjectMembers(data);
     }
   }
@@ -112,7 +111,7 @@ export default function AddMemberToProject({ projectData, setModalOpen }) {
           {projectMembers.map((ele, ind) => {
             return (
               <div
-                className="bg-gray-900 bg-opacity-90 text-white p-2 rounded"
+                className="bg-[#111827] bg-opacity-90 text-white p-2 rounded"
                 key={"project-members" + ele.id + ele.user_id}
               >
                 {ele.user_name}
