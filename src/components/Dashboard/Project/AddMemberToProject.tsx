@@ -48,7 +48,10 @@ export default function AddMemberToProject({ projectData, setModalOpen }) {
       .filter("project_id", "eq", projectData.project_id);
 
     if (!error) {
+      console.log(data);
       setProjectMembers(data);
+    } else {
+      console.log(error);
     }
   }
 
