@@ -56,10 +56,8 @@ export default function AddMemberToProject({ projectData, setModalOpen }) {
   }
 
   useEffect(() => {
-    return () => {
-      fetchMembers();
-      fetchConnections();
-    };
+    fetchMembers();
+    fetchConnections();
   }, []);
 
   async function addMemberToProject() {
