@@ -112,7 +112,7 @@ export default function AddMemberToProject({ projectData, setModalOpen }) {
           {projectMembers.map((ele, ind) => {
             return (
               <div
-                className="bg-[#111827] bg-opacity-90 text-white p-2 rounded"
+                className="bg-gradient-to-br from-[#d1c8e4] to-[#ca97d4] bg-opacity-90 text-gray-900 font-bold p-2 rounded"
                 key={"project-members" + ele.id + ele.user_id}
               >
                 {ele.user_name}
@@ -149,7 +149,7 @@ export default function AddMemberToProject({ projectData, setModalOpen }) {
 
       <button
         onClick={addMemberToProject}
-        className="w-fit mx-auto text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 my-2 "
+        className="w-fit mx-auto text-gray-900 bg-gradient-to-br from-[#d1c8e4] to-[#ca97d4] hover:opacity-80 focus:ring-4 focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 focus:outline-none"
         disabled={processing}
       >
         Add Member

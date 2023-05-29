@@ -20,39 +20,45 @@ export default function TaskDetailsModal({ task }) {
         Close details
       </button>
 
-      <div className="absolute top-0 left-0 w-full h-full pt-20 pl-32 overflow-y-scroll bg-gray-100 p-6 rounded-lg shadow-lg">
-        {/*  */}
-        <h2 className="text-2xl font-bold mb-4">Task Details</h2>
-        <ul className="list-disc pl-6">
-          <li className="mb-2">
-            <strong className="text-gray-700">Created At:</strong>{" "}
-            {task.created_at}
-          </li>
-          <li className="mb-2">
-            <strong className="text-gray-700">Name:</strong> {task.name}
-          </li>
-          <li className="mb-2">
-            <strong className="text-gray-700">Description:</strong>{" "}
-            {task.description}
-          </li>
-          <li className="mb-2">
-            <strong className="text-gray-700">Assigned To:</strong>{" "}
-            {task.assigned_to}
-          </li>
-          <li className="mb-2">
-            <strong className="text-gray-700">Status:</strong> {task.status}
-          </li>
-          <li className="mb-2">
-            <strong className="text-gray-700">Priority:</strong> {task.priority}
-          </li>
-          <li className="mb-2">
-            <strong className="text-gray-700">Due Date:</strong> {task.due_date}
-          </li>
-          <li>
-            <strong className="text-gray-700">Report:</strong> {task.report}
-          </li>
-        </ul>
-        This page needs work. I'm busy with something else rn.
+      <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center md:pt-20 md:pl-32 overflow-y-scroll bg-black bg-opacity-10 p-6 rounded-lg shadow-lg">
+        <div className="container flex flex-col w-full max-w-lg p-6 mx-auto divide-y rounded-md divide-gray-700 dark:bg-gray-900 dark:text-gray-100">
+          <div className="flex justify-between p-4">
+            <div className="flex space-x-4">
+              <div>
+                <h4 className="font-bold">{task.name}</h4>
+                <span className="text-xs dark:text-gray-400">
+                  {task.created_at}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div className="p-4 space-y-2 text-sm dark:text-gray-400">
+            <p>
+              <span className="font-bold">Task Description: </span>{" "}
+              {task.description}
+            </p>
+            <p>
+              <span className="font-bold">Task status: </span>{" "}
+              <span>{task.status}</span>
+            </p>
+            <p>
+              <span className="font-bold">Task Assigned To: </span>{" "}
+              <span>{task.users.name}</span>
+            </p>
+            <p>
+              <span className="font-bold">Task priorty: </span>{" "}
+              <span>{task.priority}</span>
+            </p>
+            <p>
+              <span className="font-bold">Task Due Date: </span>{" "}
+              <span>{task.due_date}</span>
+            </p>
+            <p>
+              <span className="font-bold">Task report: </span>{" "}
+              <span>{task.report}</span>
+            </p>
+          </div>
+        </div>
       </div>
     </motion.div>
   );

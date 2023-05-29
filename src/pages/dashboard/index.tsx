@@ -2,8 +2,14 @@ import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { NextPage } from "next";
 import Head from "next/head";
 import Account from "@/components/Dashboard/Account";
-import SidebarFlowbite from "@/components/Dashboard/SidebarFlowBite";
 import { User } from "@/types/types";
+import {
+  AiOutlineLogout,
+  AiOutlineMessage,
+  AiOutlineProject,
+} from "react-icons/ai";
+import { useRouter } from "next/router";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
 type pageProps = {
   user: User;
@@ -11,8 +17,16 @@ type pageProps = {
 };
 
 const Dashboard: NextPage<pageProps> = ({ user, initialSession }) => {
+  const supabase = useSupabaseClient();
+  const router = useRouter();
+
+  async function logOut() {
+    await supabase.auth.signOut();
+    router.push("/");
+  }
+
   return (
-    <div className="min-h-screen bg-[#FFF2F2F] text-black">
+    <div className="min-h-screen bg-white text-black py-8">
       <Head>
         <title>Dashboard</title>
         <meta name="description" content="Coded by Adan Ayaz" />
@@ -20,18 +34,22 @@ const Dashboard: NextPage<pageProps> = ({ user, initialSession }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {/* Sidebar */}
-      {/* <Sidebar /> */}
-      <SidebarFlowbite user={user} />
-
+      <div
+        title="Logout"
+        onClick={logOut}
+        className="absolute top-[25px] right-[25px] bg-gray-100 hover:bg-gray-200 transition-all duration-400 p-3 cursor-pointer z-20 rounded-md"
+      >
+        <AiOutlineLogout size={36} />
+      </div>
       {/* MAIN PANEL */}
       <div className="relative">
-        <h2 className="w-full text-xl text-center font-bold uppercase p-4">
-          Your dashboard
+        <h2 className="w-full text-xl text-center font-bold uppercase">
+          Kanban Ticketing System
         </h2>
+        <p className="text-sm text-center">Adan Ayaz</p>
 
         <div className="m-4 mt-8 p-4 bg-black bg-opacity-10 rounded-xl backdrop-blur-md">
-          <Account session={initialSession} />
+          <Account user={user} />
         </div>
 
         <div>

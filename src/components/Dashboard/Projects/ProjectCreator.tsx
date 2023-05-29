@@ -60,16 +60,15 @@ export default function ProjectCreator({ user, refetch }) {
   });
 
   return (
-    <div className="max-w-[400px] flex flex-col m-2 ml-auto">
+    <div className="flex m-2">
       {/* BUTTON TO CREATE NEW PROJECT */}
       <button
         onClick={() => setModalOpen(true)}
-        className="flex flex-row gap-2 items-center p-2 ml-auto font-bold rounded-lg text-white bg-gray-900"
+        className="text-gray-900 bg-gradient-to-br from-[#d1c8e4] to-[#ca97d4] hover:opacity-80 focus:ring-4 focus:ring-blue-300 font-medium rounded text-sm px-2.5 py-2.5 mr-2 mb-2 focus:outline-none"
       >
         <span className="text-2xl">
           <AiOutlinePlus />
-        </span>{" "}
-        Create a new project
+        </span>
       </button>
 
       {/* MODAL OR IN VIEW?? */}
@@ -92,7 +91,7 @@ export default function ProjectCreator({ user, refetch }) {
               {/* Close icon */}
               <div
                 onClick={() => setModalOpen(false)}
-                className="absolute top-[15px] right-[20px] text-2xl cursor-pointer"
+                className="absolute top-[15px] right-[20px] text-2xl cursor-pointer px-1.5 rounded hover:bg-gray-300"
               >
                 ✕
               </div>
@@ -107,14 +106,14 @@ export default function ProjectCreator({ user, refetch }) {
                   type={"text"}
                   onChange={formik.handleChange}
                   name="project_name"
-                  className=" w-full px-5 py-3 text-lg text-gray-700 bg-white outline-none rounded border-[1px] border-gray-300 focus:border-black transition-all duration-400"
+                  className="w-full px-5 py-3 font-bold text-2xl text-gray-900 bg-white outline-none rounded border-[1px] border-gray-300 focus:border-black transition-all duration-400"
                   required
                 />
               </div>
 
               {processing ? (
                 <button
-                  className="w-fit mx-auto text-white bg-gray-500 font-medium rounded px-5 py-2.5 my-2"
+                  className="text-gray-900 bg-gradient-to-br from-[#d1c8e4] to-[#ca97d4] hover:opacity-80 focus:ring-4 focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none filter grayscale"
                   disabled
                 >
                   Creating project...
@@ -122,7 +121,7 @@ export default function ProjectCreator({ user, refetch }) {
               ) : (
                 <button
                   type="submit"
-                  className="w-fit mx-auto text-white bg-gray-800 hover:bg-gray-900 font-medium rounded  px-5 py-2.5 my-2"
+                  className="text-gray-900 bg-gradient-to-br from-[#d1c8e4] to-[#ca97d4] hover:opacity-80 focus:ring-4 focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none"
                 >
                   Create Project
                 </button>

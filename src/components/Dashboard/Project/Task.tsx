@@ -44,24 +44,18 @@ export default function Task({ task, projectData }: TaskTypes) {
       .eq("task_id", task.task_id);
   }
 
-  const getTaskPriorityStyle = (priority) => {
-    let className =
-      "w-fit px-3 pt-2 text-[14px] font-semibold pb-2 mb-2 border-b-2 cursor-pointer rounded";
-    switch (priority) {
+  function returnColor(priorty: string) {
+    switch (priorty) {
       case "low":
-        className += " text-gray-900 bg-gray-300";
-        break;
+        return "linear-gradient(to right, #56ab2f, #a8e063)";
+
       case "medium":
-        className += " text-white bg-orange-500";
-        break;
+        return "linear-gradient(to right, #fdc830, #f37335)";
+
       case "high":
-        className += " text-white bg-red-500";
-        break;
-      default:
-        break;
+        return "linear-gradient(to right, #c31432, #240b36)";
     }
-    return className;
-  };
+  }
 
   if (isEditMode) {
     return (
@@ -76,28 +70,27 @@ export default function Task({ task, projectData }: TaskTypes) {
   }
 
   return (
-    <div className="h-fit flex flex-col gap-3 px-2 py-4 bg-white bg-opacity-40 backdrop-blur-lg rounded-lg drop-shadow-lg">
+    <div
+      style={{
+        background: returnColor(task.priorty),
+      }}
+      className="h-fit flex flex-col gap-3 px-2 py-4 bg-white bg-opacity-40 backdrop-blur-lg rounded-lg drop-shadow-lg"
+    >
       {/*  */}
       {/* Task title */}
-      <h1 className={getTaskPriorityStyle(task.priorty)}>{task.name}</h1>
+      <h1
+        style={{ color: task.priorty == "high" && "white" }}
+        className={"text-lg pl-4"}
+      >
+        {task.name}
+      </h1>
       {/*  */}
-      {/* Task description */}
-      <p className="h-fit p-2 text-[12px] text-blue-500 font-bold bg-gray-100 rounded">
-        <span className="uppercase text-gray-700">Description:</span>{" "}
-        {task.description}
-      </p>
       {/*  */}
-      {/* Task assigned to => ? */}
-      <p className="h-fit px-2 py-1 text-[12px] text-black bg-gray-100 rounded">
-        <span className="uppercase font-bold text-gray-700">Assigned To: </span>
-        <span className="font-bold text-green-800">
-          {task.users != null ? task.users.name : ""}
-        </span>
-      </p>
 
       {/* Task Functions */}
       <div
         onClick={() => setDropdownOpen(true)}
+        style={{ color: task.priorty == "high" && "white" }}
         className="absolute top-[5px] right-[5px] p-1 text-2xl hover:bg-gray-300 rounded-full cursor-pointer"
       >
         <BiDotsVerticalRounded />

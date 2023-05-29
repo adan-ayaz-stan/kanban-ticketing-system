@@ -6,12 +6,23 @@ import MyConnections from "@/components/Dashboard/Connections/MyConnections";
 import SearchConnections from "@/components/Dashboard/Connections/SearchConnections";
 import SidebarFlowbite from "@/components/Dashboard/SidebarFlowBite";
 import { User } from "@/types/types";
+import Link from "next/link";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useRouter } from "next/router";
 
 type ConnectionProps = {
   user: User;
 };
 
 export default function Connections({ user }: ConnectionProps) {
+  const supabase = useSupabaseClient();
+  const router = useRouter();
+
+  async function logOut() {
+    await supabase.auth.signOut();
+    router.push("/");
+  }
+
   return (
     <div className="min-h-screen bg-[#FFF2F2] text-black">
       <Head>
@@ -21,8 +32,19 @@ export default function Connections({ user }: ConnectionProps) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <SidebarFlowbite user={user} />
-      <div className="mt-28 sm:mt-20">
+      <div className="text-white flex justify-center items-center bg-gray-900 py-5 px-12">
+        <Link href={"/dashboard"} className="font-bold">
+          Home
+        </Link>
+        <h1 className="mx-auto text-white font-bold text-center text-3xl">
+          Kanban Ticketing System
+        </h1>
+        <div onClick={logOut} className="font-bold cursor-pointer">
+          Log out
+        </div>
+      </div>
+
+      <div>
         {/* Search Connections */}
         <SearchConnections user={user} />
 
