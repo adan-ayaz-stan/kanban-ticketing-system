@@ -15,13 +15,14 @@ export default function TaskDetailsModal({ task }) {
       {/* Close Icon */}
       <button
         onClick={() => setTaskAtom({ modalOpen: false, task: {} })}
-        className="absolute top-[20px] right-[20px] p-2 border-2 border-solid border-gray-800 transition duration-300 ease-in-out bg-transparent text-gray-800 font-bold text-lg hover:bg-black hover:text-white cursor-pointer z-10 rounded"
+        className="absolute top-[20px] right-[20px] p-2 border-2 border-solid border-gray-800 transition duration-300 ease-in-out bg-transparent text-white font-bold text-lg hover:bg-black hover:text-white cursor-pointer z-10 rounded bg-gray-800"
       >
         Close details
       </button>
 
       <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center md:pt-20 md:pl-32 overflow-y-scroll bg-black bg-opacity-10 p-6 rounded-lg shadow-lg">
-        <div className="container flex flex-col w-full max-w-lg p-6 mx-auto divide-y rounded-md divide-gray-700 dark:bg-gray-900 dark:text-gray-100">
+        {/*  */}
+        <div className="container flex flex-col w-full max-w-lg p-6 mx-auto divide-y rounded-md divide-gray-700 bg-white">
           <div className="flex justify-between p-4">
             <div className="flex space-x-4">
               <div>

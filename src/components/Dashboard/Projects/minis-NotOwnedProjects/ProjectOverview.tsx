@@ -22,6 +22,8 @@ export default function ProjectOverview({ projectID, user }) {
     }
   );
 
+  console.log(data);
+
   return (
     <>
       {isSuccess && data.data[0] != null && (
@@ -36,15 +38,6 @@ export default function ProjectOverview({ projectID, user }) {
             </h1>
             <p className="h-fit px-2 text-sm text-[#1A120B] font-bold bg-gray-200 rounded">
               {/* {data[0].created_at} */}
-            </p>
-          </div>
-          {/* Project Main Information */}
-          <div className="flex flex-col gap-3">
-            <p className="text-sm">
-              <span className="text-gray-700">Total Participants:</span>{" "}
-              <span className="h-fit px-2 text-sm text-[#1A120B] font-bold bg-gray-200 rounded">
-                {data && data.data.length}
-              </span>
             </p>
           </div>
         </Link>
