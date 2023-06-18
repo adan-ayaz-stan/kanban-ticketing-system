@@ -43,7 +43,7 @@ export default function TaskDetailsModal({ task }) {
             </p>
             <p>
               <span className="font-bold">Task Assigned To: </span>{" "}
-              <span>{task.users.name}</span>
+              <span>{task.users?.name}</span>
             </p>
             <p>
               <span className="font-bold">Task priorty: </span>{" "}

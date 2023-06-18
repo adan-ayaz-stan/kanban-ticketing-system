@@ -151,7 +151,20 @@ export default function TaskEditor({
         <label className="block font-medium">Assign To</label>
         <Select
           options={assignOptions}
-          defaultValue={assignOptions[0]}
+          defaultValue={() => {
+            let defaultValue = {
+              title: "",
+              value: "",
+            };
+
+            for (let i = 0; i < assignOptions.length; i++) {
+              if (assignOptions[i].value == task.assigned_to) {
+                defaultValue = assignOptions[i];
+              }
+            }
+
+            return defaultValue;
+          }}
           onChange={(value) => setAssignTo(value)}
         />
       </div>
@@ -160,7 +173,20 @@ export default function TaskEditor({
         <label className="block font-medium">Change Status To</label>
         <Select
           options={statusOptions}
-          defaultValue={statusOptions[0]}
+          defaultValue={() => {
+            let defaultValue = {
+              title: "PROGRESS",
+              value: "progress",
+            };
+
+            for (let i = 0; i < statusOptions.length; i++) {
+              if (statusOptions[i].value == task.status) {
+                defaultValue = statusOptions[i];
+              }
+            }
+
+            return defaultValue;
+          }}
           onChange={(value) => setStatusTo(value)}
         />
       </div>
@@ -169,12 +195,25 @@ export default function TaskEditor({
         <label className="block font-medium">Change Priorty To</label>
         <Select
           options={priortyOptions}
-          defaultValue={priortyOptions[0]}
+          defaultValue={() => {
+            let defaultValue = {
+              title: "Low",
+              value: "low",
+            };
+
+            for (let i = 0; i < priortyOptions.length; i++) {
+              if (priortyOptions[i].value == task.priorty) {
+                defaultValue = priortyOptions[i];
+              }
+            }
+
+            return defaultValue;
+          }}
           onChange={(value) => setPriortyTo(value)}
         />
       </div>
 
-      <div className="flex flex-row gap-3 justify-end mt-20">
+      <div className="flex flex-row gap-3 justify-end">
         <button
           onClick={() => setEditMode(false)}
           className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-green-800"

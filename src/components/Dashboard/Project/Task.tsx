@@ -84,6 +84,9 @@ export default function Task({ task, projectData }: TaskTypes) {
       >
         {task.name}
       </h1>
+      <span className="w-fit px-2 py-1 text-sm rounded-lg bg-gray-100">
+        {task.users?.name}
+      </span>
       {/*  */}
       {/*  */}
 
