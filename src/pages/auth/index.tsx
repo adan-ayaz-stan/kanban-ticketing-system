@@ -56,7 +56,10 @@ const AuthPage = ({ session }: AuthPageProps) => {
 
         <div className="w-full p-2 bg-gray-300 rounded">
           <h2 className="font-bold text-center">Dummy Creds</h2>
-          <p className="px-6">Email: vuhumavomoce@gotgel.org</p>
+          <p className="px-6">
+            Email: vuhumavomoce@gotgel.org <br /> or <br />{" "}
+            pfeoekk376@iemail.fun
+          </p>
           <p className="px-6">Password: 12345678</p>
         </div>
       </div>

@@ -22,7 +22,7 @@ export default function NavigationBar({ projectData, user }) {
 
       {/* Project Functions */}
       {/* Only available if user is the project admin */}
-      {projectData.ownership == user.id ? (
+      {projectData.owner_id == user.id ? (
         <div className="flex flex-row gap-3 mx-auto sm:mx-0 sm:ml-auto">
           {/*  */}
           <button
@@ -89,7 +89,7 @@ export default function NavigationBar({ projectData, user }) {
         ""
       )}
 
-      {projectData.ownership != user.id ? (
+      {projectData.owner_id != user.id ? (
         <div className="flex flex-row gap-3 mx-auto sm:mx-0 sm:ml-auto">
           {/*  */}
           <button

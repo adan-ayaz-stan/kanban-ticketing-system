@@ -1,9 +1,14 @@
+import { Barlow } from "@next/font/google";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { UserIdentity } from "@supabase/supabase-js";
 import { useFormik } from "formik";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { AiOutlineClose, AiOutlinePlus } from "react-icons/ai";
+import { AiOutlinePlus } from "react-icons/ai";
+import Image from "next/image";
+
+const barlow = Barlow({ subsets: ["latin"], weight: "500" });
 
 export default function ProjectCreator({ user, refetch }) {
   const router = useRouter();
@@ -13,14 +18,16 @@ export default function ProjectCreator({ user, refetch }) {
 
   const supabase = useSupabaseClient();
 
-  const validate = () => {
+  const validate = (values) => {
     const errors = {};
+
     return errors;
   };
 
   const formik = useFormik({
     initialValues: {
       project_name: "",
+      project_description: "",
     },
     validate,
     onSubmit: async (values) => {
@@ -40,7 +47,9 @@ export default function ProjectCreator({ user, refetch }) {
         .insert({
           name: values.project_name,
           created_at: date,
-          ownership: user.id,
+          description: values.project_description,
+          owner_id: user.id,
+          owner_name: user.user_metadata.name,
         })
         .select();
       if (error == null) {
@@ -89,34 +98,53 @@ export default function ProjectCreator({ user, refetch }) {
               }}
             >
               {/* Close icon */}
-              <div
-                onClick={() => setModalOpen(false)}
-                className="absolute top-[15px] right-[20px] text-2xl cursor-pointer px-1.5 rounded hover:bg-gray-300"
-              >
-                ✕
-              </div>
+              {!processing && (
+                <div
+                  onClick={() => setModalOpen(false)}
+                  className="ml-auto text-2xl cursor-pointer px-1.5 rounded hover:bg-gray-300"
+                >
+                  ✕
+                </div>
+              )}
 
               {/*  */}
 
-              <div className="flex flex-col gap-2 items-center">
-                <label className="w-fit mx-auto my-2 font-bold text-xl text-gray-800 uppercase">
-                  Project Name
-                </label>
+              <div className="flex flex-col gap-2">
                 <input
                   type={"text"}
                   onChange={formik.handleChange}
+                  autoComplete="off"
                   name="project_name"
-                  className="w-full px-5 py-3 font-bold text-2xl text-gray-900 bg-white outline-none rounded border-[1px] border-gray-300 focus:border-black transition-all duration-400"
+                  placeholder="Project Name"
+                  className="w-full px-5 py-3 font-bold text-xl text-gray-900 bg-white outline-none rounded border-[1px] border-gray-300 focus:border-black transition-all duration-400"
+                  required
+                />
+                <textarea
+                  rows={6}
+                  onChange={formik.handleChange}
+                  autoComplete="off"
+                  name="project_description"
+                  placeholder="This is the project description."
+                  style={barlow.style}
+                  className="w-full px-3 py-3 text-lg text-gray-900 bg-white outline-none rounded border-[1px] border-gray-300 focus:border-black transition-all duration-400"
                   required
                 />
               </div>
 
               {processing ? (
                 <button
-                  className="text-gray-900 bg-gradient-to-br from-[#d1c8e4] to-[#ca97d4] hover:opacity-80 focus:ring-4 focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none filter grayscale"
+                  className="flex gap-1 items-center justify-center text-gray-900 font-medium rounded text-sm px-5 py-2.5 focus:outline-none"
                   disabled
                 >
-                  Creating project...
+                  Creating project...{" "}
+                  <Image
+                    src={
+                      "https://api.iconify.design/svg-spinners:dot-revolve.svg"
+                    }
+                    alt="something"
+                    height={25}
+                    width={25}
+                  />
                 </button>
               ) : (
                 <button

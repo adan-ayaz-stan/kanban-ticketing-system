@@ -7,7 +7,6 @@ import { useQuery } from "react-query";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import OwnedProjects from "@/components/Dashboard/Projects/OwnedProjects";
 import NotOwnedProjects from "@/components/Dashboard/Projects/NotOwnedProjects";
-import SidebarFlowbite from "@/components/Dashboard/SidebarFlowBite";
 import Head from "next/head";
 import { User } from "@/types/types";
 import { AiOutlineLogout } from "react-icons/ai";
@@ -21,13 +20,29 @@ const Projects: NextPage<pageProps> = ({ user }) => {
   const supabase = useSupabaseClient();
   const router = useRouter();
 
-  // Project Owned By Users
-  const { isLoading, data, error, refetch } = useQuery(
-    "projects-data",
-    () => supabase.from("projects").select().filter("ownership", "eq", user.id),
+  // Project Owned By User
+  const ownedProjects = useQuery(
+    "all-projects-user-owns",
+    () =>
+      supabase.from("projects").select("*").filter("owner_id", "eq", user.id),
     {
       staleTime: 30000,
       cacheTime: 30000,
+    }
+  );
+
+  // Projects not owned by user
+  const notOwnedProjects = useQuery(
+    "all-projects-user-is-part-of",
+    () =>
+      supabase
+        .from("project_members")
+        .select("id, project_id, projects!inner (name, description,owner_name)")
+        .eq("user_id", user.id)
+        .filter("projects.owner_id", "not.eq", user.id),
+    {
+      staleTime: 25000,
+      cacheTime: 25000,
     }
   );
 
@@ -35,6 +50,8 @@ const Projects: NextPage<pageProps> = ({ user }) => {
     await supabase.auth.signOut();
     router.push("/");
   }
+
+  console.log(ownedProjects.data);
 
   return (
     <div
@@ -52,7 +69,7 @@ const Projects: NextPage<pageProps> = ({ user }) => {
       </Head>
 
       {/* Sidebar */}
-      <div className="flex justify-between items-center px-4">
+      <div className="flex justify-between items-center p-4">
         <p>Adan Ayaz</p>
         <h1 className="text-2xl font-bold">Kanban Ticketing System</h1>
         <div
@@ -70,14 +87,23 @@ const Projects: NextPage<pageProps> = ({ user }) => {
           <h1 className="w-fit text-2xl font-bold uppercase p-4">Projects</h1>
 
           {/* New Project Creator */}
-          <ProjectCreator user={user} refetch={refetch} />
+          <ProjectCreator user={user} refetch={ownedProjects.refetch} />
         </div>
 
         {/* Projects */}
-        <div className="grid grid-cols-2 auto-rows-auto gap-6">
-          <OwnedProjects isLoading={isLoading} data={data} error={error} />
+        <div className="grid grid-cols-1 auto-rows-auto gap-6">
+          <OwnedProjects
+            isLoading={ownedProjects.isLoading}
+            data={ownedProjects.data}
+            error={ownedProjects.error}
+          />
 
-          <NotOwnedProjects user={user} />
+          <NotOwnedProjects
+            isLoading={notOwnedProjects.isLoading}
+            isSuccess={notOwnedProjects.isSuccess}
+            data={notOwnedProjects.data}
+            error={notOwnedProjects.error}
+          />
         </div>
       </div>
     </div>
