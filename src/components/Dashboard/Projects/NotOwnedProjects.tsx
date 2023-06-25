@@ -83,11 +83,12 @@ const barlow = Barlow({ subsets: ["latin"], weight: "600" });
 function ProjectOverview({ data }) {
   const supabase = useSupabaseClient();
   const [members, setMembers] = useState([]);
+  const [imageLink, setImageLink] = useState("");
 
   async function getProjectMembers() {
     const projectMembers = await supabase
       .from("project_members")
-      .select("*")
+      .select("*, users!inner(image)")
       .eq("project_id", data.project_id);
 
     if (projectMembers.error == null) {
@@ -97,8 +98,20 @@ function ProjectOverview({ data }) {
     }
   }
 
+  async function getProfileImage() {
+    const image = await supabase
+      .from("users")
+      .select("image")
+      .eq("id", data.projects.owner_id);
+
+    if (image.error == null) {
+      setImageLink(image.data[0].image);
+    }
+  }
+
   useEffect(() => {
     getProjectMembers();
+    getProfileImage();
   }, []);
 
   return (
@@ -123,16 +136,27 @@ function ProjectOverview({ data }) {
           <p className="h-fit flex items-center gap-2 text-sm">
             Authored by:{" "}
             <span className="flex gap-2 items-center px-2 py-1 text-[#1A120B] font-bold bg-gray-200 rounded">
-              <Image
-                src={
-                  "https://img.freepik.com/free-photo/psychedelic-paper-shapes-with-copy-space_23-2149378246.jpg?w=996&t=st=1687450417~exp=1687451017~hmac=668cf406dd6bcfa588c9b38f7bf60d1c75a84570902555c93f829506e32c84a4"
-                }
-                alt="author-image"
-                height={50}
-                width={50}
-                style={{ width: "35px", height: "35px" }}
-                className="relative flex justify-center items-center rounded-full object-cover"
-              />{" "}
+              {imageLink == "" ? (
+                <Image
+                  src={
+                    "https://img.freepik.com/free-photo/psychedelic-paper-shapes-with-copy-space_23-2149378246.jpg?w=996&t=st=1687450417~exp=1687451017~hmac=668cf406dd6bcfa588c9b38f7bf60d1c75a84570902555c93f829506e32c84a4"
+                  }
+                  alt="author-image"
+                  height={50}
+                  width={50}
+                  style={{ width: "35px", height: "35px" }}
+                  className="relative min-w-[35px] flex justify-center items-center rounded-full object-cover"
+                />
+              ) : (
+                <img
+                  src={imageLink}
+                  alt="author-image"
+                  height={50}
+                  width={50}
+                  style={{ width: "35px", height: "35px" }}
+                  className="relative min-w-[35px] flex justify-center items-center rounded-full object-cover"
+                />
+              )}{" "}
               {data.projects.owner_name}
             </span>
           </p>
@@ -147,16 +171,9 @@ function ProjectOverview({ data }) {
                 }
 
                 return (
-                  <Image
-                    src={
-                      "https://img.freepik.com/free-photo/psychedelic-paper-shapes-with-copy-space_23-2149378246.jpg?w=996&t=st=1687450417~exp=1687451017~hmac=668cf406dd6bcfa588c9b38f7bf60d1c75a84570902555c93f829506e32c84a4"
-                    }
-                    key={"project-members-" + ind}
-                    alt="author-image"
-                    height={50}
-                    width={50}
-                    style={{ width: "35px", height: "35px" }}
-                    className="relative flex ml-[-10px] justify-center items-center rounded-full object-cover"
+                  <Member
+                    memberData={ele}
+                    key={"project-members-not-owned-" + ind}
                   />
                 );
               })}
@@ -173,6 +190,36 @@ function ProjectOverview({ data }) {
           </div>
         </div>
       </Link>
+    </>
+  );
+}
+
+function Member({ memberData }) {
+  const [imageLink] = useState(memberData.users.image);
+
+  return (
+    <>
+      {imageLink == "" ? (
+        <Image
+          src={
+            "https://img.freepik.com/free-photo/psychedelic-paper-shapes-with-copy-space_23-2149378246.jpg?w=996&t=st=1687450417~exp=1687451017~hmac=668cf406dd6bcfa588c9b38f7bf60d1c75a84570902555c93f829506e32c84a4"
+          }
+          alt="author-image"
+          height={50}
+          width={50}
+          style={{ width: "35px", height: "35px" }}
+          className="relative min-w-[35px] flex ml-[-10px] justify-center items-center rounded-full object-cover"
+        />
+      ) : (
+        <img
+          src={imageLink}
+          alt="author-image"
+          height={50}
+          width={50}
+          style={{ width: "35px", height: "35px" }}
+          className="relative min-w-[35px] flex ml-[-10px] justify-center items-center rounded-full object-cover"
+        />
+      )}
     </>
   );
 }

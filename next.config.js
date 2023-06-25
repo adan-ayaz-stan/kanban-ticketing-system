@@ -2,7 +2,11 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ["images.pexels.com", "img.freepik.com"],
+    domains: [
+      "images.pexels.com",
+      "img.freepik.com",
+      "oobvalfppftfjhiboumj.supabase.co",
+    ],
   },
   typescript: {
     // !! WARN !!

@@ -1,29 +1,88 @@
-import { Montserrat } from "@next/font/google";
-import Image from "next/image";
+import { Rubik } from "@next/font/google";
+import { AiOutlineFolder } from "react-icons/ai";
+import { BiMessage } from "react-icons/bi";
+import { TbCloudDataConnection, TbFriends } from "react-icons/tb";
+import { MdOutlineWeb } from "react-icons/md";
+import { motion } from "framer-motion";
 
-const montserrat = Montserrat({ subsets: ["latin"], weight: ["500", "800"] });
+const rubik = Rubik({ subsets: ["latin"], weight: "500" });
+
+const features = [
+  {
+    title: "Project Creation",
+    desc: "Effortlessly create new projects to organize your tasks and workflow",
+    icon: <AiOutlineFolder size={48} />,
+  },
+  {
+    title: "Cloud Connections",
+    desc: "Connect and collaborate with other users on the cloud, fostering teamwork",
+    icon: <TbCloudDataConnection size={48} />,
+  },
+  {
+    title: "Real-time Chat",
+    desc: "Stay connected and communicate seamlessly with project collaborators",
+    icon: <BiMessage size={48} />,
+  },
+  {
+    title: "User Collaboration",
+    desc: "Add users to your projects, enabling efficient teamwork and shared progress",
+    icon: <TbFriends size={48} />,
+  },
+  {
+    title: "Interactive UI",
+    desc: "Enjoy a visually appealing and user-friendly interface for an intuitive experience",
+    icon: <MdOutlineWeb size={48} />,
+  },
+];
 
 export default function SecondScreen() {
   return (
-    <div className="min-h-screen h-fit flex flex-col md:flex-row py-12 bg-gradient-to-b from-black via-black to-purple-300 bg-opacity-60">
-      <div className="w-full flex flex-col items-center justify-center gap-4 px-12 text-white ">
-        <h2 className={`text-[3em] font-bold ${montserrat.className}`}>
-          About
-        </h2>
-        <p className={`text-center leading-loose ${montserrat.className}`}>
-          Kanban Task Management System is a cloud-based task management system
-          that helps teams manage the flow of work across their teams. The
-          platform enables users to manage project-related tasks, including
-          schedules, meetings and more. It also uses an issue board system where
-          teams can form project specific issues, assign tickets and specify the
-          owner. Teams can connect with other users on the platform and start a
-          chat session with them for better communication within their
-          organizations or between organizations.
-        </p>
-      </div>
-      <div className="w-full p-20">
-        <div className="min-h-[300px] h-full bg-[url('https://images.pexels.com/photos/13583358/pexels-photo-13583358.jpeg?auto=compress&cs=tinysrgb&w=1920&h=1280&dpr=1')] bg-contain bg-no-repeat bg-center"></div>
-      </div>
+    <div className="min-h-screen h-fit relative flex items-end justify-center py-12 bg-gradient-to-tr from-[#d1c8e4] to-[#ca97d4]">
+      <motion.h1
+        initial={{ opacity: 0 }}
+        whileInView={{
+          opacity: 1,
+          transition: {
+            delay: 0.4,
+          },
+        }}
+        viewport={{ once: true }}
+        style={rubik.style}
+        className="absolute top-1/4 -translate-y-1/2 text-center text-gray-900 opacity-70 text-[10em] truncate uppercase font-bold"
+      >
+        What it does
+      </motion.h1>
+
+      <motion.div
+        initial={{ y: 100, opacity: 0 }}
+        whileInView={{
+          y: 0,
+          opacity: 1,
+          transition: {
+            delay: 0.5,
+            duration: 0.5,
+            type: "keyframes",
+            ease: "easeOut",
+          },
+        }}
+        viewport={{ once: true }}
+        className="grid grid-cols-3 auto-rows-fr gap-12 z-10"
+      >
+        {features.map((ele, ind) => {
+          return (
+            <div
+              key={"feature-index-" + ind}
+              className="flex flex-col items-center p-3 py-5 bg-white bg-opacity-40 rounded-lg"
+            >
+              <span className="text-gray-900">{ele.icon}</span>
+              <p className="font-semibold text-lg">{ele.title}</p>
+              <p className="w-[250px] text-gray-800 text-center text-sm">
+                {ele.desc}
+              </p>
+            </div>
+          );
+        })}
+      </motion.div>
     </div>
   );
 }

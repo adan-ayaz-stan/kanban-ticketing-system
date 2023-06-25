@@ -11,6 +11,7 @@ import Head from "next/head";
 import { User } from "@/types/types";
 import { AiOutlineLogout } from "react-icons/ai";
 import { useRouter } from "next/router";
+import ThirdScreen from "@/components/Landing/ThirdScreen";
 
 type pageProps = {
   user: User;
@@ -37,7 +38,9 @@ const Projects: NextPage<pageProps> = ({ user }) => {
     () =>
       supabase
         .from("project_members")
-        .select("id, project_id, projects!inner (name, description,owner_name)")
+        .select(
+          "id, project_id, projects!inner (name, description, owner_name, owner_id)"
+        )
         .eq("user_id", user.id)
         .filter("projects.owner_id", "not.eq", user.id),
     {
@@ -50,8 +53,6 @@ const Projects: NextPage<pageProps> = ({ user }) => {
     await supabase.auth.signOut();
     router.push("/");
   }
-
-  console.log(ownedProjects.data);
 
   return (
     <div
@@ -106,6 +107,9 @@ const Projects: NextPage<pageProps> = ({ user }) => {
           />
         </div>
       </div>
+
+      {/* Footer */}
+      <ThirdScreen />
     </div>
   );
 };
