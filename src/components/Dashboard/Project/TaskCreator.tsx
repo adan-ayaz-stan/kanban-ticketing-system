@@ -4,13 +4,14 @@ import { useFormik } from "formik";
 import Select from "react-select";
 import { DateTime } from "luxon";
 
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import { Barlow } from "@next/font/google";
 
 const barlow = Barlow({ subsets: ["latin"], weight: "700" });
 
 export default function TaskCreator({ projectData, setModalOpen }) {
   const router = useRouter();
+  const user = useUser();
   const [processing, setProcessing] = useState(false);
 
   const supabase = useSupabaseClient();
@@ -55,6 +56,7 @@ export default function TaskCreator({ projectData, setModalOpen }) {
         status: categoryState,
         priorty: priortyState,
         project_id: projectData.project_id,
+        created_by: user.id,
       });
 
       setModalOpen(false);
@@ -67,7 +69,7 @@ export default function TaskCreator({ projectData, setModalOpen }) {
       onClick={(e) => {
         e.stopPropagation();
       }}
-      className="w-10/12 md:w-8/12 lg:w-6/12 p-2 m-3 border-[1px] text-black bg-[#FFF2F2] rounded-lg"
+      className="w-10/12 md:w-8/12 lg:w-6/12 p-2 m-3 border-[1px] text-black bg-[#ffffff] rounded-lg"
     >
       <h2
         className="w-fit mx-auto my-2 font-bold text-xl text-gray-800 uppercase"
@@ -86,6 +88,7 @@ export default function TaskCreator({ projectData, setModalOpen }) {
             name="task_name"
             className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
             placeholder=" "
+            autoComplete="off"
             onChange={formik.handleChange}
             value={formik.values.task_name}
             required

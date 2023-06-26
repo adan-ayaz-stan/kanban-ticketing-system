@@ -204,7 +204,7 @@ function Member({ memberData }) {
           src={
             "https://img.freepik.com/free-photo/psychedelic-paper-shapes-with-copy-space_23-2149378246.jpg?w=996&t=st=1687450417~exp=1687451017~hmac=668cf406dd6bcfa588c9b38f7bf60d1c75a84570902555c93f829506e32c84a4"
           }
-          alt="author-image"
+          alt="member-image"
           height={50}
           width={50}
           style={{ width: "35px", height: "35px" }}
@@ -213,7 +213,7 @@ function Member({ memberData }) {
       ) : (
         <img
           src={imageLink}
-          alt="author-image"
+          alt="member-image"
           height={50}
           width={50}
           style={{ width: "35px", height: "35px" }}

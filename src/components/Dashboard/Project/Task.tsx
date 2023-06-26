@@ -4,11 +4,11 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-import { BiDotsVerticalRounded } from "react-icons/bi";
-import { useQuery } from "react-query";
+import { BiDotsVerticalRounded, BiEdit, BiTrash } from "react-icons/bi";
 import { useSetRecoilState } from "recoil";
-import TaskDetailsModal from "./TaskDetailsModal";
 import TaskEditor from "./TaskEditor";
+import { Database } from "@/types/supabase";
+import { MdSettings } from "react-icons/md";
 
 interface TaskTypes {
   task: {
@@ -29,13 +29,11 @@ interface TaskTypes {
 
 export default function Task({ task, projectData }: TaskTypes) {
   const [isEditMode, setEditMode] = useState(false);
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
+  const [isShowSettings, setShowSettings] = useState(false);
 
   const setTaskAtom = useSetRecoilState(taskDetailsModalAtom);
 
-  const supabase = useSupabaseClient();
-
-  const [taskAssignedTo, setTaskAssignedTo] = useState("");
+  const supabase = useSupabaseClient<Database>();
 
   async function deleteTask() {
     const { error } = await supabase
@@ -43,6 +41,8 @@ export default function Task({ task, projectData }: TaskTypes) {
       .delete()
       .eq("task_id", task.task_id);
   }
+
+  console.log(task);
 
   function returnColor(priorty: string) {
     switch (priorty) {
@@ -70,86 +70,87 @@ export default function Task({ task, projectData }: TaskTypes) {
   }
 
   return (
-    <div
-      style={{
-        background: returnColor(task.priorty),
-      }}
-      className="h-fit flex flex-col gap-3 px-2 py-4 bg-white bg-opacity-40 backdrop-blur-lg rounded-lg drop-shadow-lg"
-    >
-      {/*  */}
-      {/* Task title */}
-      <h1
-        style={{ color: task.priorty == "high" && "white" }}
-        className={"text-lg pl-4"}
-      >
-        {task.name}
-      </h1>
-      <span className="w-fit px-2 py-1 text-sm rounded-lg bg-gray-100">
-        {task.users?.name}
-      </span>
-      {/*  */}
-      {/*  */}
-
-      {/* Task Functions */}
+    <div className="relative">
       <div
-        onClick={() => setDropdownOpen(true)}
-        style={{ color: task.priorty == "high" && "white" }}
-        className="absolute top-[5px] right-[5px] p-1 text-2xl hover:bg-gray-300 rounded-full cursor-pointer"
+        style={{
+          background: returnColor(task.priorty),
+        }}
+        className="h-fit flex flex-col gap-1 px-2 py-2 pt-7 bg-white bg-opacity-40 backdrop-blur-lg rounded-t-md drop-shadow-lg"
       >
-        <BiDotsVerticalRounded />
+        {/*  */}
+        {/* Task title */}
+        <div
+          onClick={() => {
+            setTaskAtom({
+              modalOpen: true,
+              task: task,
+            });
+          }}
+          className="bg-white py-1 rounded-md cursor-pointer"
+        >
+          <h1 className={"text-[15px] font-bold pl-2"}>{task.name}</h1>
+          <p className="text-[14px] pl-2 truncate">{task.description}</p>
+        </div>
+        <span className="w-fit px-2 py-1 text-sm rounded-lg bg-gray-100">
+          {task.users?.name == undefined ? "Not assigned" : task.users.name}
+        </span>
       </div>
 
-      {/* Dropdown */}
-      {isDropdownOpen && (
+      {/* Settings icon to enable functions on task */}
+      <motion.div
+        onClick={() => {
+          setShowSettings((value) => !value);
+        }}
+        animate={{
+          scale: isShowSettings ? 1.1 : 1,
+        }}
+        className="absolute top-0 right-0 text-gray-700 bg-white p-0.5 ring-black hover:ring-gray-300 shadow-xl border-gray-700 rounded-bl-lg rounded-tr-md cursor-pointer"
+      >
+        <MdSettings size={18} />
+      </motion.div>
+
+      {/* Functions on task */}
+      {isShowSettings && (
         <AnimatePresence>
           <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            className="absolute top-[5px] right-[5px] flex flex-col gap-1 text-[12px] bg-gray-100 rounded cursor-pointer"
+            initial={{
+              top: "90%",
+              opacity: 0,
+            }}
+            animate={{ top: "100%", opacity: 1 }}
+            exit={{
+              top: "90%",
+              opacity: 0,
+            }}
+            className="absolute top-full right-0 w-full flex justify-between items-center"
           >
-            <p
-              onClick={() => setDropdownOpen(false)}
-              className="px-3 pt-1 ml-auto text-xl hover:text-gray-500"
-            >
-              <AiOutlineCloseCircle />
-            </p>
-            <p
-              onClick={() => {
-                deleteTask();
-                setDropdownOpen(false);
-              }}
-              className="px-4 py-1 bg-gray-100 hover:brightness-[90%]"
-            >
-              Delete Task
-            </p>
-            <p
+            {/* Task editor */}
+            <div
               onClick={() => {
                 setEditMode(true);
-                setDropdownOpen(false);
               }}
-              className="px-4 py-1 bg-gray-100 hover:brightness-[90%]"
+              className="w-fit group flex gap-1 items-center bg-blue-500 pl-1.5 p-0.5 text-gray-100 cursor-pointer rounded-b-md hover:px-1.5"
             >
-              Edit
-            </p>
-            <p
-              onClick={() => {
-                setTaskAtom({
-                  modalOpen: true,
-                  task: task,
-                });
-                setDropdownOpen(false);
+              <BiEdit size={18} />
+              <span className="max-w-[0px] max-h-[15px] text-[10px] overflow-hidden group-hover:max-w-[100px] font-bold transition-all duration-700 ease-out">
+                Edit task
+              </span>
+            </div>
+            {/* Task deletor */}
+            <div
+              onClick={(e) => {
+                deleteTask();
               }}
-              className="px-4 py-1 bg-gray-100 hover:brightness-[90%]"
+              className="w-fit group flex gap-1 items-center bg-red-500 pl-1.5 p-0.5 text-gray-100 cursor-pointer rounded-b-md hover:px-1.5"
             >
-              View details
-            </p>
+              <BiTrash size={18} />
+              <span className="max-w-[0px] max-h-[15px] text-[10px] overflow-hidden group-hover:max-w-[100px] font-bold transition-all duration-700 ease-out">
+                Delete task
+              </span>
+            </div>
           </motion.div>
         </AnimatePresence>
       )}
-
-      {/*  */}
-      {/* Task labels were removed as they seemed unneccessary */}
     </div>
   );
 }

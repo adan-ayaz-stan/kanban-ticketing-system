@@ -82,16 +82,22 @@ export default function IndvidualProject({ project, user }: pageProps) {
   async function getTasksForProjects() {
     const { data, error } = await supabase
       .from("tasks")
-      .select("*, users(name)")
+      .select("*, users!tasks_assigned_to_fkey(name)")
       .eq("project_id", project.project_id);
 
     if (error == null) {
       setTasks(data);
+      console.log("Getting tasks", data);
     }
+
+    console.log(error);
   }
 
   useEffect(() => {
     getTasksForProjects();
+  });
+
+  useEffect(() => {
     // Setting up the subscription
     supabase
       .channel("any")
@@ -149,7 +155,7 @@ export default function IndvidualProject({ project, user }: pageProps) {
         }
       )
       .subscribe();
-  }, []);
+  });
 
   return (
     <div className="min-h-screen h-fit pb-24 bg-[#FFF2F2]">

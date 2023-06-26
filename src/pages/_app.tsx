@@ -6,6 +6,7 @@ import { AppProps } from "next/app";
 import "../styles/globals.css";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { RecoilRoot } from "recoil";
+import { Database } from "@/types/supabase";
 
 const queryClient = new QueryClient();
 
