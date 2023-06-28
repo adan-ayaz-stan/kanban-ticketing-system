@@ -1,9 +1,45 @@
 import { taskDetailsModalAtom } from "@/atoms/taskDetailsModalAtom";
+import { Inter } from "@next/font/google";
 import { motion } from "framer-motion";
 import { useSetRecoilState } from "recoil";
 
-export default function TaskDetailsModal({ task }) {
+import { FaRegDotCircle } from "react-icons/fa";
+import { useEffect, useState } from "react";
+
+const inter = Inter({ subsets: ["latin"], weight: ["400", "500"] });
+
+export default function TaskDetailsModal({ task, taskAssignee }) {
   const setTaskAtom = useSetRecoilState(taskDetailsModalAtom);
+
+  const [taskDate, setTaskDate] = useState("");
+
+  function returnSolidColor(priorty: string) {
+    switch (priorty) {
+      case "low":
+        return "#52b788";
+
+      case "medium":
+        return "#ffba08";
+
+      case "high":
+        return "#d90429";
+    }
+  }
+
+  useEffect(() => {
+    const dateString = task.created_at;
+    const date = new Date(dateString);
+    const options = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+    };
+    const simpleDateTime = date.toLocaleString(undefined, options);
+    setTaskDate(simpleDateTime);
+  }, []);
 
   return (
     <motion.div
@@ -24,39 +60,53 @@ export default function TaskDetailsModal({ task }) {
         {/*  */}
         <div className="container flex flex-col w-full max-w-lg p-6 mx-auto divide-y rounded-md divide-gray-700 bg-white">
           <div className="flex justify-between p-4">
-            <div className="flex space-x-4">
-              <div>
-                <h4 className="font-bold">{task.name}</h4>
-                <span className="text-xs dark:text-gray-400">
-                  {task.created_at}
-                </span>
-              </div>
+            <div>
+              <h4 style={inter.style} className="leading-[1em] font-medium">
+                {task.name}
+              </h4>
+              <span className="text-xs dark:text-gray-400">{taskDate}</span>
+            </div>
+
+            <div>
+              <p
+                style={{
+                  borderColor: returnSolidColor(task.priorty),
+                }}
+                className="flex items-center gap-1 p-1 text-[12px] bg-white rounded w-fit uppercase border-2"
+              >
+                <FaRegDotCircle
+                  size={16}
+                  style={{
+                    color: returnSolidColor(task.priorty),
+                  }}
+                />{" "}
+                {task.priorty} {"PRIORTY TASK"}
+              </p>
             </div>
           </div>
           <div className="p-4 space-y-2 text-sm dark:text-gray-400">
-            <p>
-              <span className="font-bold">Task Description: </span>{" "}
-              {task.description}
+            <p className="flex flex-col ring-1 ring-gray-600 rounded">
+              <span className="text-[12px] text-gray-600 lowercase font-mono border-b-[1px] border-gray-800 rounded-t px-2 pt-1">
+                Task Description:{" "}
+              </span>{" "}
+              <pre style={inter.style} className="p-2">
+                {task.description}
+              </pre>
             </p>
-            <p>
-              <span className="font-bold">Task status: </span>{" "}
-              <span>{task.status}</span>
-            </p>
-            <p>
-              <span className="font-bold">Task Assigned To: </span>{" "}
-              <span>{task.users?.name}</span>
-            </p>
-            <p>
-              <span className="font-bold">Task priorty: </span>{" "}
-              <span>{task.priority}</span>
-            </p>
-            <p>
-              <span className="font-bold">Task Due Date: </span>{" "}
-              <span>{task.due_date}</span>
-            </p>
-            <p>
-              <span className="font-bold">Task report: </span>{" "}
-              <span>{task.report}</span>
+            <p className="flex flex-col ring-1 ring-gray-600 rounded">
+              <span className="text-[12px] text-gray-600 lowercase font-mono border-b-[1px] border-gray-800 rounded-t px-2 pt-1">
+                Task Assigned To:{" "}
+              </span>{" "}
+              <span className="w-fit flex items-center gap-2 px-2 py-1 my-2 mx-2 text-sm rounded-lg bg-gray-100">
+                {taskAssignee.image != "" && (
+                  <img
+                    src={taskAssignee.image}
+                    alt="assignee-profile"
+                    className="h-8 w-8 rounded-full object-cover"
+                  />
+                )}{" "}
+                {taskAssignee.name}
+              </span>
             </p>
           </div>
         </div>

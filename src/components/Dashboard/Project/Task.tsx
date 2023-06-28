@@ -1,14 +1,14 @@
-import { taskDetailsModalAtom } from "@/atoms/taskDetailsModalAtom";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
-import { AiOutlineCloseCircle } from "react-icons/ai";
-import { BiDotsVerticalRounded, BiEdit, BiTrash } from "react-icons/bi";
+import { useEffect, useState } from "react";
+import { BiEdit, BiTrash } from "react-icons/bi";
 import { useSetRecoilState } from "recoil";
-import TaskEditor from "./TaskEditor";
 import { Database } from "@/types/supabase";
 import { MdSettings } from "react-icons/md";
+import { Inter } from "@next/font/google";
+import { taskDetailsModalAtom } from "@/atoms/taskDetailsModalAtom";
+import { taskEditorModalAtom } from "@/atoms/taskEditorModalAtom";
+import { FaRegDotCircle } from "react-icons/fa";
 
 interface TaskTypes {
   task: {
@@ -27,11 +27,17 @@ interface TaskTypes {
   projectData: Object;
 }
 
+const inter = Inter({ subsets: ["latin"], weight: "500" });
+
 export default function Task({ task, projectData }: TaskTypes) {
-  const [isEditMode, setEditMode] = useState(false);
+  const [taskAssignee, setTaskAssignee] = useState({
+    name: "",
+    image: "",
+  });
   const [isShowSettings, setShowSettings] = useState(false);
 
-  const setTaskAtom = useSetRecoilState(taskDetailsModalAtom);
+  const setTaskDetailsAtom = useSetRecoilState(taskDetailsModalAtom);
+  const setTaskEditorAtom = useSetRecoilState(taskEditorModalAtom);
 
   const supabase = useSupabaseClient<Database>();
 
@@ -42,7 +48,18 @@ export default function Task({ task, projectData }: TaskTypes) {
       .eq("task_id", task.task_id);
   }
 
-  console.log(task);
+  async function getTaskAssignee() {
+    const { data, error } = await supabase
+      .from("users")
+      .select("name, image")
+      .eq("id", task.assigned_to)
+      .limit(1)
+      .single();
+
+    if (error == null) {
+      setTaskAssignee({ name: data.name, image: data.image });
+    }
+  }
 
   function returnColor(priorty: string) {
     switch (priorty) {
@@ -56,18 +73,29 @@ export default function Task({ task, projectData }: TaskTypes) {
         return "linear-gradient(to right, #c31432, #240b36)";
     }
   }
+  function returnSolidColor(priorty: string) {
+    switch (priorty) {
+      case "low":
+        return "#52b788";
 
-  if (isEditMode) {
-    return (
-      <div className="h-fit flex flex-col gap-2 p-2 bg-white bg-opacity-40 backdrop-blur-lg rounded-lg drop-shadow-lg">
-        <TaskEditor
-          task={task}
-          setEditMode={setEditMode}
-          projectData={projectData}
-        />
-      </div>
-    );
+      case "medium":
+        return "#ffba08";
+
+      case "high":
+        return "#d90429";
+    }
   }
+
+  function openEditorForTask() {
+    setTaskEditorAtom({
+      modalOpen: true,
+      task: task,
+    });
+  }
+
+  useEffect(() => {
+    getTaskAssignee();
+  }, [task]);
 
   return (
     <div className="relative">
@@ -75,24 +103,45 @@ export default function Task({ task, projectData }: TaskTypes) {
         style={{
           background: returnColor(task.priorty),
         }}
-        className="h-fit flex flex-col gap-1 px-2 py-2 pt-7 bg-white bg-opacity-40 backdrop-blur-lg rounded-t-md drop-shadow-lg"
+        className="h-fit flex flex-col gap-1 px-2 py-2 pt-3 bg-white bg-opacity-40 backdrop-blur-lg rounded-t-md drop-shadow-lg"
       >
-        {/*  */}
+        {/* Task priorty */}
+        <p className="flex items-center gap-1 p-1 text-[12px] bg-white rounded w-fit uppercase">
+          <FaRegDotCircle
+            size={16}
+            style={{
+              color: returnSolidColor(task.priorty),
+            }}
+          />{" "}
+          {task.priorty}
+        </p>
         {/* Task title */}
         <div
           onClick={() => {
-            setTaskAtom({
+            setTaskDetailsAtom({
               modalOpen: true,
               task: task,
+              taskAssignee,
             });
           }}
-          className="bg-white py-1 rounded-md cursor-pointer"
+          className="bg-white py-1 rounded-md cursor-pointer hover:scale-[1.025] transition-all duration-400"
         >
-          <h1 className={"text-[15px] font-bold pl-2"}>{task.name}</h1>
-          <p className="text-[14px] pl-2 truncate">{task.description}</p>
+          <h1 style={inter.style} className={"text-[15px] font-bold pl-2"}>
+            {task.name}
+          </h1>
+          <p className="max-w-[200px] text-[12px] text-gray-600 pl-2 truncate">
+            {task.description}
+          </p>
         </div>
-        <span className="w-fit px-2 py-1 text-sm rounded-lg bg-gray-100">
-          {task.users?.name == undefined ? "Not assigned" : task.users.name}
+        <span className="w-fit flex items-center gap-2 px-2 py-1 text-sm rounded-lg bg-gray-100">
+          {taskAssignee.image != "" && (
+            <img
+              src={taskAssignee.image}
+              alt="assignee-profile"
+              className="h-8 w-8 rounded-full object-cover"
+            />
+          )}{" "}
+          {taskAssignee.name}
         </span>
       </div>
 
@@ -101,12 +150,12 @@ export default function Task({ task, projectData }: TaskTypes) {
         onClick={() => {
           setShowSettings((value) => !value);
         }}
-        animate={{
-          scale: isShowSettings ? 1.1 : 1,
+        style={{
+          color: isShowSettings ? "#000000" : "#555555",
         }}
-        className="absolute top-0 right-0 text-gray-700 bg-white p-0.5 ring-black hover:ring-gray-300 shadow-xl border-gray-700 rounded-bl-lg rounded-tr-md cursor-pointer"
+        className="absolute top-0 right-0 flex items-center bg-white p-0.5 pr-1 ring-black hover:ring-gray-300 shadow-xl border-gray-700 rounded-bl-lg rounded-tr-md cursor-pointer transition-all duration-400"
       >
-        <MdSettings size={18} />
+        <MdSettings size={18} /> <span className="text-[12px]">Settings</span>
       </motion.div>
 
       {/* Functions on task */}
@@ -126,9 +175,7 @@ export default function Task({ task, projectData }: TaskTypes) {
           >
             {/* Task editor */}
             <div
-              onClick={() => {
-                setEditMode(true);
-              }}
+              onClick={openEditorForTask}
               className="w-fit group flex gap-1 items-center bg-blue-500 pl-1.5 p-0.5 text-gray-100 cursor-pointer rounded-b-md hover:px-1.5"
             >
               <BiEdit size={18} />

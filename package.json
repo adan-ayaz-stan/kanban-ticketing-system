@@ -13,7 +13,7 @@
     "@supabase/auth-helpers-nextjs": "^0.5.3",
     "@supabase/auth-helpers-react": "^0.3.1",
     "@supabase/auth-ui-react": "^0.2.6",
-    "@supabase/supabase-js": "^2.4.0",
+    "@supabase/supabase-js": "^2.26.0",
     "@types/jsonwebtoken": "^9.0.1",
     "@types/node": "18.11.18",
     "@types/react": "18.0.27",

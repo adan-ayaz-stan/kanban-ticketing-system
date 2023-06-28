@@ -4,8 +4,12 @@ import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import {
+  createServerComponentSupabaseClient,
+  createServerSupabaseClient,
+  createBrowserSupabaseClient,
+} from "@supabase/auth-helpers-nextjs";
+import { cookies } from "next/headers";
 
 import Category from "@/components/Dashboard/Project/Category";
 import NavigationBar from "@/components/Dashboard/Project/NavigationBar";
@@ -13,10 +17,13 @@ import Sidebar from "@/components/Dashboard/Sidebar";
 import TaskDetailsModal from "@/components/Dashboard/Project/TaskDetailsModal";
 
 import { taskDetailsModalAtom } from "../../../atoms/taskDetailsModalAtom";
+import { taskEditorModalAtom } from "@/atoms/taskEditorModalAtom";
 
 import { Project, User } from "@/types/types";
 import { BiCoinStack } from "react-icons/bi";
 import { useRecoilValue } from "recoil";
+import TaskEditor from "@/components/Dashboard/Project/TaskEditor";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
 type pageProps = {
   project: Project;
@@ -26,7 +33,8 @@ type pageProps = {
 export default function IndvidualProject({ project, user }: pageProps) {
   const router = useRouter();
   const supabase = useSupabaseClient();
-  const taskAtom = useRecoilValue(taskDetailsModalAtom);
+  const taskDetailsAtom = useRecoilValue(taskDetailsModalAtom);
+  const taskEditorAtom = useRecoilValue(taskEditorModalAtom);
 
   const [items, setItems] = useState(project.task_categories);
   const [tasks, setTasks] = useState([]);
@@ -87,20 +95,17 @@ export default function IndvidualProject({ project, user }: pageProps) {
 
     if (error == null) {
       setTasks(data);
-      console.log("Getting tasks", data);
     }
-
-    console.log(error);
   }
 
   useEffect(() => {
     getTasksForProjects();
-  });
+  }, []);
 
   useEffect(() => {
     // Setting up the subscription
-    supabase
-      .channel("any")
+    const channel = supabase
+      .channel("realtime tasks")
       .on(
         "postgres_changes",
         {
@@ -109,12 +114,8 @@ export default function IndvidualProject({ project, user }: pageProps) {
           table: "tasks",
           filter: `project_id=eq.${project.project_id}`,
         },
-        async (payload) => {
+        (payload) => {
           // Adding the task to the existing array of tasks
-          const { data, error } = await supabase
-            .from("users")
-            .select("name")
-            .eq("id", user.id);
 
           // If incase task editing occurs, we will remove that respective task from the array and add the new payload to the array
           console.log(payload);
@@ -139,7 +140,7 @@ export default function IndvidualProject({ project, user }: pageProps) {
               const newObject = {
                 ...payload.new,
                 users: {
-                  name: data[0].name,
+                  name: user.user_metadata.name,
                 },
               };
 
@@ -154,11 +155,17 @@ export default function IndvidualProject({ project, user }: pageProps) {
           }
         }
       )
-      .subscribe();
-  });
+      .subscribe((status, err) => {
+        console.log(status, err);
+      });
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [supabase, project.project_id]);
 
   return (
-    <div className="min-h-screen h-fit pb-24 bg-[#FFF2F2]">
+    <div className="min-h-screen h-fit pb-24 bg-white">
       <Head>
         <title>{project.name}</title>
         <meta name="description" content="Coded by Adan Ayaz" />
@@ -167,7 +174,17 @@ export default function IndvidualProject({ project, user }: pageProps) {
       </Head>
 
       <AnimatePresence>
-        {taskAtom.modalOpen && <TaskDetailsModal task={taskAtom.task} />}
+        {taskDetailsAtom.modalOpen && (
+          <TaskDetailsModal
+            task={taskDetailsAtom.task}
+            taskAssignee={taskDetailsAtom.taskAssignee}
+          />
+        )}
+      </AnimatePresence>
+      <AnimatePresence>
+        {taskEditorAtom.modalOpen && (
+          <TaskEditor task={taskEditorAtom.task} projectData={project} />
+        )}
       </AnimatePresence>
 
       <Sidebar />

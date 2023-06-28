@@ -47,7 +47,7 @@ export default function Category({ category, projectData, tasks }: Props) {
         </span>
       </div>
 
-      <div className="flex flex-col gap-3 py-3">
+      <div className="flex flex-col gap-8 py-3 pb-6">
         {tasks.map((ele, ind) => {
           return (
             <Task task={ele} key={ele.task_id} projectData={projectData} />

@@ -14,7 +14,7 @@ export default function NavigationBar({ projectData, user }) {
     useState(false);
 
   return (
-    <div className="flex flex-col sm:flex-row items-center gap-3 p-3 mt-2 ml-2 mr-2 sm:mr-0 mb-4 text-white bg-gray-900 rounded-l-xl rounded-r-xl sm:rounded-r-none">
+    <div className="flex flex-col sm:flex-row items-center gap-3 p-3 mt-2 ml-2 mr-2 sm:mr-0 mb-4 text-white bg-[url('https://i.ibb.co/NZ7skxR/image.png')] bg-cover bg-center rounded-l-xl rounded-r-xl sm:rounded-r-none">
       {/* Project details */}
       <h2 className={`${barlow.className} text-white text-2xl`}>
         {projectData.name}

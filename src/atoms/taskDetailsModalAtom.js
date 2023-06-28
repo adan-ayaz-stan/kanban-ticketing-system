@@ -5,5 +5,6 @@ export const taskDetailsModalAtom = atom({
   default: {
     modalOpen: false,
     task: {},
+    taskAssignee: {},
   },
 });

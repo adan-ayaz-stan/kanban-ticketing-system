@@ -2,7 +2,6 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import {
-  AiFillGift,
   AiFillHome,
   AiOutlineLogout,
   AiFillProject,
@@ -11,7 +10,11 @@ import {
 import { Tooltip } from "react-tooltip";
 
 import "react-tooltip/dist/react-tooltip.css";
+
 import { Barlow } from "@next/font/google";
+
+import logoSvg from "../../assets/images/logo.svg";
+import Image from "next/image";
 
 const barlow = Barlow({ subsets: ["latin"], weight: "700" });
 
@@ -27,9 +30,21 @@ export default function Sidebar() {
   };
 
   return (
-    <div className="h-fit sm:h-screen w-screen sm:w-16 fixed bottom-0 sm:top-0 left-0 flex flex-row sm:flex-col justify-center sm:justify-between items-center py-2 sm:py-0 text-white bg-gray-900 z-50">
+    <div className="h-fit sm:h-screen w-screen sm:w-16 fixed bottom-0 sm:top-0 left-0 flex flex-row sm:flex-col justify-center sm:justify-between items-center py-2 sm:py-0 text-white bg-[url('https://i.ibb.co/NZ7skxR/image.png')] bg-cover bg-center z-30">
       {/* Logo */}
-      <div className="relative hidden sm:block h-20 w-full">Logo</div>
+      <div className="relative flex items-center justify-center sm:block w-full p-2">
+        <Image
+          src={logoSvg}
+          alt="logo"
+          height={40}
+          width={40}
+          style={{
+            height: "40px",
+            width: "40px",
+          }}
+          className="mx-auto rounded-full object-cover invert"
+        />
+      </div>
 
       {/* Routing */}
       <div className="flex flex-row sm:flex-col gap-4">

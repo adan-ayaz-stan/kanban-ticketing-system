@@ -1,9 +1,12 @@
+import { taskEditorModalAtom } from "@/atoms/taskEditorModalAtom";
+import { Project } from "@/types/types";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useFormik } from "formik";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import Select from "react-select";
+import { useSetRecoilState } from "recoil";
 
 type TaskEditor = {
   task: {
@@ -20,35 +23,20 @@ type TaskEditor = {
     project_id: string;
   };
   setEditMode: any;
-  projectData: Object;
+  projectData: Project;
 };
 
-export default function TaskEditor({
-  task,
-  setEditMode,
-  projectData,
-}: TaskEditor) {
+export default function TaskEditor({ task, projectData }: TaskEditor) {
   const router = useRouter();
   const supabase = useSupabaseClient();
 
-  const { isLoading, isSuccess, data, error, refetch } = useQuery(
-    `assign-options-for-tasks-project-${projectData.project_id}`,
-    () =>
-      supabase
-        .from("project_members")
-        .select()
-        .eq("project_id", projectData.project_id),
-    {
-      cacheTime: 6000,
-      staleTime: 6000,
-    }
-  );
+  const setTaskEditorAtom = useSetRecoilState(taskEditorModalAtom);
 
-  const assignOptions = isSuccess
-    ? data.data.map((ele, ind) => {
-        return { label: ele.user_name, value: ele.user_id };
-      })
-    : [];
+  const [projectMembers, setProjectMembers] = useState([]);
+
+  const assignOptions = projectMembers.map((ele, ind) => {
+    return { label: ele.user_name, value: ele.user_id };
+  });
 
   const statusOptions = projectData.task_categories.map((ele, ind) => {
     return { value: ele, label: `${ele}`.toUpperCase() };
@@ -66,14 +54,47 @@ export default function TaskEditor({
 
   const [processing, setProcessing] = useState(false);
 
+  async function getProjectMembers() {
+    const { data, error } = await supabase
+      .from("project_members")
+      .select()
+      .eq("project_id", projectData.project_id);
+
+    if (error == null) {
+      setProjectMembers(data);
+    }
+  }
+
+  function checkForDefaultAssigne(assignOptions) {
+    let defaultValue = {
+      title: "",
+      value: "",
+    };
+
+    for (let i = 0; i < assignOptions.length; i++) {
+      if (assignOptions[i].value == task.assigned_to) {
+        defaultValue = assignOptions[i];
+      }
+    }
+
+    return defaultValue;
+  }
+
+  useEffect(() => {
+    getProjectMembers();
+    const assOps = projectMembers.map((ele, ind) => {
+      return { label: ele.user_name, value: ele.user_id };
+    });
+  }, []);
+
   const validate = (values) => {
     const errors = {};
 
     if (values.name.length == 0) {
       errors.name = "Task name cannot be empty.";
     }
-    if (values.name.length > 28) {
-      errors.name = "Task name cannot exceed 28 characters.";
+    if (values.name.length > 38) {
+      errors.name = "Task name cannot exceed 38 characters.";
     }
 
     if (values.description.length == 0) {
@@ -104,131 +125,128 @@ export default function TaskEditor({
         .eq("task_id", task.task_id);
 
       if (error == null) {
-        setEditMode(false);
+        setTaskEditorAtom({
+          modalOpen: false,
+          task: {},
+        });
       }
       setProcessing(false);
     },
   });
 
   return (
-    <form
-      onSubmit={formik.handleSubmit}
-      className="flex flex-col gap-2 text-sm z-[1000]"
-    >
-      <div>
-        <label className="block font-medium">Task Name</label>
-        <input
-          name="name"
-          type={"text"}
-          className="w-full px-2 py-1 rounded bg-gray-100"
-          defaultValue={task.name}
-          onChange={formik.handleChange}
-        />
-        {formik.errors.name && (
-          <p className="px-2 py-1 text-[12px] text-red-600">
-            {formik.errors.name}
-          </p>
-        )}
-      </div>
+    <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-black bg-opacity-30 z-50">
+      <form
+        onSubmit={formik.handleSubmit}
+        className="sm:min-w-[400px] flex flex-col gap-2 text-sm z-[1000] bg-white py-6 px-4 rounded-md"
+      >
+        <div>
+          <label className="block font-medium">Task Name</label>
+          <input
+            name="name"
+            type={"text"}
+            className="w-full px-2 py-1 rounded ring-1 ring-gray-300"
+            defaultValue={task.name}
+            onChange={formik.handleChange}
+          />
+          {formik.errors.name && (
+            <p className="px-2 py-1 text-[12px] text-red-600">
+              {formik.errors.name}
+            </p>
+          )}
+        </div>
 
-      <div>
-        <label className="block font-medium">Task Description</label>
-        <textarea
-          name="description"
-          rows={2}
-          className="w-full px-2 py-1 rounded resize-y bg-gray-100"
-          defaultValue={task.description}
-          onChange={formik.handleChange}
-        />
-        {formik.errors.description && (
-          <p className="px-2 py-1 text-[12px] text-red-600">
-            {formik.errors.description}
-          </p>
-        )}
-      </div>
+        <div>
+          <label className="block font-medium">Task Description</label>
+          <textarea
+            name="description"
+            rows={2}
+            className="w-full px-2 py-1 rounded resize-y ring-1 ring-gray-300"
+            defaultValue={task.description}
+            onChange={formik.handleChange}
+          />
+          {formik.errors.description && (
+            <p className="px-2 py-1 text-[12px] text-red-600">
+              {formik.errors.description}
+            </p>
+          )}
+        </div>
 
-      <div>
-        <label className="block font-medium">Assign To</label>
-        <Select
-          options={assignOptions}
-          defaultValue={() => {
-            let defaultValue = {
-              title: "",
-              value: "",
-            };
+        <div>
+          <label className="block font-medium">Assign To</label>
+          <Select
+            options={assignOptions}
+            onChange={(value) => setAssignTo(value)}
+          />
+        </div>
 
-            for (let i = 0; i < assignOptions.length; i++) {
-              if (assignOptions[i].value == task.assigned_to) {
-                defaultValue = assignOptions[i];
+        <div>
+          <label className="block font-medium">Change Status To</label>
+          <Select
+            options={statusOptions}
+            defaultValue={() => {
+              let defaultValue = {
+                title: "PROGRESS",
+                value: "progress",
+              };
+
+              for (let i = 0; i < statusOptions.length; i++) {
+                if (statusOptions[i].value == task.status) {
+                  defaultValue = statusOptions[i];
+                }
               }
-            }
 
-            return defaultValue;
-          }}
-          onChange={(value) => setAssignTo(value)}
-        />
-      </div>
+              return defaultValue;
+            }}
+            onChange={(value) => setStatusTo(value)}
+          />
+        </div>
 
-      <div>
-        <label className="block font-medium">Change Status To</label>
-        <Select
-          options={statusOptions}
-          defaultValue={() => {
-            let defaultValue = {
-              title: "PROGRESS",
-              value: "progress",
-            };
+        <div>
+          <label className="block font-medium">Change Priorty To</label>
+          <Select
+            options={priortyOptions}
+            defaultValue={() => {
+              let defaultValue = {
+                title: "Low",
+                value: "low",
+              };
 
-            for (let i = 0; i < statusOptions.length; i++) {
-              if (statusOptions[i].value == task.status) {
-                defaultValue = statusOptions[i];
+              for (let i = 0; i < priortyOptions.length; i++) {
+                if (priortyOptions[i].value == task.priorty) {
+                  defaultValue = priortyOptions[i];
+                  setPriortyTo(priortyOptions[i]);
+                }
               }
+
+              return defaultValue;
+            }}
+            onChange={(value) => setPriortyTo(value)}
+          />
+        </div>
+
+        <div className="flex flex-row gap-3 justify-end">
+          <button
+            onClick={() =>
+              setTaskEditorAtom({
+                modalOpen: false,
+                task: {},
+              })
             }
-
-            return defaultValue;
-          }}
-          onChange={(value) => setStatusTo(value)}
-        />
-      </div>
-
-      <div>
-        <label className="block font-medium">Change Priorty To</label>
-        <Select
-          options={priortyOptions}
-          defaultValue={() => {
-            let defaultValue = {
-              title: "Low",
-              value: "low",
-            };
-
-            for (let i = 0; i < priortyOptions.length; i++) {
-              if (priortyOptions[i].value == task.priorty) {
-                defaultValue = priortyOptions[i];
-              }
-            }
-
-            return defaultValue;
-          }}
-          onChange={(value) => setPriortyTo(value)}
-        />
-      </div>
-
-      <div className="flex flex-row gap-3 justify-end">
-        <button
-          onClick={() => setEditMode(false)}
-          className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-green-800"
-          disabled={processing}
-        >
-          Discard
-        </button>
-        <button
-          type="submit"
-          className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-          disabled={processing}
-        >
-          Save
-        </button>
-      </div>
-    </form>
+            className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-green-800"
+            disabled={processing}
+          >
+            Discard
+          </button>
+          <button
+            type="submit"
+            className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+            disabled={processing}
+          >
+            Save
+          </button>
+        </div>
+      </form>
+    </div>
   );
 }
