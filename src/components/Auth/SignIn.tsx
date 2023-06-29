@@ -1,6 +1,9 @@
+import { Sen } from "@next/font/google";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import router from "next/router";
+
+const sen = Sen({ weight: "700", subsets: ["latin"] });
 
 export default function SignIn({ changeMode }) {
   const supabase = useSupabaseClient();
@@ -43,7 +46,7 @@ export default function SignIn({ changeMode }) {
       }}
     >
       {({ isSubmitting }) => (
-        <Form className="flex flex-col gap-4 text-white py-4">
+        <Form style={sen.style} className="flex flex-col gap-4 text-white py-4">
           <div className="flex flex-col gap-1">
             <label className="text-gray-400">Your email</label>
             <Field
@@ -77,7 +80,7 @@ export default function SignIn({ changeMode }) {
             disabled={isSubmitting}
             className="w-full text-center mt-2 p-3 text-black bg-[#fff2f2] rounded-md hover:opacity-90 disabled:cursor-not-allowed"
           >
-            Sign in
+            {isSubmitting ? "Signing In..." : "Sign in"}
           </button>
 
           <div className="flex flex-col gap-1 py-4 text-sm text-center underline text-white">

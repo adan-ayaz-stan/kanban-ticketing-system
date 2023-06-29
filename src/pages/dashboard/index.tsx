@@ -10,17 +10,27 @@ import { MdSettings } from "react-icons/md";
 import { useState } from "react";
 import Settings from "@/components/Dashboard/Settings";
 import { AnimatePresence } from "framer-motion";
+import { Rubik, Sen } from "@next/font/google";
 
 type pageProps = {
   user: User;
   initialSession: Object;
 };
 
+const rubik = Rubik({
+  subsets: ["hebrew"],
+  weight: ["400", "500", "600", "700", "800"],
+});
+const sen = Sen({ subsets: ["latin"], weight: ["400", "700", "800"] });
+
 const Dashboard: NextPage<pageProps> = ({ user, initialSession }) => {
   const [isOpenSettings, setOpenSettings] = useState(false);
 
   return (
-    <div className="min-h-screen flex-col bg-white text-black py-4">
+    <div
+      style={sen.style}
+      className="min-h-screen flex-col bg-white text-black py-4"
+    >
       <Head>
         <title>Dashboard</title>
         <meta name="description" content="Coded by Adan Ayaz" />
@@ -32,7 +42,7 @@ const Dashboard: NextPage<pageProps> = ({ user, initialSession }) => {
         {isOpenSettings && <Settings closeSettings={setOpenSettings} />}
       </AnimatePresence>
       {/*  */}
-      <div className="flex items-center justify-between px-8">
+      <div className="flex flex-col sm:flex-row items-center justify-between px-8">
         <Heading
           className={
             "w-fit pt-3 text-xl text-center font-medium uppercase mb-4"
@@ -52,7 +62,7 @@ const Dashboard: NextPage<pageProps> = ({ user, initialSession }) => {
         </div>
       </div>
       {/* MAIN PANEL */}
-      <div className="relative px-8 py-12">
+      <div className="relative px-3 md:px-8 py-12">
         <Account user={user} />
       </div>
 

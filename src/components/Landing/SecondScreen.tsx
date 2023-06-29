@@ -1,11 +1,15 @@
-import { Rubik } from "@next/font/google";
+import { Sen, Rubik } from "@next/font/google";
 import { AiOutlineFolder } from "react-icons/ai";
 import { BiMessage } from "react-icons/bi";
 import { TbCloudDataConnection, TbFriends } from "react-icons/tb";
 import { MdOutlineWeb } from "react-icons/md";
 import { motion } from "framer-motion";
 
-const rubik = Rubik({ subsets: ["latin"], weight: "500" });
+const rubik = Rubik({
+  subsets: ["hebrew"],
+  weight: ["400", "500", "600", "700", "800"],
+});
+const sen = Sen({ subsets: ["latin"], weight: ["400", "700", "800"] });
 
 const features = [
   {
@@ -48,7 +52,7 @@ export default function SecondScreen() {
         }}
         viewport={{ once: true }}
         style={rubik.style}
-        className="absolute top-1/4 -translate-y-1/2 text-center text-gray-900 opacity-70 text-[10em] truncate uppercase font-bold"
+        className="absolute top-1/4 -translate-y-1/2 text-center text-gray-900 opacity-70 text-[10em] truncate uppercase font-medium"
       >
         What it does
       </motion.h1>
@@ -75,8 +79,13 @@ export default function SecondScreen() {
               className="flex flex-col items-center p-3 py-5 bg-white bg-opacity-40 rounded-lg"
             >
               <span className="text-gray-900">{ele.icon}</span>
-              <p className="font-semibold text-lg">{ele.title}</p>
-              <p className="w-[250px] text-gray-800 text-center text-sm">
+              <p style={rubik.style} className="font-semibold text-lg">
+                {ele.title}
+              </p>
+              <p
+                style={sen.style}
+                className="w-[250px] text-gray-800 text-center text-sm"
+              >
                 {ele.desc}
               </p>
             </div>

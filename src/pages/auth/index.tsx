@@ -8,6 +8,7 @@ import User from "@/components/Dashboard/SidebarFlowbite/User";
 import SignIn from "@/components/Auth/SignIn";
 import SignUp from "@/components/Auth/SignUp";
 import ForgotPassword from "@/components/Auth/ForgotPassword";
+import { Rubik, Sen } from "@next/font/google";
 
 type AuthPageProps = {
   session: {
@@ -17,6 +18,12 @@ type AuthPageProps = {
     };
   };
 };
+
+const rubik = Rubik({
+  subsets: ["hebrew"],
+  weight: ["400", "500", "600", "700", "800"],
+});
+const sen = Sen({ subsets: ["latin"], weight: ["400", "700", "800"] });
 
 const AuthPage = ({ session }: AuthPageProps) => {
   const router = useRouter();
@@ -54,13 +61,23 @@ const AuthPage = ({ session }: AuthPageProps) => {
 
         {mode == "fgtPassword" && <ForgotPassword changeMode={setMode} />}
 
-        <div className="w-full p-2 bg-gray-300 rounded">
-          <h2 className="font-bold text-center">Dummy Creds</h2>
-          <p className="px-6">
-            Email: vuhumavomoce@gotgel.org <br /> or <br />{" "}
-            pfeoekk376@iemail.fun
+        <div style={sen.style} className="w-full p-2 bg-gray-300 rounded">
+          <h2 style={rubik.style} className="font-bold text-center">
+            Dummy Creds
+          </h2>
+          <p className="font-medium px-6">
+            <span style={rubik.style} className="font-semibold">
+              Email
+            </span>
+            : vuhumavomoce@gotgel.org
+            <br /> or <br /> pfeoekk376@iemail.fun
           </p>
-          <p className="px-6">Password: 12345678</p>
+          <p className="px-6">
+            <span style={rubik.style} className="font-semibold">
+              Password
+            </span>
+            : 12345678
+          </p>
         </div>
       </div>
     </div>

@@ -8,17 +8,20 @@ export default function Account({ user }) {
   const username = user.user_metadata.name;
   const supabase = useSupabaseClient();
 
+  const [name, setName] = useState(username);
   const [imageLink, setImageLink] = useState("");
 
   async function getProfileImage() {
     const { data, error } = await supabase
       .from("users")
-      .select("image")
-      .eq("id", user.id);
+      .select("name, image")
+      .eq("id", user.id)
+      .limit(1)
+      .single();
 
     if (error == null) {
-      console.log("got link", data[0].image);
-      setImageLink(data[0].image);
+      setImageLink(data.image);
+      setName(data.name);
     }
   }
 
@@ -28,7 +31,7 @@ export default function Account({ user }) {
 
   return (
     <>
-      <div className="w-fit px-12 bg-gray-900 rounded-lg shadow">
+      <div className="w-full sm:w-fit px-3 sm:px-12 bg-gray-900 rounded-lg shadow">
         <div className="flex flex-col items-center py-10">
           {imageLink == "" ? (
             <div
@@ -48,8 +51,8 @@ export default function Account({ user }) {
             />
           )}
 
-          <h5 className="mb-1 text-xl font-medium text-gray-100">{username}</h5>
-          <div className="flex mt-4 space-x-3 md:mt-6">
+          <h5 className="mb-1 text-xl font-medium text-gray-100">{name}</h5>
+          <div className="flex flex-col sm:flex-row mt-4 md:mt-6">
             <Link
               href="/dashboard/projects"
               className="text-gray-900 bg-gradient-to-br from-[#d1c8e4] to-[#ca97d4] hover:opacity-80 focus:ring-4 focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none"

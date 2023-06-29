@@ -27,15 +27,11 @@ export default function AddMemberToProject({ projectData, setModalOpen }) {
   async function fetchConnections() {
     const { data, error } = await supabase
       .from("connections")
-      .select()
-      .or(`user1_id.eq.${session?.user.id},user2_id.eq.${session?.user.id}`);
+      .select("*, users!user2_id(name)")
+      .eq(`user1_id`, session?.user.id);
 
     const processedData = data?.map((ele, ind) => {
-      if (session?.user.id == ele.user1_id) {
-        return { label: ele.user2_name, value: ele.user2_id };
-      } else if (session?.user.id == ele.user2_id) {
-        return { label: ele.user1_name, value: ele.user1_id };
-      }
+      return { label: ele.users.name, value: ele.user2_id };
     });
 
     setOptions(processedData);
@@ -44,11 +40,10 @@ export default function AddMemberToProject({ projectData, setModalOpen }) {
   async function fetchMembers() {
     const { data, error } = await supabase
       .from("project_members")
-      .select()
+      .select("*, users!inner(name)")
       .filter("project_id", "eq", projectData.project_id);
 
     if (!error) {
-      console.log(data);
       setProjectMembers(data);
     } else {
       console.log(error);

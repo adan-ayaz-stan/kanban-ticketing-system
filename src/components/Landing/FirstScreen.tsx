@@ -1,9 +1,6 @@
 import Link from "next/link";
-import Image from "next/image";
 
 import { Rubik, Sen } from "@next/font/google";
-
-import DoodleImage from "@/assets/images/doodle-main-page.png";
 
 const sen = Sen({ weight: "700", subsets: ["latin"] });
 const rubik = Rubik({ subsets: ["hebrew"], weight: "400" });
@@ -15,7 +12,7 @@ export default function FirstScreen() {
       <div className="flex flex-row justify-between items-center px-6 sm:px-12 py-4">
         <div className="text-lg font-mono text-black">Adan Ayaz</div>
 
-        <div className="flex flex-row gap-4">
+        <div style={sen.style} className="flex flex-row gap-4">
           <Link
             href={"/auth"}
             className="text-white bg-gray-900 hover:bg-gray-800 focus:ring-4 focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none"
@@ -45,6 +42,7 @@ export default function FirstScreen() {
             <div className="flex flex-row gap-4">
               <Link
                 href={"/auth"}
+                style={sen.style}
                 className="text-white bg-gray-900 hover:bg-gray-800 focus:ring-4 focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none"
               >
                 Login

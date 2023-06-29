@@ -10,6 +10,13 @@ import Heading from "../Layout/Heading";
 import Image from "next/image";
 import { MdArrowBack, MdClose } from "react-icons/md";
 import { useRouter } from "next/router";
+import { Rubik, Sen } from "@next/font/google";
+
+const rubik = Rubik({
+  subsets: ["hebrew"],
+  weight: ["400", "500", "600", "700", "800"],
+});
+const sen = Sen({ subsets: ["latin"], weight: ["400", "700", "800"] });
 
 export default function Settings({ closeSettings }) {
   const supabase = useSupabaseClient();
@@ -47,7 +54,7 @@ export default function Settings({ closeSettings }) {
         onClick={(e) => {
           e.stopPropagation();
         }}
-        className="bg-white rounded-xl p-4"
+        className="md:w-1/2 sm:w-2/3 w-[90vw] bg-white rounded-xl p-4"
       >
         <div className="flex justify-between items-center">
           <Heading className={"mr-auto text-xl font-medium"}>
@@ -174,9 +181,11 @@ function DisplayNameChanger({
         <input
           type="text"
           id="name"
-          className="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-gray-600 focus:border-transparent"
+          style={sen.style}
+          className="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 font-semibold text-lg bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-gray-600 focus:border-transparent"
           name="name"
           placeholder="Your name"
+          autoComplete="off"
           required
           maxLength={18}
         />

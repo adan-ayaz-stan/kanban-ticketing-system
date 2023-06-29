@@ -1,4 +1,4 @@
-import { Barlow } from "@next/font/google";
+import { Barlow, Rubik, Sen } from "@next/font/google";
 import { useState } from "react";
 import User from "../SidebarFlowbite/User";
 import AddMemberToProject from "./AddMemberToProject";
@@ -9,7 +9,11 @@ import { FaInfoCircle } from "react-icons/fa";
 import { useSetRecoilState } from "recoil";
 import { projectInfoModalAtom } from "@/atoms/projectInfoModalAtom";
 
-const barlow = Barlow({ subsets: ["latin"], weight: "700" });
+const rubik = Rubik({
+  subsets: ["hebrew"],
+  weight: ["400", "500", "600", "700", "800"],
+});
+const sen = Sen({ subsets: ["latin"], weight: ["400", "700", "800"] });
 
 export default function NavigationBar({ projectData, user }) {
   const [isTaskModalOpen, setTaskModalOpen] = useState(false);
@@ -27,10 +31,10 @@ export default function NavigationBar({ projectData, user }) {
   }
 
   return (
-    <div className="flex flex-col sm:flex-row items-center gap-3 p-3 mt-2 ml-2 mr-2 sm:mr-0 mb-4 text-white bg-[url('https://i.ibb.co/NZ7skxR/image.png')] bg-cover bg-center rounded-l-xl rounded-r-xl sm:rounded-r-none">
+    <div className="flex flex-col sm:flex-row items-center gap-3 p-3 mt-2 ml-2 mr-2 sm:mr-0 mb-4 text-white bg-[url('https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fgetwallpapers.com%2Fwallpaper%2Ffull%2F6%2F5%2F5%2F751756-vertical-hd-texture-backgrounds-2560x1440.jpg&f=1&nofb=1&ipt=75c3e1bf8f244e55f528ec2be332fe7891a63f307646155992f11d19ab95c9f6&ipo=images')] bg-cover bg-center rounded-l-xl rounded-r-xl sm:rounded-r-none">
       {/* Project details */}
       <h2
-        className={`${barlow.className} flex items-center gap-1 text-white text-2xl`}
+        className={`${rubik.className} flex items-center gap-1 font-medium text-white text-2xl`}
       >
         {projectData.name}{" "}
         <FaInfoCircle
@@ -43,11 +47,11 @@ export default function NavigationBar({ projectData, user }) {
       {/* Project Functions */}
       {/* Only available if user is the project admin */}
       {projectData.owner_id == user.id ? (
-        <div className="flex flex-row gap-3 mx-auto sm:mx-0 sm:ml-auto">
+        <div className="flex flex-col sm:flex-row gap-3 mx-auto sm:mx-0 sm:ml-auto">
           {/*  */}
           <button
             onClick={() => setTaskModalOpen(true)}
-            className="text-gray-900 bg-gradient-to-br from-[#d1c8e4] to-[#ca97d4] hover:opacity-80 focus:ring-4 focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 focus:outline-none"
+            className="text-gray-900 bg-gradient-to-br from-[#d1c8e4] to-[#ca97d4] hover:opacity-80 focus:ring-4 focus:ring-blue-300 font-semibold rounded text-sm px-5 py-2.5 focus:outline-none"
           >
             Create Task
           </button>
@@ -67,7 +71,7 @@ export default function NavigationBar({ projectData, user }) {
           {/* Add member to project */}
           <button
             onClick={() => setMemberModalOpen(true)}
-            className="text-gray-900 bg-gradient-to-br from-[#d1c8e4] to-[#ca97d4] hover:opacity-80 focus:ring-4 focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 focus:outline-none"
+            className="text-gray-900 bg-gradient-to-br from-[#d1c8e4] to-[#ca97d4] hover:opacity-80 focus:ring-4 focus:ring-blue-300 font-semibold rounded text-sm px-5 py-2.5 focus:outline-none"
           >
             Add Member
           </button>
@@ -88,7 +92,7 @@ export default function NavigationBar({ projectData, user }) {
           {/* Remove a category from project */}
           <button
             onClick={() => setRemoveCategoryModalOpen(true)}
-            className="text-gray-900 bg-gradient-to-br from-[#d1c8e4] to-[#ca97d4] hover:opacity-80 focus:ring-4 focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 focus:outline-none"
+            className="text-gray-900 bg-gradient-to-br from-[#d1c8e4] to-[#ca97d4] hover:opacity-80 focus:ring-4 focus:ring-blue-300 font-semibold rounded text-sm px-5 py-2.5 focus:outline-none"
           >
             Remove Category
           </button>

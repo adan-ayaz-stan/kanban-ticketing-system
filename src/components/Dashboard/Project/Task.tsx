@@ -106,7 +106,7 @@ export default function Task({ task, projectData }: TaskTypes) {
         className="h-fit flex flex-col gap-1 px-2 py-2 pt-3 bg-white bg-opacity-40 backdrop-blur-lg rounded-t-md drop-shadow-lg"
       >
         {/* Task priorty */}
-        <p className="flex items-center gap-1 p-1 text-[12px] bg-white rounded w-fit uppercase">
+        <p className="flex items-center gap-1 p-1 font-semibold text-[12px] bg-white rounded w-fit uppercase">
           <FaRegDotCircle
             size={16}
             style={{
@@ -129,7 +129,7 @@ export default function Task({ task, projectData }: TaskTypes) {
           <h1 style={inter.style} className={"text-[15px] font-bold pl-2"}>
             {task.name}
           </h1>
-          <p className="max-w-[200px] text-[12px] text-gray-600 pl-2 truncate">
+          <p className="max-w-[200px] text-[12px] font-semibold text-gray-600 pl-2 truncate">
             {task.description}
           </p>
         </div>

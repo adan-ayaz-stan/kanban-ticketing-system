@@ -35,7 +35,7 @@ export default function TaskEditor({ task, projectData }: TaskEditor) {
   const [projectMembers, setProjectMembers] = useState([]);
 
   const assignOptions = projectMembers.map((ele, ind) => {
-    return { label: ele.user_name, value: ele.user_id };
+    return { label: ele.users.name, value: ele.user_id };
   });
 
   const statusOptions = projectData.task_categories.map((ele, ind) => {
@@ -57,7 +57,7 @@ export default function TaskEditor({ task, projectData }: TaskEditor) {
   async function getProjectMembers() {
     const { data, error } = await supabase
       .from("project_members")
-      .select()
+      .select("*, users!inner(name)")
       .eq("project_id", projectData.project_id);
 
     if (error == null) {
@@ -234,14 +234,14 @@ export default function TaskEditor({ task, projectData }: TaskEditor) {
                 task: {},
               })
             }
-            className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-green-800"
+            className="focus:outline-none text-white bg-red-700 hover:bg-red-800 font-medium rounded text-sm px-5 py-1.5 mr-2 mb-2"
             disabled={processing}
           >
             Discard
           </button>
           <button
             type="submit"
-            className="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+            className="focus:outline-none text-white bg-green-700 hover:bg-green-800 font-medium rounded text-sm px-5 py-1.5 mr-2 mb-2"
             disabled={processing}
           >
             Save

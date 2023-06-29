@@ -26,11 +26,18 @@ import TaskEditor from "@/components/Dashboard/Project/TaskEditor";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { projectInfoModalAtom } from "@/atoms/projectInfoModalAtom";
 import ProjectInfoModal from "@/components/Dashboard/Project/ProjectInfoModal";
+import { Rubik, Sen } from "@next/font/google";
 
 type pageProps = {
   project: Project;
   user: User;
 };
+
+const rubik = Rubik({
+  subsets: ["hebrew"],
+  weight: ["400", "500", "600", "700", "800"],
+});
+const sen = Sen({ subsets: ["latin"], weight: ["400", "700", "800"] });
 
 export default function IndvidualProject({ project, user }: pageProps) {
   const router = useRouter();
@@ -168,7 +175,7 @@ export default function IndvidualProject({ project, user }: pageProps) {
   }, [supabase, project.project_id]);
 
   return (
-    <div className="min-h-screen h-fit pb-24 bg-white">
+    <div style={sen.style} className="min-h-screen h-fit pb-24 bg-white">
       <Head>
         <title>{project.name}</title>
         <meta name="description" content="Coded by Adan Ayaz" />

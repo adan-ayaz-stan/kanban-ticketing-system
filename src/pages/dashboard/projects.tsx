@@ -12,10 +12,17 @@ import { User } from "@/types/types";
 import { AiOutlineLogout } from "react-icons/ai";
 import { useRouter } from "next/router";
 import ThirdScreen from "@/components/Landing/ThirdScreen";
+import { Rubik, Sen } from "@next/font/google";
 
 type pageProps = {
   user: User;
 };
+
+const rubik = Rubik({
+  subsets: ["hebrew"],
+  weight: ["400", "500", "600", "700", "800"],
+});
+const sen = Sen({ subsets: ["latin"], weight: ["400", "700", "800"] });
 
 const Projects: NextPage<pageProps> = ({ user }) => {
   const supabase = useSupabaseClient();
@@ -57,8 +64,10 @@ const Projects: NextPage<pageProps> = ({ user }) => {
   return (
     <div
       style={{
-        background:
-          "linear-gradient(to top, #eaafc8, #C9D6FF)" /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */,
+        background: "linear-gradient(to top, #eaafc8, #C9D6FF)",
+        fontFamily: sen.style.fontFamily,
+        fontWeight: sen.style.fontWeight,
+        fontStyle: sen.style.fontStyle,
       }}
       className="min-h-screen text-black text-sm"
     >
@@ -70,22 +79,31 @@ const Projects: NextPage<pageProps> = ({ user }) => {
       </Head>
 
       {/* Sidebar */}
-      <div className="flex justify-between items-center p-4">
-        <p>Adan Ayaz</p>
-        <h1 className="text-2xl font-bold">Kanban Ticketing System</h1>
+      <div className="flex flex-col sm:flex-row justify-between items-center gap-3 p-4">
+        <h1
+          style={rubik.style}
+          className="text-center sm:text-left text-2xl font-medium"
+        >
+          Kanban Ticketing System
+        </h1>
         <div
           title="Logout"
           onClick={logOut}
           className="bg-gray-100 hover:bg-gray-200 transition-all duration-400 p-3 cursor-pointer z-20 rounded-md"
         >
-          <AiOutlineLogout size={36} />
+          Logout
         </div>
       </div>
 
       {/* MAIN PANEL */}
-      <div className="relative mt-20">
+      <div className="relative">
         <div className="flex flex-row justify-start flex-wrap items-center">
-          <h1 className="w-fit text-2xl font-bold uppercase p-4">Projects</h1>
+          <h1
+            style={rubik.style}
+            className="w-fit text-2xl font-medium uppercase p-4"
+          >
+            Projects
+          </h1>
 
           {/* New Project Creator */}
           <ProjectCreator user={user} refetch={ownedProjects.refetch} />

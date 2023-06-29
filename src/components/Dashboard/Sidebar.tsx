@@ -30,7 +30,7 @@ export default function Sidebar() {
   };
 
   return (
-    <div className="h-fit sm:h-screen w-screen sm:w-16 fixed bottom-0 sm:top-0 left-0 flex flex-row sm:flex-col justify-center sm:justify-between items-center py-2 sm:py-0 text-white bg-[url('https://i.ibb.co/NZ7skxR/image.png')] bg-cover bg-center z-30">
+    <div className="h-fit sm:h-screen w-screen sm:w-16 fixed bottom-0 sm:top-0 left-0 flex flex-row sm:flex-col justify-center sm:justify-between items-center py-2 sm:py-0 text-white bg-[url('https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fgetwallpapers.com%2Fwallpaper%2Ffull%2F6%2F5%2F5%2F751756-vertical-hd-texture-backgrounds-2560x1440.jpg&f=1&nofb=1&ipt=75c3e1bf8f244e55f528ec2be332fe7891a63f307646155992f11d19ab95c9f6&ipo=images')] bg-cover bg-center z-30">
       {/* Logo */}
       <div className="relative flex items-center justify-center sm:block w-full p-2">
         <Image

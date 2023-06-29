@@ -6,8 +6,6 @@ import { useSetRecoilState } from "recoil";
 import { FaRegDotCircle } from "react-icons/fa";
 import { useEffect, useState } from "react";
 
-const inter = Inter({ subsets: ["latin"], weight: ["400", "500"] });
-
 export default function TaskDetailsModal({ task, taskAssignee }) {
   const setTaskAtom = useSetRecoilState(taskDetailsModalAtom);
 
@@ -50,7 +48,9 @@ export default function TaskDetailsModal({ task, taskAssignee }) {
     >
       {/* Close Icon */}
       <button
-        onClick={() => setTaskAtom({ modalOpen: false, task: {} })}
+        onClick={() =>
+          setTaskAtom({ modalOpen: false, task: {}, taskAssignee: {} })
+        }
         className="absolute top-[20px] right-[20px] p-2 border-2 border-solid border-gray-800 transition duration-300 ease-in-out bg-transparent text-white font-bold text-lg hover:bg-black hover:text-white cursor-pointer z-10 rounded bg-gray-800"
       >
         Close details
@@ -61,9 +61,7 @@ export default function TaskDetailsModal({ task, taskAssignee }) {
         <div className="container flex flex-col w-full max-w-lg p-6 mx-auto divide-y rounded-md divide-gray-700 bg-white">
           <div className="flex justify-between p-4">
             <div>
-              <h4 style={inter.style} className="leading-[1em] font-medium">
-                {task.name}
-              </h4>
+              <h4 className="leading-[1em] font-medium">{task.name}</h4>
               <span className="text-xs dark:text-gray-400">{taskDate}</span>
             </div>
 
@@ -72,7 +70,7 @@ export default function TaskDetailsModal({ task, taskAssignee }) {
                 style={{
                   borderColor: returnSolidColor(task.priorty),
                 }}
-                className="flex items-center gap-1 p-1 text-[12px] bg-white rounded w-fit uppercase border-2"
+                className="flex items-center gap-1 p-1 font-semibold text-[12px] bg-white rounded w-fit uppercase border-2"
               >
                 <FaRegDotCircle
                   size={16}
@@ -89,9 +87,7 @@ export default function TaskDetailsModal({ task, taskAssignee }) {
               <span className="text-[12px] text-gray-600 lowercase font-mono border-b-[1px] border-gray-800 rounded-t px-2 pt-1">
                 Task Description:{" "}
               </span>{" "}
-              <pre style={inter.style} className="p-2">
-                {task.description}
-              </pre>
+              <pre className="p-2 pb-5 overflow-auto">{task.description}</pre>
             </p>
             <p className="flex flex-col ring-1 ring-gray-600 rounded">
               <span className="text-[12px] text-gray-600 lowercase font-mono border-b-[1px] border-gray-800 rounded-t px-2 pt-1">
