@@ -193,6 +193,7 @@ export default function TaskEditor({ task, projectData }: TaskEditor) {
               for (let i = 0; i < statusOptions.length; i++) {
                 if (statusOptions[i].value == task.status) {
                   defaultValue = statusOptions[i];
+                  setStatusTo(statusOptions[i]);
                 }
               }
 

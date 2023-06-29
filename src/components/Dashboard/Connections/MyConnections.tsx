@@ -2,22 +2,24 @@ import { Barlow } from "@next/font/google";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useQuery } from "react-query";
 import Connection from "./minisMyConnections/Connection";
+import { User } from "@/types/types";
+import { Database } from "@/types/supabase";
 
 const barlow = Barlow({ subsets: ["latin"], weight: "700" });
 
-export default function MyConnections({ user }) {
-  const supabase = useSupabaseClient();
+export default function MyConnections({ user }: { user: User }) {
+  const supabase = useSupabaseClient<Database>();
 
   const { isSuccess, data, error, refetch } = useQuery(
     "my-received-connections",
     () =>
       supabase
         .from("connections")
-        .select(`*`)
-        .or(`user1_id.eq.${user.id},user2_id.eq.${user.id}`),
+        .select("*, users!user2_id(name, image)")
+        .eq(`user1_id`, user.id),
     {
-      staleTime: 1000,
-      cacheTime: 1000,
+      staleTime: 60000,
+      cacheTime: 60000,
     }
   );
 
@@ -33,21 +35,12 @@ export default function MyConnections({ user }) {
         {isSuccess &&
           data.data != null &&
           data.data.map((ele, ind) => {
-            if (ele.user1_id == user.id) {
-              return (
-                <Connection
-                  connectionUserID={ele.user2_id}
-                  key={ind * Math.random() + 124}
-                />
-              );
-            } else if (ele.user2_id == user.id) {
-              return (
-                <Connection
-                  connectionUserID={ele.user1_id}
-                  key={ind * Math.random() + 124}
-                />
-              );
-            }
+            const user = {
+              id: ele.user2_id,
+              name: ele.users.name,
+              image: ele.users.image,
+            };
+            return <Connection user={user} key={ind * Math.random() + 124} />;
           })}
 
         {isSuccess && data.data != null && data.data.length == 0 ? (

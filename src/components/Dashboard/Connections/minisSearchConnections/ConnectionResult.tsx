@@ -1,12 +1,14 @@
 import { User } from "@/types/types";
+import { SupabaseClient } from "@supabase/supabase-js";
 import Image from "next/image";
+import { useState } from "react";
 
 type ConnectionResultProps = {
   processing: boolean;
   setProcessing(arg0: boolean): boolean;
-  userSearchResult: { name: string; email: string; id: string };
+  userSearchResult: { name: string; email: string; id: string; image: string };
   user: User;
-  supabase: any;
+  supabase: SupabaseClient;
 };
 
 export default function ConnectionResult({
@@ -16,21 +18,28 @@ export default function ConnectionResult({
   user,
   supabase,
 }: ConnectionResultProps) {
-  console.log(userSearchResult);
+  const [requestExists, setRequestExists] = useState(false);
+
   // Send Connection request function handler
   async function sendConnectionRequest(receiverID: String, event: Object) {
     setProcessing(true);
-    const { data } = await supabase
-      .from("users")
-      .select("name")
-      .eq("id", user.id);
+    const checkIfRequestExists = await supabase
+      .from("connections_requests")
+      .select("*")
+      .eq("sender_id", user.id)
+      .eq("receiver_id", receiverID)
+      .limit(1);
     //
-    const { error } = await supabase.from("connections_requests").upsert({
-      sender_name: data[0].name,
-      sender_id: user.id,
-      receiver_id: receiverID,
-    });
+    if (checkIfRequestExists.data.length == 0) {
+      const { error } = await supabase.from("connections_requests").upsert({
+        sender_id: user.id,
+        receiver_id: receiverID,
+      });
+    } else {
+      setRequestExists(true);
+    }
 
+    console.log(checkIfRequestExists);
     setProcessing(false);
   }
 
@@ -38,9 +47,7 @@ export default function ConnectionResult({
     <div className="relative col-span-12 sm:col-span-6 md:col-span-4 lg:col-span-3 flex flex-col items-center gap-3 p-3 m-2 text-gray-800 bg-white rounded border-2 border-gray-300">
       <div className="relative h-20 w-20">
         <Image
-          src={
-            "https://images.pexels.com/photos/14208349/pexels-photo-14208349.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-          }
+          src={userSearchResult.image}
           alt="connection-profile"
           fill={true}
           className="rounded-full object-cover"
@@ -57,18 +64,26 @@ export default function ConnectionResult({
         {userSearchResult.email == user.email ? (
           <p>You</p>
         ) : (
-          <button
-            onClick={(e) => {
-              sendConnectionRequest(userSearchResult.id, e);
-            }}
-            className="px-2 py-1 text-gray-700 bg-gray-200 hover:bg-gray-300 rounded font-mono"
-            disabled={processing ? true : false}
-            style={{
-              background: processing ? "gray" : "",
-            }}
-          >
-            Add Connection
-          </button>
+          <>
+            {requestExists ? (
+              <button className="px-2 py-1 text-gray-700 bg-gray-200 hover:bg-gray-300 rounded font-mono">
+                Request already exists
+              </button>
+            ) : (
+              <button
+                onClick={(e) => {
+                  sendConnectionRequest(userSearchResult.id, e);
+                }}
+                className="px-2 py-1 text-gray-700 bg-gray-200 hover:bg-gray-300 rounded font-mono"
+                disabled={processing ? true : false}
+                style={{
+                  background: processing ? "gray" : "",
+                }}
+              >
+                Add Connection
+              </button>
+            )}
+          </>
         )}
       </div>
     </div>

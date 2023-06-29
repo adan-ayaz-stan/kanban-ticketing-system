@@ -24,6 +24,8 @@ import { BiCoinStack } from "react-icons/bi";
 import { useRecoilValue } from "recoil";
 import TaskEditor from "@/components/Dashboard/Project/TaskEditor";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { projectInfoModalAtom } from "@/atoms/projectInfoModalAtom";
+import ProjectInfoModal from "@/components/Dashboard/Project/ProjectInfoModal";
 
 type pageProps = {
   project: Project;
@@ -33,6 +35,7 @@ type pageProps = {
 export default function IndvidualProject({ project, user }: pageProps) {
   const router = useRouter();
   const supabase = useSupabaseClient();
+  const projectInfoAtom = useRecoilValue(projectInfoModalAtom);
   const taskDetailsAtom = useRecoilValue(taskDetailsModalAtom);
   const taskEditorAtom = useRecoilValue(taskEditorModalAtom);
 
@@ -173,6 +176,11 @@ export default function IndvidualProject({ project, user }: pageProps) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      <AnimatePresence>
+        {projectInfoAtom.modalOpen && (
+          <ProjectInfoModal project={projectInfoAtom.project} />
+        )}
+      </AnimatePresence>
       <AnimatePresence>
         {taskDetailsAtom.modalOpen && (
           <TaskDetailsModal

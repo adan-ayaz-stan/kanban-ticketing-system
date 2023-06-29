@@ -16,36 +16,29 @@ export default function ConnectionRequests({ user }) {
   const { isLoading, data, error, refetch, isSuccess } = useQuery(
     "connection-requests",
     () =>
-      supabase.from("connections_requests").select().eq("receiver_id", user.id),
+      supabase
+        .from("connections_requests")
+        .select("*, users!sender_id(name, image)")
+        .eq("receiver_id", user.id),
     {
       staleTime: 30000,
     }
   );
 
-  async function acceptConnectionRequest(
-    requestID: String,
-    senderID: String,
-    senderName: String
-  ) {
+  async function acceptConnectionRequest(requestID: String, senderID: String) {
     setProcessing(true);
 
-    const user1DataFromUsers = await supabase
-      .from("users")
-      .select("name")
-      .eq("id", user.id);
-    const user2DataFromUsers = await supabase
-      .from("users")
-      .select("name")
-      .eq("id", senderID);
-
-    const { error } = await supabase.from("connections").insert({
+    const connectUserToOther = await supabase.from("connections").insert({
       user1_id: user.id,
       user2_id: senderID,
-      user1_name: user1DataFromUsers.data[0].name,
-      user2_name: user2DataFromUsers.data[0].name,
     });
 
-    if (error == null) {
+    const connectOtherToUser = await supabase.from("connections").insert({
+      user1_id: senderID,
+      user2_id: user.id,
+    });
+
+    if (connectUserToOther.error == null && connectOtherToUser.error == null) {
       const { data, error } = await supabase
         .from("connections_requests")
         .delete({ count: "estimated" })
@@ -116,13 +109,11 @@ export default function ConnectionRequests({ user }) {
             return (
               <div
                 key={ind * Math.random()}
-                className="relative min-w-[20em] col-span-12 sm:col-span-9 md:col-span-6 lg:col-span-4 flex flex-row items-center gap-3 p-3 text-sm text-white bg-[#3C2A21] rounded"
+                className="relative flex flex-row items-center gap-3 p-3 text-gray-800 bg-white rounded-xl border-gray-300 border-2"
               >
                 <div className="relative h-20 w-20">
                   <Image
-                    src={
-                      "https://images.pexels.com/photos/14208349/pexels-photo-14208349.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                    }
+                    src={ele.users.image}
                     alt="connection-profile"
                     fill={true}
                     className="rounded-full object-cover"
@@ -130,17 +121,13 @@ export default function ConnectionRequests({ user }) {
                 </div>
                 {/*  */}
                 <div>
-                  <p>{ele.sender_name}</p>
+                  <p>{ele.users.name}</p>
                 </div>
                 {/*  */}
                 <div className="ml-auto flex flex-row gap-3">
                   <button
                     onClick={() => {
-                      acceptConnectionRequest(
-                        ele.id,
-                        ele.sender_id,
-                        ele.sender_name
-                      );
+                      acceptConnectionRequest(ele.id, ele.sender_id);
                     }}
                     disabled={processing}
                     className="px-2 py-1 text-sm font-bold text-gray-800 bg-[#e5e5cb] rounded hover:brightness-[80%] disabled:bg-gray-500"

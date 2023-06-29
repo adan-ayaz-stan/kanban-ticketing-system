@@ -11,8 +11,13 @@ export default function SearchConnections({ user }) {
 
   const supabase = useSupabaseClient();
 
-  const { isLoading, data, error } = useQuery("users", () =>
-    supabase.from("users").select("*")
+  const { isLoading, data, error } = useQuery(
+    "users",
+    () => supabase.from("users").select("*"),
+    {
+      staleTime: 500000,
+      cacheTime: 500000,
+    }
   );
   const handleSearchChange = async (event) => {
     if (event.target.value !== "") {

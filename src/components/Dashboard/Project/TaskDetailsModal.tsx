@@ -80,7 +80,7 @@ export default function TaskDetailsModal({ task, taskAssignee }) {
                     color: returnSolidColor(task.priorty),
                   }}
                 />{" "}
-                {task.priorty} {"PRIORTY TASK"}
+                {task.priorty} {"PRIORTY"}
               </p>
             </div>
           </div>
