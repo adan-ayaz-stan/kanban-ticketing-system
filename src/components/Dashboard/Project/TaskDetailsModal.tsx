@@ -51,7 +51,7 @@ export default function TaskDetailsModal({ task, taskAssignee }) {
         onClick={() =>
           setTaskAtom({ modalOpen: false, task: {}, taskAssignee: {} })
         }
-        className="absolute top-[20px] right-[20px] p-2 border-2 border-solid border-gray-800 transition duration-300 ease-in-out bg-transparent text-white font-bold text-lg hover:bg-black hover:text-white cursor-pointer z-10 rounded bg-gray-800"
+        className="absolute top-[20px] right-[20px] p-2 border-2 border-solid border-gray-800 transition duration-300 ease-in-out bg-transparent text-black font-bold text-lg hover:bg-black hover:text-white cursor-pointer z-10 rounded bg-gray-200"
       >
         Close details
       </button>
@@ -87,7 +87,12 @@ export default function TaskDetailsModal({ task, taskAssignee }) {
               <span className="text-[12px] text-gray-600 lowercase font-mono border-b-[1px] border-gray-800 rounded-t px-2 pt-1">
                 Task Description:{" "}
               </span>{" "}
-              <pre className="p-2 pb-5 overflow-auto">{task.description}</pre>
+              <pre
+                style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }}
+                className="p-2 pb-5 overflow-auto"
+              >
+                {task.description}
+              </pre>
             </p>
             <p className="flex flex-col ring-1 ring-gray-600 rounded">
               <span className="text-[12px] text-gray-600 lowercase font-mono border-b-[1px] border-gray-800 rounded-t px-2 pt-1">
