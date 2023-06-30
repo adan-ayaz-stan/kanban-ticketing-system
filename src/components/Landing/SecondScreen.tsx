@@ -41,7 +41,7 @@ const features = [
 
 export default function SecondScreen() {
   return (
-    <div className="min-h-screen h-fit relative flex items-end justify-center py-12 bg-gradient-to-tr from-[#d1c8e4] to-[#ca97d4]">
+    <div className="min-h-screen h-fit relative flex flex-col items-center justify-center gap-6 py-12 bg-gradient-to-tr from-[#d1c8e4] to-[#ca97d4]">
       <motion.h1
         initial={{ opacity: 0 }}
         whileInView={{
@@ -52,29 +52,27 @@ export default function SecondScreen() {
         }}
         viewport={{ once: true }}
         style={rubik.style}
-        className="absolute top-1/4 -translate-y-1/2 text-center text-gray-900 opacity-70 text-[10em] truncate uppercase font-medium"
+        className="text-center text-black opacity-70 text-[2.5em] sm:text-[4em] lg:text-[4em] truncate uppercase font-medium"
       >
         What it does
       </motion.h1>
 
-      <motion.div
-        initial={{ y: 100, opacity: 0 }}
-        whileInView={{
-          y: 0,
-          opacity: 1,
-          transition: {
-            delay: 0.5,
-            duration: 0.5,
-            type: "keyframes",
-            ease: "easeOut",
-          },
-        }}
-        viewport={{ once: true }}
-        className="grid grid-cols-3 auto-rows-fr gap-12 z-10"
-      >
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 auto-rows-fr gap-12 z-10">
         {features.map((ele, ind) => {
           return (
-            <div
+            <motion.div
+              initial={{ y: 100, opacity: 0 }}
+              whileInView={{
+                y: 0,
+                opacity: 1,
+                transition: {
+                  delay: 0.5,
+                  duration: 0.5,
+                  type: "keyframes",
+                  ease: "easeOut",
+                },
+              }}
+              viewport={{ once: true }}
               key={"feature-index-" + ind}
               className="flex flex-col items-center p-3 py-5 bg-white bg-opacity-40 rounded-lg"
             >
@@ -88,10 +86,10 @@ export default function SecondScreen() {
               >
                 {ele.desc}
               </p>
-            </div>
+            </motion.div>
           );
         })}
-      </motion.div>
+      </div>
     </div>
   );
 }
