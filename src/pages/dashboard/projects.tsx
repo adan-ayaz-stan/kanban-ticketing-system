@@ -1,7 +1,6 @@
 import { NextPage } from "next";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 
-import Sidebar from "@/components/Dashboard/Sidebar";
 import ProjectCreator from "@/components/Dashboard/Projects/ProjectCreator";
 import { useQuery } from "react-query";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
@@ -9,7 +8,6 @@ import OwnedProjects from "@/components/Dashboard/Projects/OwnedProjects";
 import NotOwnedProjects from "@/components/Dashboard/Projects/NotOwnedProjects";
 import Head from "next/head";
 import { User } from "@/types/types";
-import { AiOutlineLogout } from "react-icons/ai";
 import { useRouter } from "next/router";
 import ThirdScreen from "@/components/Landing/ThirdScreen";
 import { Rubik, Sen } from "@next/font/google";

@@ -1,8 +1,6 @@
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { useQuery } from "react-query";
 
 export default function Account({ user }) {
   const username = user.user_metadata.name;

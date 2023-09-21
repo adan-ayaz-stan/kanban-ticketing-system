@@ -4,7 +4,6 @@ import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import ConnectionRequests from "@/components/Dashboard/Connections/ConnectionRequests";
 import MyConnections from "@/components/Dashboard/Connections/MyConnections";
 import SearchConnections from "@/components/Dashboard/Connections/SearchConnections";
-import SidebarFlowbite from "@/components/Dashboard/SidebarFlowBite";
 import { User } from "@/types/types";
 import Link from "next/link";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
