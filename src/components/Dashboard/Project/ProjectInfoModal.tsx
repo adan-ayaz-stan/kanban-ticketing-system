@@ -16,12 +16,15 @@ export default function ProjectInfoModal({ project }) {
 
   return (
     <motion.div
+      onClick={() => closeProjectModal()}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-[#fefefe] bg-opacity-80  z-50"
+      className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-black bg-opacity-50 z-50 backdrop-blur-sm"
     >
-      <div className="w-[90vw] md:w-2/3 lg:w-1/2 flex flex-col gap-2 p-3 shadow-lg bg-white rounded-lg">
+      <div 
+      onClick={(e) => e.stopPropagation()}
+      className="w-[90vw] md:w-2/3 lg:w-1/2 flex flex-col gap-2 p-3 shadow-lg bg-white rounded-lg">
         <div className="flex justify-between items-center">
           <Heading className={"text-xl underline"}>Information</Heading>
           <MdClose

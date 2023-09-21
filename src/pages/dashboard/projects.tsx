@@ -11,6 +11,7 @@ import { User } from "@/types/types";
 import { useRouter } from "next/router";
 import ThirdScreen from "@/components/Landing/ThirdScreen";
 import { Rubik, Sen } from "@next/font/google";
+import Link from "next/link";
 
 type pageProps = {
   user: User;
@@ -84,10 +85,16 @@ const Projects: NextPage<pageProps> = ({ user }) => {
         >
           Kanban Ticketing System
         </h1>
+
+        <div className="flex flex-row gap-2">
+          <Link href={"/dashboard"} className="px-4 py-3 text-md bg-gray-200 rounded hover:bg-white">Dashboard</Link>
+          <Link href={"/dashboard/connections"} className="px-4 py-3 text-md bg-gray-200 rounded hover:bg-white">Connections</Link>
+        </div>
+
         <div
           title="Logout"
           onClick={logOut}
-          className="bg-gray-100 hover:bg-gray-200 transition-all duration-400 p-3 cursor-pointer z-20 rounded-md"
+          className="bg-gray-100 hover:bg-white transition-all duration-400 p-3 cursor-pointer z-20 rounded-md"
         >
           Logout
         </div>

@@ -59,7 +59,7 @@ export default function NavigationBar({ projectData, user }) {
           {isTaskModalOpen && (
             <div
               onClick={() => setTaskModalOpen(false)}
-              className="w-screen h-screen fixed top-0 left-0 flex items-center justify-center bg-black bg-opacity-60 z-[9999]"
+              className="w-screen h-screen fixed top-0 left-0 flex items-center justify-center bg-black bg-opacity-50 z-[9999] backdrop-blur-sm"
             >
               <TaskCreator
                 projectData={projectData}
@@ -80,7 +80,7 @@ export default function NavigationBar({ projectData, user }) {
           {isMemberModalOpen && (
             <div
               onClick={() => setMemberModalOpen(false)}
-              className="w-screen h-screen fixed top-0 left-0 flex items-center justify-center bg-black bg-opacity-60 z-[9999]"
+              className="w-screen h-screen fixed top-0 left-0 flex items-center justify-center bg-black bg-opacity-50 z-[9999] backdrop-blur-sm"
             >
               <AddMemberToProject
                 projectData={projectData}
@@ -100,7 +100,7 @@ export default function NavigationBar({ projectData, user }) {
           {isRemoveCategoryModalOpen && (
             <div
               onClick={() => setRemoveCategoryModalOpen(false)}
-              className="w-screen h-screen fixed top-0 left-0 flex items-center justify-center bg-black bg-opacity-60 z-[9999]"
+              className="w-screen h-screen fixed top-0 left-0 flex items-center justify-center bg-black bg-opacity-50 z-[9999] backdrop-blur-sm"
             >
               <RemoveCategory
                 projectData={projectData}

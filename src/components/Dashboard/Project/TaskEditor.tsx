@@ -135,7 +135,7 @@ export default function TaskEditor({ task, projectData }: TaskEditor) {
   });
 
   return (
-    <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-black bg-opacity-30 z-50">
+    <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-black bg-opacity-50 z-50 backdrop-blur-sm">
       <form
         onSubmit={formik.handleSubmit}
         className="sm:min-w-[400px] flex flex-col gap-2 text-sm z-[1000] bg-white py-6 px-4 rounded-md"
@@ -228,6 +228,7 @@ export default function TaskEditor({ task, projectData }: TaskEditor) {
 
         <div className="flex flex-row gap-3 justify-end">
           <button
+            type='button'
             onClick={() =>
               setTaskEditorAtom({
                 modalOpen: false,

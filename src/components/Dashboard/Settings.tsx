@@ -7,8 +7,10 @@ import {
 import { motion } from "framer-motion";
 import { useState } from "react";
 import Heading from "../Layout/Heading";
-import Image from "next/image";
 import { MdArrowBack, MdClose } from "react-icons/md";
+import { BsPersonBoundingBox } from "react-icons/bs";
+import { BiRename } from "react-icons/bi";
+import { MdPassword } from "react-icons/md";
 import { useRouter } from "next/router";
 import { Rubik, Sen } from "@next/font/google";
 
@@ -48,7 +50,7 @@ export default function Settings({ closeSettings }) {
       exit={{
         opacity: 0,
       }}
-      className="flex items-center justify-center fixed top-0 left-0 h-screen w-screen bg-black bg-opacity-50 z-50"
+      className="flex items-center justify-center fixed top-0 left-0 h-screen w-screen bg-black bg-opacity-50 z-50 backdrop-blur-sm"
     >
       <div
         onClick={(e) => {
@@ -77,26 +79,30 @@ export default function Settings({ closeSettings }) {
         </div>
 
         {currentModal == "" && (
-          <div className="flex flex-col gap-1 py-3">
+          <div className="flex flex-col lg:flex-row gap-1 py-3">
             <button
               type="button"
               onClick={() => setCurrentModal("profile")}
-              className="py-2 px-4 bg-[#111111] hover:opacity-90 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md rounded-lg "
+              className="flex flex-col items-center gap-3 py-5 px-4 bg-[#111111] hover:opacity-90 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md rounded-lg "
             >
+              <BsPersonBoundingBox size={36} />
+
               Change my profile picture
             </button>
             <button
               type="button"
               onClick={() => setCurrentModal("name")}
-              className="py-2 px-4 bg-blue-700 hover:opacity-90 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md rounded-lg "
+              className="flex flex-col items-center gap-3 py-5 px-4 bg-blue-700 hover:opacity-90 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md rounded-lg "
             >
+              <BiRename size={36} />
               Change my display name
             </button>
             <button
               type="button"
               onClick={() => setCurrentModal("password")}
-              className="py-2 px-4 bg-red-600 hover:opacity-90 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md rounded-lg "
+              className="flex flex-col items-center gap-3 py-5 px-4 bg-red-600 hover:opacity-90 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md rounded-lg "
             >
+              <MdPassword size={36} />
               Change my password
             </button>
           </div>

@@ -83,8 +83,11 @@ export default function ProjectCreator({ user, refetch }) {
       {/* MODAL OR IN VIEW?? */}
       <AnimatePresence>
         {isModalOpen && (
-          <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-black z-50 bg-opacity-50">
+          <div 
+          onClick={() => setModalOpen(false)}
+          className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center bg-black z-50 bg-opacity-50 backdrop-blur-sm">
             <motion.form
+              onClick={(e) => e.stopPropagation()}
               onSubmit={formik.handleSubmit}
               className="relative w-11/12 sm:w-9/12 md:w-6/12 lg:w-4/12 p-3 flex flex-col gap-2 text-black bg-[#FFF2F2] rounded-lg"
               initial={{ opacity: 0, maxHeight: "0px" }}
@@ -149,7 +152,7 @@ export default function ProjectCreator({ user, refetch }) {
               ) : (
                 <button
                   type="submit"
-                  className="text-gray-900 bg-gradient-to-br from-[#d1c8e4] to-[#ca97d4] hover:opacity-80 focus:ring-4 focus:ring-blue-300 font-medium rounded text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none"
+                  className="text-gray-900 bg-gradient-to-br from-[#d1c8e4] to-[#ca97d4] hover:opacity-80 focus:ring-4 focus:ring-blue-300 font-semibold rounded text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none"
                 >
                   Create Project
                 </button>
