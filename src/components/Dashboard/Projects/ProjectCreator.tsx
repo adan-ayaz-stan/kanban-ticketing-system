@@ -73,7 +73,7 @@ export default function ProjectCreator({ user, refetch }) {
       {/* BUTTON TO CREATE NEW PROJECT */}
       <button
         onClick={() => setModalOpen(true)}
-        className="text-gray-900 bg-gradient-to-br from-[#d1c8e4] to-[#ca97d4] hover:opacity-80 focus:ring-4 focus:ring-blue-300 font-medium rounded text-sm px-2.5 py-2.5 mr-2 mb-2 focus:outline-none"
+        className="text-gray-900 bg-gradient-to-br from-[#c7affd] to-[#f9f9f9] hover:opacity-80 focus:ring-4 focus:ring-blue-300 font-medium rounded text-sm px-2.5 py-2.5 mr-2 mb-2 focus:outline-none"
       >
         <span className="text-2xl">
           <AiOutlinePlus />

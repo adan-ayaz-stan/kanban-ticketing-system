@@ -48,7 +48,8 @@ const Dashboard: NextPage<pageProps> = ({ user, initialSession }) => {
             "w-fit pt-3 text-xl text-center font-medium uppercase mb-4"
           }
         >
-          Kanban Ticketing System
+          Kanban Ticketing System <span className="text-gray-300">
+          | Dashboard </span>
         </Heading>
 
         <div className="flex gap-2 items-center">

@@ -1,13 +1,13 @@
 import Head from "next/head";
-import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
-
-import ConnectionRequests from "@/components/Dashboard/Connections/ConnectionRequests";
-import MyConnections from "@/components/Dashboard/Connections/MyConnections";
-import SearchConnections from "@/components/Dashboard/Connections/SearchConnections";
-import { User } from "@/types/types";
-import Link from "next/link";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
+
+import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
+
+import Contacts from "@/components/Dashboard/Connections/Contacts";
+import MainChatWindow from "@/components/Dashboard/Connections/MainChatWindow";
+
+import { User } from "@/types/types";
 
 type ConnectionProps = {
   user: User;
@@ -23,7 +23,7 @@ export default function Connections({ user }: ConnectionProps) {
   }
 
   return (
-    <div className="min-h-screen bg-[#FFF2F2] text-black">
+    <div className="min-h-screen bg-white text-black">
       <Head>
         <title>Connections</title>
         <meta name="description" content="Coded by Adan Ayaz" />
@@ -31,27 +31,13 @@ export default function Connections({ user }: ConnectionProps) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className="text-white flex justify-center items-center bg-gray-900 py-5 px-12">
-        <Link href={"/dashboard"} className="font-bold">
-          Home
-        </Link>
-        <h1 className="mx-auto text-white font-bold text-center text-3xl">
-          Kanban Ticketing System
-        </h1>
-        <div onClick={logOut} className="font-bold cursor-pointer">
-          Log out
+      <div className="min-h-screen flex flex-row px-8">
+        <Contacts />
+
+        {/* Right Main Functioning Window */}
+        <div className="w-full border-2">
+          <MainChatWindow />
         </div>
-      </div>
-
-      <div>
-        {/* Search Connections */}
-        <SearchConnections user={user} />
-
-        {/* My connections */}
-        <MyConnections user={user} />
-
-        {/* Connection Requests */}
-        <ConnectionRequests user={user} />
       </div>
     </div>
   );

@@ -1,6 +1,7 @@
 import { NextPage } from "next";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 
+import Heading from "@/components/Layout/Heading";
 import ProjectCreator from "@/components/Dashboard/Projects/ProjectCreator";
 import { useQuery } from "react-query";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
@@ -79,22 +80,24 @@ const Projects: NextPage<pageProps> = ({ user }) => {
 
       {/* Sidebar */}
       <div className="flex flex-col sm:flex-row justify-between items-center gap-3 p-4">
-        <h1
-          style={rubik.style}
-          className="text-center sm:text-left text-2xl font-medium"
+      <Heading
+          className={
+            "w-fit pt-3 text-xl text-center font-medium uppercase mb-4"
+          }
         >
-          Kanban Ticketing System
-        </h1>
+          Kanban Ticketing System <span className="text-gray-100">
+          | Projects </span>
+        </Heading>
 
         <div className="flex flex-row gap-2">
-          <Link href={"/dashboard"} className="px-4 py-3 text-md bg-gray-200 rounded hover:bg-white">Dashboard</Link>
-          <Link href={"/dashboard/connections"} className="px-4 py-3 text-md bg-gray-200 rounded hover:bg-white">Connections</Link>
+          <Link href={"/dashboard"} className="px-4 py-3 text-md bg-white rounded hover:bg-gray-100">Dashboard</Link>
+          <Link href={"/dashboard/connections"} className="px-4 py-3 text-md bg-white rounded hover:bg-gray-100">Connections</Link>
         </div>
 
         <div
           title="Logout"
           onClick={logOut}
-          className="bg-gray-100 hover:bg-white transition-all duration-400 p-3 cursor-pointer z-20 rounded-md"
+          className="bg-white hover:bg-gray-100 transition-all duration-400 p-3 cursor-pointer z-20 rounded-md"
         >
           Logout
         </div>
@@ -102,12 +105,12 @@ const Projects: NextPage<pageProps> = ({ user }) => {
 
       {/* MAIN PANEL */}
       <div className="relative">
-        <div className="flex flex-row justify-start flex-wrap items-center">
+        <div className="flex flex-row justify-end flex-wrap items-center">
           <h1
             style={rubik.style}
-            className="w-fit text-2xl font-medium uppercase p-4"
+            className="w-fit text-xl font-medium uppercase p-4"
           >
-            Projects
+            Create a new project
           </h1>
 
           {/* New Project Creator */}
