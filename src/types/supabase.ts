@@ -3,7 +3,7 @@ export type Json =
   | number
   | boolean
   | null
-  | { [key: string]: Json }
+  | { [key: string]: Json | undefined }
   | Json[]
 
 export interface Database {
@@ -50,23 +50,17 @@ export interface Database {
         Row: {
           id: string
           user1_id: string
-          user1_name: string | null
           user2_id: string
-          user2_name: string | null
         }
         Insert: {
           id?: string
           user1_id: string
-          user1_name?: string | null
           user2_id: string
-          user2_name?: string | null
         }
         Update: {
           id?: string
           user1_id?: string
-          user1_name?: string | null
           user2_id?: string
-          user2_name?: string | null
         }
         Relationships: [
           {
@@ -88,19 +82,16 @@ export interface Database {
           id: string
           receiver_id: string
           sender_id: string
-          sender_name: string
         }
         Insert: {
           id?: string
           receiver_id: string
           sender_id: string
-          sender_name?: string
         }
         Update: {
           id?: string
           receiver_id?: string
           sender_id?: string
-          sender_name?: string
         }
         Relationships: [
           {
@@ -116,6 +107,33 @@ export interface Database {
             referencedColumns: ["id"]
           }
         ]
+      }
+      groups: {
+        Row: {
+          created_at: string
+          group_image: string
+          group_name: string
+          id: number
+          isExclusive: boolean
+          members: string[] | null
+        }
+        Insert: {
+          created_at?: string
+          group_image?: string
+          group_name?: string
+          id?: number
+          isExclusive: boolean
+          members?: string[] | null
+        }
+        Update: {
+          created_at?: string
+          group_image?: string
+          group_name?: string
+          id?: number
+          isExclusive?: boolean
+          members?: string[] | null
+        }
+        Relationships: []
       }
       project_members: {
         Row: {

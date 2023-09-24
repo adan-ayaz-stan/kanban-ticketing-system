@@ -1,15 +1,11 @@
 import { useFormik } from "formik";
 import { AnimatePresence, Reorder } from "framer-motion";
-import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import {
-  createServerComponentSupabaseClient,
   createServerSupabaseClient,
-  createBrowserSupabaseClient,
 } from "@supabase/auth-helpers-nextjs";
-import { cookies } from "next/headers";
 
 import Category from "@/components/Dashboard/Project/Category";
 import NavigationBar from "@/components/Dashboard/Project/NavigationBar";

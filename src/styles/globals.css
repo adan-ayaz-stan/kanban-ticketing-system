@@ -15,8 +15,10 @@
 html,
 body {
   max-width: 100vw;
-  overflow-x: hidden;
+  max-height: 100vh;
+  overflow: hidden;
   font-family: "Poppins", sans-serif;
+  scroll-behavior: smooth;
 }
 
 input {
@@ -30,6 +32,25 @@ summary {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+
+::-webkit-scrollbar-track
+{
+	border: 1px solid black;
+	background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar
+{
+	width: 10px;
+	background-color: #F5F5F5;
+  scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar-thumb
+{
+	background-color: #000000;	
 }
 
 /* 

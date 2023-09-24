@@ -8,29 +8,12 @@ import { HiGlobe } from "react-icons/hi";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import { chatWindowAtom } from "@/atoms/chatWindowAtom";
 
 export default function Contacts() {
-  const user = useUser();
-  const supabase = useSupabaseClient();
-
-  const [contacts, setContacts] = useState([]);
-  const [isLoading, setLoading] = useState(true);
-
-  async function getContacts() {
-    const { data, error } = await supabase
-      .from("connections")
-      .select("*, users!user1_id(name, image)")
-      .eq("user2_id", user.id);
-
-    if (error == null) {
-      setLoading(false);
-      setContacts(data);
-    }
-  }
-
-  useEffect(() => {
-    getContacts();
-  }, []);
+  // 4 categories : 'personal', 'groups', 'requests', 'settings'
+  const [categoryOpen, setCategoryOpen] = useState("personal");
 
   return (
     <div className="min-w-[250px] w-[35%] flex flex-col bg-white pr-6">
@@ -53,27 +36,35 @@ export default function Contacts() {
       {/* Navigation */}
       <div className="flex flex-row justify-evenly items-center py-3">
         <BiSolidChat
+          onClick={() => setCategoryOpen("personal")}
           size={50}
-          className="p-3 rounded-lg bg-gray-100 hover:bg-gray-200 cursor-pointer"
+          style={categoryOpen == "personal" && { background: "#ca97d4" }}
+          className="p-3 rounded-lg bg-gray-100 hover:bg-gray-200 cursor-pointer transition-all"
         />
         <HiGlobe
+          onClick={() => setCategoryOpen("groups")}
           size={50}
-          className="p-3 rounded-lg bg-gray-100 hover:bg-gray-200 cursor-pointer"
+          style={categoryOpen == "groups" && { background: "#ca97d4" }}
+          className="p-3 rounded-lg bg-gray-100 hover:bg-gray-200 cursor-pointer transition-all"
         />
         <BsPersonFillAdd
+          onClick={() => setCategoryOpen("requests")}
           size={50}
-          className="p-3 rounded-lg bg-gray-100 hover:bg-gray-200 cursor-pointer"
+          style={categoryOpen == "requests" && { background: "#ca97d4" }}
+          className="p-3 rounded-lg bg-gray-100 hover:bg-gray-200 cursor-pointer transition-all"
         />
         <IoIosSettings
+          onClick={() => setCategoryOpen("settings")}
           size={50}
-          className="p-3 rounded-lg bg-gray-100 hover:bg-gray-200 cursor-pointer"
+          style={categoryOpen == "settings" && { background: "#ca97d4" }}
+          className="p-3 rounded-lg bg-gray-100 hover:bg-gray-200 cursor-pointer transition-all"
         />
       </div>
 
       {/* Search Bar */}
       <div className="flex flex-row">
         <input
-          placeholder="Search the chat..."
+          placeholder="Search your connections..."
           type="text"
           name="text"
           className="w-full mx-5 my-2 h-15 p-2 rounded-12 border-1-5 outline-none transition border-2 rounded-md focus:border-gray-700"
@@ -82,35 +73,98 @@ export default function Contacts() {
 
       {/* The contacts box */}
       <div className="h-full overflow-y-auto">
-        {isLoading && (
-          <div className="w-fit mx-auto text-gray-400 rotate-180">
-            <SvgSpinner />
-          </div>
-        )}
-
-        {isLoading ||
-          contacts.map((ele, ind) => {
-            return (
-              <div
-                key={ele.id}
-                className="flex p-2 gap-2 hover:bg-gray-100 rounded-md cursor-pointer"
-              >
-                <Image
-                  src={ele.users.image}
-                  width={100}
-                  height={100}
-                  alt="profile-image"
-                  className="border-2 h-14 w-14 rounded-lg"
-                />
-
-                <div className="flex flex-col justify-center">
-                  <p className="text-sm">{ele.users.name}</p>
-                </div>
-              </div>
-            );
-          })}
+        {categoryOpen == "personal" && <PersonalChats />}
       </div>
     </div>
+  );
+}
+
+function PersonalChats() {
+  const user = useUser();
+  const supabase = useSupabaseClient();
+
+  const [chatWindowState, setChatWindowState] = useRecoilState(chatWindowAtom);
+
+  const [contacts, setContacts] = useState([]);
+  const [isLoading, setLoading] = useState(true);
+
+  async function getContacts() {
+    const { data, error } = await supabase
+      .from("connections")
+      .select("*, users!user1_id(name, image)")
+      .eq("user2_id", user.id);
+
+    if (error == null) {
+      setLoading(false);
+      setContacts(data);
+    }
+  }
+
+  async function openChatWithUser(
+    reciever_id: string,
+    reciever_name: string,
+    reciever_image: string
+  ) {
+    if (chatWindowState != null && chatWindowState.id == reciever_id) {
+      return;
+    }
+    console.log("Fetching group");
+    // find the group
+    const group = await supabase
+      .from("groups")
+      .select("*")
+      .contains("members", [user.id, reciever_id])
+      .single();
+    //
+    if (group.error == null) {
+      setChatWindowState({
+        id: reciever_id,
+        name: reciever_name,
+        image: reciever_image,
+        group_id: group.data.id,
+      });
+    } else {
+      return;
+    }
+  }
+
+  useEffect(() => {
+    getContacts();
+  }, []);
+
+  return (
+    <>
+      {isLoading && (
+        <div className="w-fit mx-auto text-gray-400 rotate-180">
+          <SvgSpinner />
+        </div>
+      )}
+
+      {isLoading ||
+        contacts.map((ele, ind) => {
+          return (
+            <div
+              key={ele.id}
+              onClick={() => {
+                openChatWithUser(ele.user1_id, ele.users.name, ele.users.image);
+              }}
+              className="flex p-2 gap-2 hover:bg-gray-100 rounded-md cursor-pointer"
+            >
+              <Image
+                src={ele.users.image}
+                width={100}
+                height={100}
+                alt="profile-image"
+                className="border-2 h-14 w-14 rounded-lg object-cover"
+              />
+
+              <div className="flex flex-col justify-center">
+                <p className="text-sm">{ele.users.name}</p>
+              </div>
+            </div>
+          );
+        })}
+    </>
   );
 }
 
