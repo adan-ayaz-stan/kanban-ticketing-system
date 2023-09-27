@@ -69,8 +69,14 @@ const AuthPage = ({ session }: AuthPageProps) => {
             <span style={rubik.style} className="font-semibold">
               Email
             </span>
-            : vuhumavomoce@gotgel.org
-            <br /> or <br /> pfeoekk376@iemail.fun
+            :{" "}
+            <pre>
+              vuhumavomoce@gotgel.org
+              <br />
+              conag99682@bookspre.com
+              <br />
+              pfeoekk376@iemail.fun
+            </pre>
           </p>
           <p className="px-6">
             <span style={rubik.style} className="font-semibold">

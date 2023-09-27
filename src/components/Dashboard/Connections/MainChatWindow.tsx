@@ -1,6 +1,5 @@
 import { chatWindowAtom } from "@/atoms/chatWindowAtom";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
-import { supabase } from "@supabase/auth-ui-react/dist/esm/common/theming";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { BiInfoCircle } from "react-icons/bi";
@@ -29,7 +28,6 @@ export default function MainChatWindow() {
     const newMessage = {
       message: messageString,
       sender_id: user.id,
-      reciever_id: chatWindowState.id,
       group_id: chatWindowState.group_id,
       state: "sending",
     };
@@ -42,7 +40,6 @@ export default function MainChatWindow() {
     // send message to database
     const sendingMessage = await supabase.from("chats").insert({
       sender_id: user.id,
-      reciever_id: chatWindowState.id,
       message: messageString,
       group_id: chatWindowState.group_id,
     });
@@ -61,7 +58,7 @@ export default function MainChatWindow() {
   async function getMessagesFromDatabase() {
     const messagesFromDatabase = await supabase
       .from("chats")
-      .select("*")
+      .select("*, users(name)")
       .eq("group_id", chatWindowState.group_id)
       .order("created_at", {
         ascending: false,
@@ -88,21 +85,32 @@ export default function MainChatWindow() {
           table: "chats",
           filter: `group_id=eq.${chatWindowState.group_id}`,
         },
-        (payload) => {
+        async (payload) => {
           // All actions here
           if (payload.eventType == "INSERT") {
-            const newMessage = payload.new;
+            const { data, error } = await supabase
+              .from("users")
+              .select("name")
+              .eq("id", payload.new.sender_id)
+              .limit(1)
+              .single();
 
-            setMessages((prevMessages) => {
-              // Remove messages with 'sending' status and same ID
-              const updatedMessages = prevMessages.filter(
-                (message) =>
-                  message.id !== newMessage.id && message.state !== "sending"
-              );
+            if (error == null) {
+              const newMessage = {
+                ...payload.new,
+                users: data,
+              };
+              setMessages((prevMessages) => {
+                // Remove messages with 'sending' status and same ID
+                const updatedMessages = prevMessages.filter(
+                  (message) =>
+                    message.id !== newMessage.id && message.state !== "sending"
+                );
 
-              // Insert the new message
-              return [...updatedMessages, newMessage];
-            });
+                // Insert the new message
+                return [...updatedMessages, newMessage];
+              });
+            }
           }
         }
       )
@@ -115,8 +123,6 @@ export default function MainChatWindow() {
     };
   }, [supabase]);
 
-  console.log(messages);
-
   useEffect(() => {
     const container = messageContainerRef.current;
     if (container) {
@@ -126,7 +132,7 @@ export default function MainChatWindow() {
 
   useEffect(() => {
     getMessagesFromDatabase();
-  }, []);
+  }, [chatWindowState]);
 
   return (
     <div className="flex flex-row h-full max-h-screen w-full border-l-2">
@@ -160,13 +166,13 @@ export default function MainChatWindow() {
             {" >>"}
           </p>
 
-          <button className="px-2 py-3 mx-auto text-sm text-gray-600 rounded shadow-lg bg-gray-100">
+          <button className="px-2 py-3 mx-auto mb-4 text-sm text-gray-600 rounded shadow-lg bg-gray-100">
             Load previous messages
           </button>
 
           {messages.map((ele, ind) => {
             return (
-              <p
+              <div
                 key={ind}
                 style={{
                   marginLeft: ele.sender_id == user.id ? "auto" : "",
@@ -174,10 +180,24 @@ export default function MainChatWindow() {
                     ele.state != undefined && ele.state == "sending" && 0.5,
                   background: ele.sender_id == user.id ? "#f7d7fc" : "",
                 }}
-                className="w-fit m-1 p-2 bg-white rounded-lg shadow-lg"
+                className="relative w-fit m-1 mt-3 p-2 bg-white rounded-lg shadow-lg"
               >
-                {ele.message}
-              </p>
+                <p>{ele.message}</p>
+                <span
+                  style={
+                    ele.sender_id == user.id
+                      ? {
+                          right: "10px",
+                        }
+                      : {
+                          left: "10px",
+                        }
+                  }
+                  className="absolute top-[-10px] text-gray-600 text-[14px] whitespace-nowrap"
+                >
+                  {ele?.users?.name}
+                </span>
+              </div>
             );
           })}
         </div>
@@ -191,7 +211,10 @@ export default function MainChatWindow() {
             autoComplete="off"
             className="w-full bg-gray-100 px-6 py-3 focus:outline-none border-t-2 border-gray-50 focus:border-black rounded-tr-md"
           />
-          <button type="submit" className="bg-blue-500 px-3 rounded-lg">
+          <button
+            type="submit"
+            className="bg-blue-500 px-3 rounded-none rounded-l-md"
+          >
             <RiSendPlaneFill size={24} className="text-white" />
           </button>
         </form>
@@ -206,7 +229,7 @@ function InformationSection() {
   return (
     <div className="w-[40%] flex flex-col items-center p-4">
       {/* Group Info */}
-      <div className="w-full h-[200px] flex flex-col gap-2 bg-gray-50 rounded-2xl border-2 shadow-b">
+      <div className="w-full h-[200px] flex flex-col gap-2 bg-gray-50 text-sm rounded-2xl border-2 shadow-b">
         {/* Group heading */}
         <div className="flex items-center gap-12 px-12 py-2 bg-white rounded-t-2xl">
           <BiInfoCircle size={20} />

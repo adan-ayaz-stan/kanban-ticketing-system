@@ -6,6 +6,7 @@ const nextConfig = {
       "images.pexels.com",
       "img.freepik.com",
       "oobvalfppftfjhiboumj.supabase.co",
+      "www.google.com"
     ],
   },
   typescript: {

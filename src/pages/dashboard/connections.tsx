@@ -1,16 +1,15 @@
-import Head from "next/head";
-import { useRouter } from "next/router";
+import Head from "next/head"; 
+import { useRecoilValue } from "recoil";
 
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
-import { useSupabaseClient } from "@supabase/auth-helpers-react";
 
 import Contacts from "@/components/Dashboard/Connections/Contacts";
 import MainChatWindow from "@/components/Dashboard/Connections/MainChatWindow";
 
 import { User } from "@/types/types";
-import { useState } from "react";
-import { useRecoilValue } from "recoil";
 import { chatWindowAtom } from "@/atoms/chatWindowAtom";
+import { requestsWindowAtom } from "@/atoms/requestsWindowAtom";
+import RequestsWindow from "@/components/Dashboard/Connections/RequestsWindow";
 
 type ConnectionProps = {
   user: User;
@@ -18,6 +17,7 @@ type ConnectionProps = {
 
 export default function Connections({ user }: ConnectionProps) {
   const chatWindowState = useRecoilValue(chatWindowAtom);
+  const requestsWindowState = useRecoilValue(requestsWindowAtom);
 
   return (
     <div className="min-h-screen max-h-screen bg-white text-black">
@@ -32,8 +32,13 @@ export default function Connections({ user }: ConnectionProps) {
         <Contacts />
 
         {/* Right Main Functioning Window */}
-        <div className="w-full border-2">
-          {chatWindowState == null ? <NoChatWindowOpen /> : <MainChatWindow />}
+        <div className="w-full">
+          {chatWindowState != null && <MainChatWindow />}
+          {requestsWindowState != null && <RequestsWindow />}
+
+          {chatWindowState == null && requestsWindowState == null && (
+            <NoChatWindowOpen />
+          )}
         </div>
       </div>
     </div>
