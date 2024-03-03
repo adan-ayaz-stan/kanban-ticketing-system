@@ -29,7 +29,7 @@ const Dashboard: NextPage<pageProps> = ({ user, initialSession }) => {
   return (
     <div
       style={sen.style}
-      className="min-h-screen flex-col bg-white text-black py-4"
+      className="flex flex-col min-h-screen py-4 text-black bg-white"
     >
       <Head>
         <title>Dashboard</title>
@@ -42,20 +42,20 @@ const Dashboard: NextPage<pageProps> = ({ user, initialSession }) => {
         {isOpenSettings && <Settings closeSettings={setOpenSettings} />}
       </AnimatePresence>
       {/*  */}
-      <div className="flex flex-col sm:flex-row items-center justify-between px-8">
+      <div className="flex flex-col items-center justify-between px-8 sm:flex-row">
         <Heading
           className={
             "w-fit pt-3 text-xl text-center font-medium uppercase mb-4"
           }
         >
-          Kanban Ticketing System <span className="text-gray-300">
-          | Dashboard </span>
+          Kanban Ticketing System{" "}
+          <span className="text-gray-300">| Dashboard </span>
         </Heading>
 
-        <div className="flex gap-2 items-center">
+        <div className="flex items-center gap-2">
           <div
             onClick={() => setOpenSettings(true)}
-            className="flex gap-1 items-center text-gray-500 hover:text-gray-800 cursor-pointer"
+            className="flex items-center gap-1 text-gray-500 cursor-pointer hover:text-gray-800"
           >
             <MdSettings size={28} /> Account Settings
           </div>
@@ -63,7 +63,7 @@ const Dashboard: NextPage<pageProps> = ({ user, initialSession }) => {
         </div>
       </div>
       {/* MAIN PANEL */}
-      <div className="relative px-3 md:px-8 py-12">
+      <div className="relative flex-1 px-3 py-12 md:px-8">
         <Account user={user} />
       </div>
 

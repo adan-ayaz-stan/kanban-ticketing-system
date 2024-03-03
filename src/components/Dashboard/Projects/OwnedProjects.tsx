@@ -9,8 +9,8 @@ import { useState, useEffect } from "react";
 
 export default function OwnedProjects({ isLoading, data, error }) {
   return (
-    <div className="mx-2 p-2 rounded-xl shadow-xl backdrop-blur-lg bg-[#ffffff55]">
-      <h1 className="p-2 mb-2 text-center rounded-t-xl rounded-b-md text-green-700 bg-white text-xl font-bold uppercase">
+    <div className="mx-2 p-2 rounded-xl backdrop-blur-lg bg-[#ffffff55]">
+      <h1 className="p-2 mb-2 text-xl font-bold text-center text-green-700 uppercase bg-white rounded-t-xl rounded-b-md">
         Projects you have created
       </h1>
 
@@ -35,7 +35,7 @@ export default function OwnedProjects({ isLoading, data, error }) {
                 duration: 0.01,
               },
             }}
-            className="w-fit py-3 mx-auto text-4xl"
+            className="py-3 mx-auto text-4xl w-fit"
           >
             <AiOutlineLoading3Quarters />
           </motion.p>
@@ -98,7 +98,7 @@ function ProjectOverview({ data }) {
     <>
       <Link
         href={`/dashboard/project/${data.project_id}`}
-        className="relative flex flex-col gap-3 text-black p-4 border-gray-300 bg-white border-2 border-l-blue-500 border-l-4 rounded-lg"
+        className="relative flex flex-col gap-3 p-4 text-black bg-white border-2 border-l-4 border-gray-300 rounded-lg border-l-blue-500"
       >
         {/* Project heading */}
         <div className="max-w-[400px] flex flex-col gap-2">
@@ -113,7 +113,7 @@ function ProjectOverview({ data }) {
             </MultiClamp>
           </div>
           {/* Project author */}
-          <p className="h-fit flex items-center gap-2 text-sm">
+          <p className="flex items-center gap-2 text-sm h-fit">
             Authored by:{" "}
             <span className="flex gap-2 items-center px-2 py-1 text-[#1A120B] font-bold bg-gray-200 rounded">
               {imageLink == "" ? (

@@ -64,12 +64,11 @@ const Projects: NextPage<pageProps> = ({ user }) => {
   return (
     <div
       style={{
-        background: "linear-gradient(to top, #eaafc8, #C9D6FF)",
         fontFamily: sen.style.fontFamily,
         fontWeight: sen.style.fontWeight,
         fontStyle: sen.style.fontStyle,
       }}
-      className="min-h-screen text-black text-sm"
+      className="flex flex-col min-h-screen text-sm text-black"
     >
       <Head>
         <title>Projects</title>
@@ -79,36 +78,46 @@ const Projects: NextPage<pageProps> = ({ user }) => {
       </Head>
 
       {/* Sidebar */}
-      <div className="flex flex-col sm:flex-row justify-between items-center gap-3 p-4">
-      <Heading
+      <div className="flex flex-col items-center justify-between gap-3 p-4 sm:flex-row">
+        <Heading
           className={
             "w-fit pt-3 text-xl text-center font-medium uppercase mb-4"
           }
         >
-          Kanban Ticketing System <span className="text-gray-100">
-          | Projects </span>
+          Kanban Ticketing System{" "}
+          <span className="text-gray-300">| Projects </span>
         </Heading>
 
         <div className="flex flex-row gap-2">
-          <Link href={"/dashboard"} className="px-4 py-3 text-md bg-white rounded hover:bg-gray-100">Dashboard</Link>
-          <Link href={"/dashboard/connections"} className="px-4 py-3 text-md bg-white rounded hover:bg-gray-100">Connections</Link>
+          <Link
+            href={"/dashboard"}
+            className="px-4 py-3 bg-white rounded text-md hover:bg-gray-100 hover:underline"
+          >
+            Dashboard
+          </Link>
+          <Link
+            href={"/dashboard/connections"}
+            className="px-4 py-3 bg-white rounded text-md hover:bg-gray-100 hover:underline"
+          >
+            Connections
+          </Link>
         </div>
 
         <div
           title="Logout"
           onClick={logOut}
-          className="bg-white hover:bg-gray-100 transition-all duration-400 p-3 cursor-pointer z-20 rounded-md"
+          className="z-20 p-3 transition-all bg-white rounded-md cursor-pointer hover:bg-gray-100 duration-400"
         >
           Logout
         </div>
       </div>
 
       {/* MAIN PANEL */}
-      <div className="relative">
-        <div className="flex flex-row justify-end flex-wrap items-center">
+      <div className="relative flex-1">
+        <div className="flex flex-row flex-wrap items-center justify-end">
           <h1
             style={rubik.style}
-            className="w-fit text-xl font-medium uppercase p-4"
+            className="p-4 text-xl font-medium uppercase w-fit"
           >
             Create a new project
           </h1>
@@ -118,7 +127,7 @@ const Projects: NextPage<pageProps> = ({ user }) => {
         </div>
 
         {/* Projects */}
-        <div className="grid grid-cols-1 auto-rows-auto gap-6">
+        <div className="grid grid-cols-1 gap-6 auto-rows-auto">
           <OwnedProjects
             isLoading={ownedProjects.isLoading}
             data={ownedProjects.data}
